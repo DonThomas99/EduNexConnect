@@ -27,7 +27,10 @@ const TenantSchema:Schema = new Schema({
         type:String,
         require:true
     },
-
+    school:{
+type:String,
+require:true
+    },
     address:{
         type:String,
         require:true

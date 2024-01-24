@@ -1,8 +1,9 @@
 interface tenants{
     id?:string,
-    email?: string, 
+    email: string, 
     password?:string,
-    mongoString?:string,
+    name?:string,
+    school?:string,
     address?:string,
     state?:string
 }

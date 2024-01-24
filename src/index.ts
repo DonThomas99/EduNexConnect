@@ -1,5 +1,5 @@
 import { createServer } from "./infrastructure/config/app";
-import { connectDB } from "./infrastructure/config/connectDb";
+import  {connectDB}  from "./infrastructure/config/connectDb";
 import dotenv from 'dotenv'
 dotenv.config()
 const startServer =async () => {
