@@ -1,6 +1,8 @@
-import tenants from "../../domain/tenants";
+import { ITenants } from "../../domain/tenants";
 interface tenantRepository {
-    save(tenant: tenants):any;
+    save(tenant: ITenants):any;
     findByEmail(email:string):any
 }
+
+
 export default tenantRepository

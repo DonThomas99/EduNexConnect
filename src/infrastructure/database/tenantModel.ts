@@ -1,63 +1,56 @@
-import mongoose,{Schema,Document,ObjectId } from 'mongoose'
+import mongoose,{Schema,Document,ObjectId, Model } from 'mongoose'
+import { ITenants } from '../../domain/tenants';
 
-export interface Itenants extends Document {
-    _id: ObjectId;
-    email:String | null;
-    mobile: string | null;
-    isBlocked:Boolean | null;
-    password : string | null;
-    name:string | null;
-    address: string| null;
-    state: string|null;
-}
+type TenantSchemaType = ITenants & Document
 
-const TenantSchema:Schema = new Schema({
+const TenantSchema:Schema = new Schema<TenantSchemaType>({
     name : {
         type: String,
         required:true
     },
     mobile:{
         type : String,
-        require: true
+        required: true
     },
     email: {
-        type: String
+        type: String,
+        required:true
     },
     password:{
         type:String,
-        require:true
+        required:true
     },
     school:{
-type:String,
-require:true
+        type:String,
+        require:true
     },
     address:{
         type:String,
-        require:true
+        required:true
     },
 
     state:{
         type:String,
-        require:true
+        required:true
     },
-    
-    transactions:[ {
-      transactionType: String,
-      method:String,
-      amount: Number,
-      date:Date,
-    }], isBlocked:{
+    // transactions:[ {
+    //   transactionType: String,
+    //   method:String,
+    //   amount: Number,
+    //   date:Date,
+    // }], 
+    isBlocked:{
         type:Boolean,
+        required: true,
         default:false
     }
 },
-    {
-        timestamps:true
-    }
-
+{
+    timestamps:true
+}
 );
 
-const TenantModel= mongoose.model<Itenants>('Tenant',TenantSchema)
+const TenantModel: Model<TenantSchemaType> = mongoose.model<TenantSchemaType>('Tenant',TenantSchema)
 
 export default TenantModel
 

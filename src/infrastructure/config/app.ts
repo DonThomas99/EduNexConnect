@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser'
 import http from 'http'
 import tenantRoute from '../route/tenantRoute'
 import session, {SessionOptions} from 'express-session'
+import superAdminRouter from "../route/superAdminRoute"
 
 export const createServer = ()=>{
 //  try {
@@ -29,9 +30,10 @@ export const createServer = ()=>{
           secure:false,
           maxAge:3600000,
         }
-      } 
+      }
       app.use(session(sessionOptions))
-      app.use(tenantRoute)
+      app.use('/tenant',tenantRoute)
+      app.use('/super-admin',superAdminRouter)
       return app
 //  }
   // catch (error) {
