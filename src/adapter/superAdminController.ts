@@ -1,11 +1,10 @@
 import { Request, Response } from "express"
 import superAdminUsecase from "../use_case/superAdminUseCase"
-import tenantUsecase from "../use_case/tenantUsecase"
 class superAdminController {
     private superAdminCase:superAdminUsecase
-    
     constructor(
-        superAdminCase:superAdminUsecase       ){
+        superAdminCase:superAdminUsecase,
+              ){
         this.superAdminCase= superAdminCase
         
     }
@@ -22,5 +21,18 @@ async tenantList(req:Request,res:Response){
     const list:any = await this.superAdminCase.findAll()
     res.status(list.status).json(list)
 }
+
+async blockUnblock(req:Request,res:Response){
+    try {
+        
+        const id = req.body.id as string
+        const tenantStatus = await this.superAdminCase.blockUnblock(id)
+        res.status(200).json(tenantStatus)
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
 }
 export default superAdminController

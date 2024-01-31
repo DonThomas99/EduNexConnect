@@ -20,6 +20,8 @@ const router = express.Router()
 router.post('/signup',(req:Request,res)=>controller.signUp(req,res))
 router.post('/signin',(req:Request,res)=>controller.signIn(req,res))
 router.post('/verifyOtp',(req:Request,res)=>controller.verifyOtp(req,res))
+router.put('/updateProfile',(req:Request,res)=>controller.updateProfile(req,res))
+router.put('/updatePassword',(req:Request,res)=>controller.updatePassword(req,res))
 
 
 export default router

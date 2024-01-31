@@ -61,5 +61,16 @@ async findAll(){
     }
 }
 
+
+async blockUnblock(id:string){
+    try {
+        const tenantStatus = await this.tenantRepository.blockUnblock(id)
+        
+    } catch (error) {
+        
+    }
+
+ }
+
 }
 export default  superAdminUsecase

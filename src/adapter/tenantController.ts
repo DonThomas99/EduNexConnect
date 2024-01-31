@@ -76,6 +76,23 @@ class tenantController {
         console.log(error);
                     
         }
+    } 
+    async updateProfile(req:Request,res:Response){
+        try {
+            const body = req.body
+            const update = await this.tenantCase.update(body)
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+    async updatePassword(req:Request,res:Response){
+        try {
+            const body=req.body
+            const update = await this.tenantCase.updatePassword(body) 
+        } catch (error) {
+            
+        }
     }
     
 }

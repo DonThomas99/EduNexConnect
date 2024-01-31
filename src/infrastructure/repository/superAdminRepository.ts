@@ -9,4 +9,5 @@ class superAdminRepository implements SuperAdminRepository{
         return await superAdminModel.findOne({email:email})
     }
 }
+
 export default superAdminRepository

@@ -124,6 +124,19 @@ async signIn(email:string,password:string) {
 
     }
 
+async update(tenant:ITenants){
+    try {    const id = tenant._id as unknown as string
+            const data = await this.tenantRepository.updateProfile(id,tenant)
+            return {
+                status:200,
+                data:data
+            }
+    } catch (error) {
+        
+    }
+}
+
+async updatePassword()
 
 
 

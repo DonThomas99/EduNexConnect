@@ -3,6 +3,7 @@ import TenantModel from "../database/tenantModel"
 import TenantRepository from "../../use_case/interface/tenantRepository";
 // import { ITempTenants } from "../../domain/tempTeants";
 import { ITenants } from "../../domain/tenants";
+import { UpdateResult } from "mongodb";
 
 class tenantRepository implements TenantRepository{
    
@@ -29,5 +30,30 @@ class tenantRepository implements TenantRepository{
     async findAll(){
         return await TenantModel.find({})
     }
+
+    async blockUnblock(id:string):Promise<UpdateResult | null>{
+        try {
+            const tenant =  await TenantModel.findById(id)
+            if(tenant){
+                const newStatus = ! tenant.isBlocked;
+                const tenantStatus = await TenantModel.updateOne(
+                    {_id:id},{$set:{isBlocked:newStatus}}
+                )
+                return tenantStatus
+            } else {
+                return null
+            }
+        } catch (error) {
+            return null
+        } 
+    } 
+    async updateProfile(id:string,tenant:ITenants){
+        const {name,mobile,email,school,address,state} = tenant
+     const status = await TenantModel.findByIdAndUpdate({_id:id},{$set:{
+        name,mobile,email,school,address,state
+     }})
+     return status
+    }
+
 }
 export default tenantRepository
