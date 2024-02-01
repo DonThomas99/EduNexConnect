@@ -88,9 +88,13 @@ class tenantController {
     }
     async updatePassword(req:Request,res:Response){
         try {
-            const body=req.body
-            const update = await this.tenantCase.updatePassword(body) 
+            const {email,existingPassword,newPassword,confirmPassword} = req.body
+            
+            const update = await this.tenantCase.updatePassword(email,existingPassword,newPassword,confirmPassword) 
+            console.log('update:',update);
+            
         } catch (error) {
+           console.log(error);
             
         }
     }

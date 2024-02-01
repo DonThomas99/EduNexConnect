@@ -59,10 +59,10 @@ async signIn(email:string,password:string) {
     try {
         
         const emailDb = await this.tenantRepository.findByEmail(email)
-        console.log(emailDb);
         
         if(emailDb){
             const passwordMatch = await this.hashPassword.compare(password,emailDb.password)
+            console.log(passwordMatch);
             
             if(passwordMatch){
                 console.log(passwordMatch);
@@ -136,7 +136,35 @@ async update(tenant:ITenants){
     }
 }
 
-async updatePassword()
+async updatePassword(email:string,existingPassword:any,newPassword:string,confirmPassword:string){
+try { 
+        console.log('In the usecase of update password');
+        
+        const data = await this.tenantRepository.findByEmail(email)
+        if(data){
+                console.log('going to update password');
+                
+            const status = await this.hashPassword.compare(existingPassword,data.password)   
+            console.log("status:",status);
+            if(status){
+            const hashedPassword = await this.hashPassword.createHash(newPassword)
+            console.log("hashedPassword:",hashedPassword);
+
+            if(hashedPassword){
+                const id = data._id as unknown as string 
+                console.log('id tfytf8',id);
+                
+                const status2 = await this.tenantRepository.updatePassword(id,hashedPassword)
+            console.log("status2:",status2);
+                
+            }
+            }     
+        }
+} catch (error) {
+    console.log(error);
+    
+}
+}
 
 
 

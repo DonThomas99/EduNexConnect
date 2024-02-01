@@ -55,5 +55,18 @@ class tenantRepository implements TenantRepository{
      return status
     }
 
+    async updatePassword(id:string,password:string){
+   const tenant = await TenantModel.findById(id)
+        
+   if(tenant){
+     const tenantStatus = await TenantModel.updateOne({_id:id},{$set:{password}})
+       
+    console.log(tenantStatus);
+    return tenantStatus
+}
+        
+    }
+
+
 }
 export default tenantRepository
