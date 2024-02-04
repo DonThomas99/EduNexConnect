@@ -136,23 +136,18 @@ async update(tenant:ITenants){
     }
 }
 
-async updatePassword(email:string,existingPassword:any,newPassword:string,confirmPassword:string){
+async updatePassword(email:string,currentPassword:any,newPassword:string,repeatPassword:string){
 try { 
-        console.log('In the usecase of update password');
         
         const data = await this.tenantRepository.findByEmail(email)
         if(data){
-                console.log('going to update password');
                 
-            const status = await this.hashPassword.compare(existingPassword,data.password)   
-            console.log("status:",status);
+            const status = await this.hashPassword.compare(currentPassword,data.password)   
             if(status){
             const hashedPassword = await this.hashPassword.createHash(newPassword)
-            console.log("hashedPassword:",hashedPassword);
 
             if(hashedPassword){
                 const id = data._id as unknown as string 
-                console.log('id tfytf8',id);
                 
                 const status2 = await this.tenantRepository.updatePassword(id,hashedPassword)
                     if(status2){

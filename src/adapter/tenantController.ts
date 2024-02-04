@@ -88,10 +88,10 @@ class tenantController {
     }
     async updatePassword(req:Request,res:Response){
         try {
-            const {email,existingPassword,newPassword,confirmPassword} = req.body
             
-            const update = await this.tenantCase.updatePassword(email,existingPassword,newPassword,confirmPassword) 
-            console.log('update:',update);
+            const {email,currentPassword,newPassword,repeatPassword} = req.body.data
+            
+            const update = await this.tenantCase.updatePassword(email,currentPassword,newPassword,repeatPassword) 
             if(update){
 
                 res.status(200).json()
