@@ -59,7 +59,7 @@ class tenantRepository implements TenantRepository{
    const tenant = await TenantModel.findById(id)
         
    if(tenant){
-     const tenantStatus = await TenantModel.updateOne({_id:id},{$set:{password}})
+     const tenantStatus = await TenantModel.updateOne({_id:id},{$set:{password}},{new:true})
        
     console.log(tenantStatus);
     return tenantStatus

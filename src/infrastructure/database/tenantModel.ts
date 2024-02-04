@@ -22,7 +22,7 @@ const TenantSchema:Schema = new Schema<TenantSchemaType>({
     },
     school:{
         type:String,
-        require:true
+        required:true
     },
     address:{
         type:String,
@@ -31,6 +31,14 @@ const TenantSchema:Schema = new Schema<TenantSchemaType>({
 
     state:{
         type:String,
+        required:true
+    },
+    city:{
+        type:String,
+        required:true
+    },
+    zip:{
+        type:Number,
         required:true
     },
     // transactions:[ {

@@ -10,5 +10,7 @@ export interface ITenants {
     school:string;
     address: string;
     state: string;
+    city:string;
+    zip:number;
     // transactions: string;
 }

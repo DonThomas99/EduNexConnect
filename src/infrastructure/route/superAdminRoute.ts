@@ -15,6 +15,6 @@ const controller = new superAdminController(useCase)
 const superAdminRouter = express.Router()
 superAdminRouter.post('/login',(req:Request,res)=>controller.adminLogin(req,res))
 superAdminRouter.get('/tenantList',(req:Request,res)=>controller.tenantList(req,res))
-superAdminRouter.put('/blockTenant/',(req:Request,res)=>controller.blockUnblock(req,res))
+superAdminRouter.put('/blockTenant',(req:Request,res)=>controller.blockUnblock(req,res))
 
 export default superAdminRouter 

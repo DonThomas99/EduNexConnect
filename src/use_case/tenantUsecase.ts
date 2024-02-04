@@ -155,8 +155,11 @@ try {
                 console.log('id tfytf8',id);
                 
                 const status2 = await this.tenantRepository.updatePassword(id,hashedPassword)
-            console.log("status2:",status2);
-                
+                    if(status2){
+                        return true
+                    }     else{
+                        return false
+                    }           
             }
             }     
         }

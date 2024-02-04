@@ -92,7 +92,12 @@ class tenantController {
             
             const update = await this.tenantCase.updatePassword(email,existingPassword,newPassword,confirmPassword) 
             console.log('update:',update);
-            
+            if(update){
+
+                res.status(200).json()
+            }else{
+                res.status(401).json()
+            }
         } catch (error) {
            console.log(error);
             
