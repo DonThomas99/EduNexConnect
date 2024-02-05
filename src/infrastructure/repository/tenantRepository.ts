@@ -46,7 +46,20 @@ class tenantRepository implements TenantRepository{
         } catch (error) {
             return null
         } 
-    } 
+    }
+    
+    async findById(id:string){
+try {
+    const Data = await TenantModel.findById(id)
+    if(Data){
+        return Data
+    }
+} catch (error) {
+    console.log(error);
+    
+}
+    }
+
     async updateProfile(id:string,tenant:ITenants){
         const {name,mobile,email,school,address,state} = tenant
      const status = await TenantModel.findByIdAndUpdate({_id:id},{$set:{

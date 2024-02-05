@@ -33,6 +33,20 @@ async blockUnblock(req:Request,res:Response){
         
     }
 }
+async getTenantData(req:Request,res:Response){
+    try {     console.log('ghee');
+       
+        const id = req.params.TenantId as unknown as string
+        const tenantData = await this.superAdminCase.findById(id)
+        if(tenantData){
+            console.log(tenantData);
+            
+            res.status(200).json(tenantData)
+        }
+    } catch (error) {
+        
+    }
+}
 
 }
 export default superAdminController

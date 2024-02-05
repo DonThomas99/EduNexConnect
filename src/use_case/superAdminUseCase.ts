@@ -72,5 +72,24 @@ async blockUnblock(id:string){
 
  }
 
+ async findById(id:string){
+try {
+    const Data = await this.tenantRepository.findById(id)
+    if(Data){
+        return {
+            status:200,
+            data:Data
+        }
+    } else{
+        return {
+            status:404
+        }
+    }
+} catch (error) {
+    console.log(error);
+    
+}
+ }
+
 }
 export default  superAdminUsecase
