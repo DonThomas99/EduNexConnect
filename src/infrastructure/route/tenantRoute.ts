@@ -22,6 +22,7 @@ router.post('/signin',(req:Request,res)=>controller.signIn(req,res))
 router.post('/verifyOtp',(req:Request,res)=>controller.verifyOtp(req,res))
 router.put('/updateProfile',(req:Request,res)=>controller.updateProfile(req,res))
 router.put('/updatePassword',(req:Request,res)=>controller.updatePassword(req,res))
+router.post('/saveAdmin',(req:Request,res)=>controller.saveAdmin(req,res))
 
 
 export default router

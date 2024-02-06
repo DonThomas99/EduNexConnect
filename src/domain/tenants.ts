@@ -12,5 +12,6 @@ export interface ITenants {
     state: string;
     city:string;
     zip:number;
+    schoolAdmins:[]
     // transactions: string;
 }

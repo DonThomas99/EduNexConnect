@@ -41,6 +41,12 @@ const TenantSchema:Schema = new Schema<TenantSchemaType>({
         type:Number,
         required:true
     },
+    schoolAdmins:[
+        {
+        adminId:String,
+        password:String,
+    },
+],
     // transactions:[ {
     //   transactionType: String,
     //   method:String,

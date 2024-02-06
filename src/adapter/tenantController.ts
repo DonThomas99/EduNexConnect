@@ -104,6 +104,15 @@ class tenantController {
         }
     }
     
+async saveAdmin(req:Request,res:Response){
+try {
+    console.log("hee",req.body);
+    
+} catch (error) {
+    
+}
+}
+
 }
 
 export default tenantController 
