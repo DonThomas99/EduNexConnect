@@ -106,8 +106,17 @@ class tenantController {
     
 async saveAdmin(req:Request,res:Response){
 try {
-    console.log("hee",req.body);
     
+    const {TenantId,id,password,repeatPassword} = req.body
+   
+    const response = await this.tenantCase.saveAdmin(TenantId,id,password,repeatPassword)
+if(response){
+    return res.status(200).json()
+}   else{
+    return res.status(401).json()
+}
+
+
 } catch (error) {
     
 }

@@ -163,6 +163,24 @@ try {
     
 }
 }
+async saveAdmin(tenantId:string,id:string,password:string,repeatPassword:string){
+    try { 
+        
+        
+        const isExists =await this.tenantRepository.adminExist(tenantId,id)
+        
+        if(!isExists){
+
+            const add = await this.tenantRepository.AdminSave(tenantId,id,password)
+            return add
+        } else{
+            return false
+        }
+        
+    } catch (error) {
+        
+    }
+}
 
 
 

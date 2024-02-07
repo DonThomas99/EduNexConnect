@@ -78,6 +78,48 @@ try {
 }
         
     }
+async adminExist(tenantId:string,id:string){
+    try {
+        const data = await TenantModel.find({_id:tenantId},{schoolAdmins:1})
+        const schoolAdminsArray = (data[0]?.schoolAdmins ||[]) as {adminId:string,password:string}[];
+        for(const doc of schoolAdminsArray){
+            
+            if(id === doc.adminId){
+                return true
+            }
+        }
+        return false
+        
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
+
+    async AdminSave(tenantId:string,id:string,password:string){
+        const adminData ={
+            adminId :id,
+            password:password
+        }
+        try {
+            
+            const updatedTenant = await TenantModel.findByIdAndUpdate(
+                tenantId,
+                { $push: { schoolAdmins: adminData }},
+                { new: true }
+            );
+                
+            if(updatedTenant){
+                        return true
+        } else {
+                return false;  
+            }
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
 
 
 }
