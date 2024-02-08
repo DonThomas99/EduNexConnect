@@ -122,6 +122,26 @@ if(response){
 }
 }
 
+async getAdminList(req:Request,res:Response){
+    try {
+        const id = req.body.id as unknown as string
+        const data = await this.tenantCase.adminList(id)
+
+    } catch (error) {
+        console.log(error);
+        
+    }
 }
+
+async createDb(req:Request,res:Response){
+try {
+    const id = req.body.id as unknown as string
+    const data = await this.tenantCase.createDb(id)
+} catch (error) {
+    
+}
+}
+}
+
 
 export default tenantController 

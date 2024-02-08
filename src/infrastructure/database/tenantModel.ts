@@ -45,6 +45,11 @@ const TenantSchema:Schema = new Schema<TenantSchemaType>({
         {
         adminId:String,
         password:String,
+        is_Blocked:{
+         type:Boolean,
+            required:true,
+         default:false
+        }
     },
 ],
     // transactions:[ {

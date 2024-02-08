@@ -182,6 +182,21 @@ async saveAdmin(tenantId:string,id:string,password:string,repeatPassword:string)
     }
 }
 
+async adminList(id:string){
+    try {
+        const data = await this.tenantRepository.findById(id)
+    } catch (error) {
+        
+    }
+}
+
+async createDb(id:string){
+    try {
+        
+    } catch (error) {
+        
+    }
+}
 
 
 }
