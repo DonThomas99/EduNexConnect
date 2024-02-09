@@ -5,10 +5,11 @@ import express,{Request, Response} from "express";
 import JwtCreate from "../utils/jwtCreate";
 import tenantRepository from "../repository/tenantRepository";
 import tenantUsecase from "../../use_case/tenantUsecase";
+import {getSchema} from "../utils/switchDb"
 
 const repository = new SuperAdminRepository()
 const jwt = new JwtCreate()
-const trepository = new tenantRepository()
+const trepository = new tenantRepository(getSchema)
 const useCase = new superAdminUseCase(repository,trepository,jwt)
 const controller = new superAdminController(useCase)
 

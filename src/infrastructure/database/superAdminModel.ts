@@ -5,7 +5,7 @@ export interface superAdmin extends Document{
     email: string,
     password: string
 }
-const superAdminSchema: Schema = new Schema({
+export const superAdminSchema: Schema = new Schema({
     email: {
         type:String
     },

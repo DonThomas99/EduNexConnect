@@ -165,9 +165,10 @@ try {
 }
 async saveAdmin(tenantId:string,id:string,password:string,repeatPassword:string){
     try { 
-        
-        
+                
         const isExists =await this.tenantRepository.adminExist(tenantId,id)
+        
+        console.log("is exist:",isExists);
         
         if(!isExists){
 

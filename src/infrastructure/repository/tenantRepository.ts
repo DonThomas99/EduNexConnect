@@ -4,8 +4,14 @@ import TenantRepository from "../../use_case/interface/tenantRepository";
 // import { ITempTenants } from "../../domain/tempTeants";
 import { ITenants } from "../../domain/tenants";
 import { UpdateResult } from "mongodb";
+import { getSchema } from "../utils/switchDb";
 
 class tenantRepository implements TenantRepository{
+    private readonly getSchema: (schoolName: string, modelName: string) => Promise<any>;
+
+    constructor(getSchema: (schoolName: string, modelName: string) => Promise<any>) {
+        this.getSchema = getSchema;
+    }
    
      async save(tenant: ITenants) {
     const newTenant = new TenantModel(tenant)   
@@ -15,7 +21,7 @@ class tenantRepository implements TenantRepository{
 
     async findByEmail(email:string): Promise<ITenants | null>{
         console.log(email, 'email from repository');
-        
+        const TenantModel = await this.getSchema("EduNextConnect","tenants")
         return await TenantModel.findOne({email:email})
 
 
@@ -33,9 +39,13 @@ class tenantRepository implements TenantRepository{
 
     async blockUnblock(id:string):Promise<UpdateResult | null>{
         try {
+        
+
             const tenant =  await TenantModel.findById(id)
             if(tenant){
                 const newStatus = ! tenant.isBlocked;
+        const TenantModel = await getSchema("EduNextConnect","tenants")
+
                 const tenantStatus = await TenantModel.updateOne(
                     {_id:id},{$set:{isBlocked:newStatus}}
                 )
@@ -50,6 +60,8 @@ class tenantRepository implements TenantRepository{
     
     async findById(id:string){
 try {
+    const TenantModel = await getSchema("EduNextConnect","tenants")
+
     const Data = await TenantModel.findById(id)
     if(Data){
         return Data
@@ -61,6 +73,7 @@ try {
     }
 
     async updateProfile(id:string,tenant:ITenants){
+        const TenantModel = await getSchema(id,"admins")
         const {name,mobile,email,school,address,state} = tenant
      const status = await TenantModel.findByIdAndUpdate({_id:id},{$set:{
         name,mobile,email,school,address,state
@@ -79,10 +92,14 @@ try {
         
     }
 async adminExist(tenantId:string,id:string){
-    try {
-        const data = await TenantModel.find({_id:tenantId},{schoolAdmins:1})
-        const schoolAdminsArray = (data[0]?.schoolAdmins ||[]) as {adminId:string,password:string}[];
-        for(const doc of schoolAdminsArray){
+    try {        
+        const TenantModel = await this.getSchema(tenantId,"schoolAdmin")
+
+        const data = await TenantModel.find({})
+        // const schoolAdminsArray = (data[0]?.schoolAdmins ||[]) as {adminId:string,password:string}[];
+        console.log("datqat:",data[0].adminId);
+        
+        for(const doc of data){
             
             if(id === doc.adminId){
                 return true
@@ -103,12 +120,12 @@ async adminExist(tenantId:string,id:string){
             password:password
         }
         try {
-            
-            const updatedTenant = await TenantModel.findByIdAndUpdate(
-                tenantId,
-                { $push: { schoolAdmins: adminData }},
-                { new: true }
-            );
+
+
+            const schoolAdminmodel = await getSchema(tenantId,"schoolAdmin")
+            const newAdmin = new schoolAdminmodel(adminData); // Create a new instance of the CompanySchema with the provided data
+            const updatedTenant = await newAdmin.save();
+                console.log(updatedTenant);
                 
             if(updatedTenant){
                         return true

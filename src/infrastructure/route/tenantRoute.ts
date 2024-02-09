@@ -6,8 +6,9 @@ import otpGen from "../utils/otpGen"
 import sendOtp from "../utils/sendMail"
 import HashPassword from "../utils/hashPassword"
 import JwtCreate from "../utils/jwtCreate"
+import  {getSchema} from "../utils/switchDb"
 
-const repository = new tenantRepository()
+const repository = new tenantRepository(getSchema)
 const otp = new otpGen()
 const otpSend = new sendOtp()
 const hashPassword = new HashPassword()

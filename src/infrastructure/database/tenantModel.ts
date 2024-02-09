@@ -3,7 +3,7 @@ import { ITenants } from '../../domain/tenants';
 
 type TenantSchemaType = ITenants & Document
 
-const TenantSchema:Schema = new Schema<TenantSchemaType>({
+export const TenantSchema:Schema = new Schema<TenantSchemaType>({
     name : {
         type: String,
         required:true
