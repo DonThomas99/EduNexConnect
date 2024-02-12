@@ -5,6 +5,7 @@ import http from 'http'
 import tenantRoute from '../route/tenantRoute'
 import session, {SessionOptions} from 'express-session'
 import superAdminRouter from "../route/superAdminRoute"
+import { checkTenantMiddleware } from "../middlewares/checkTenant"
 
 export const createServer = ()=>{
 //  try {
@@ -32,8 +33,13 @@ export const createServer = ()=>{
         }
       }
       app.use(session(sessionOptions))
-      app.use('/tenant',tenantRoute)
+
+
+      app.use(checkTenantMiddleware)
       app.use('/super-admin',superAdminRouter)
+
+      app.use('/tenant',tenantRoute)
+      // const pathName = req.originalUrl.split('?')[0]
       return app
 //  }
   // catch (error) {
