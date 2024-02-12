@@ -26,4 +26,5 @@ router.put('/updatePassword',(req:Request,res)=>controller.updatePassword(req,re
 router.post('/saveAdmin',(req:Request,res)=>controller.saveAdmin(req,res))
 router.get('/SchoolAdminList',(req:Request,res)=>controller.getAdminList(req,res))
 router.get('/createDb',(req:Request,res)=>controller.createDb(req,res))
+router.get('/resendOtp',(req:Request,res)=>controller.resendOtp(req,res))
 export default router

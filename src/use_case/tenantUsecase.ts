@@ -199,6 +199,23 @@ async createDb(id:string){
     }
 }
 
+async resendOtp(tenant:ITenants){
+try {
+    const otp = await this.otpGen.genOtp(4)
+    console.log(otp, 'otp')
+    this.sendMail.sendMail(tenant.name,tenant.email,otp);
+    return {
+        status:200,
+        data:{data:false,
+            otp:otp
+        }
+    }
+} catch (error) {
+    console.log(error);
+    
+}
+}
+
 
 }
 export default tenantUsecase

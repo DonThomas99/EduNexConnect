@@ -22,7 +22,7 @@ class tenantController {
                     req.app.locals.otp = tenant.data.otp
                     res.status(200).json({data:tenant})
                 } else{
-                    res.status(200).json({data:false})
+                    res.status(409).json({data:false})
                 }
 
                 console.log('sending response');
@@ -140,6 +140,15 @@ try {
 } catch (error) {
     
 }
+}
+async resendOtp(req:Request,res:Response){
+    try { 
+        const tenant = req.app.locals.tenant
+        req.app.locals.otp = tenant.data.otp
+    
+    } catch (error) {
+        
+    }
 }
 }
 

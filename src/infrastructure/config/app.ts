@@ -35,10 +35,10 @@ export const createServer = ()=>{
       app.use(session(sessionOptions))
 
 
-      app.use(checkTenantMiddleware)
       app.use('/super-admin',superAdminRouter)
-
+      
       app.use('/tenant',tenantRoute)
+      app.use(checkTenantMiddleware)
       // const pathName = req.originalUrl.split('?')[0]
       return app
 //  }
