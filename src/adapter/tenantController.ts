@@ -1,5 +1,6 @@
 import { Request,Response } from "express";
 import tenantUsecase from "../use_case/tenantUsecase"
+import { ITenants } from "../domain/tenants";
 // import tenants from "../domain/tenants";
 
 
@@ -143,10 +144,15 @@ try {
 }
 async resendOtp(req:Request,res:Response){
     try { 
-        const tenant = req.app.locals.tenant
-        req.app.locals.otp = tenant.data.otp
+        const tenantData:ITenants = req.app.locals.tenant
+           const  tenant = await this.tenantCase.resendOtp(tenantData)
+           if(tenant){
+            req.app.locals.otp = tenant.data.otp
+           return  res.status(tenant.status).json({message:true})
+           }
     
     } catch (error) {
+        console.log(error);
         
     }
 }
