@@ -14,6 +14,14 @@ class JwtCreate implements Ijwt{
         }
         throw new Error("JWT_KEY is not defined");
     }
+    generateRefreshToken(id:string):string{
+        const key = process.env.JWT_KEY
+        if(key){
+            const exp = Math.floor(Date.now()/1000) + (24 * 60 * 60)
+            return jwt.sign({id:id,exp,iat:Date.now()/1000},key)
+        }
+        throw new Error('JWT key is not defined')
+    }
 }
 
 export default JwtCreate

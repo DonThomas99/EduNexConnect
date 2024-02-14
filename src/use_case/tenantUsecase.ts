@@ -55,51 +55,53 @@ class tenantUsecase{
         }
     }
 
-async signIn(email:string,password:string) {
-    try {
-        
-        const emailDb = await this.tenantRepository.findByEmail(email)
-        
-        if(emailDb){
-            const passwordMatch = await this.hashPassword.compare(password,emailDb.password)
-            console.log(passwordMatch);
-            
-            if(passwordMatch){
-                console.log(passwordMatch);
-                
-            //    const email:s =  emailDb
-                const jwt =  this.JwtCreate.createJwt(emailDb._id as unknown as string)
-
-                return{
-                    status: 200,
-                    data:{jwt,emailDb}
+    async signIn(email: string, password: string) {
+        try {
+            const emailDb = await this.tenantRepository.findByEmail(email);
+    
+            if (emailDb) {
+                const passwordMatch = await this.hashPassword.compare(password, emailDb.password);
+                if (passwordMatch) {
+                    // Generate tokens
+                    const accessToken = this.JwtCreate.createJwt(emailDb._id as unknown as string);
+                    const refreshToken = this.JwtCreate.generateRefreshToken(emailDb._id as unknown as string); // Implement your refresh token generation logic here
+    
+                    // Set the refresh token in the user object (for future use)
+                    // await this.tenantRepository.setRefreshToken(emailDb._id as unknown as  string, refreshToken);
+    
+                    // Send the tokens in the response
+                    return {
+                        status: 200,
+                        data: {
+                            accessToken,
+                            refreshToken,
+                            emailDb
+                        }
+                    };
+                } else {
+                    return {
+                        status: 401,
+                        data: null
+                    
+                    };
                 }
+            } else {
+                return {
+                    status: 400,
+                    data: null,
+                    message: 'User Not Found'
+                };
             }
-            else{
-                return{
-                    status:401,
-                    data:null,
-                    message:'Invalid Password'
-                }
-            }
-        }else{
-            return{
-                status:400,
-                data:null,
-                message:'User Not Found'
-            }
-        }
-    } catch (error) {
-        console.log((error as Error).message)
-        return {
-            status: 500,
-            data:null,
-            message:'Internal Server Error'
+        } catch (error) {
+            console.log((error as Error).message);
+            return {
+                status: 500,
+                data: null,
+                message: 'Internal Server Error'
+            };
         }
     }
-
-
-    }
+    
     async tenantSave(tenant:ITenants){
 
         try {

@@ -34,8 +34,9 @@ class tenantController {
         }
     async signIn(req:Request,res:Response){
         try {
-            const tenant:any = await this.tenantCase.signIn(req.body.email,req.body.password)
-            res.status(tenant.status).json(tenant)
+            const loginStatus = await this.tenantCase.signIn(req.body.email,req.body.password)
+            
+            res.status(loginStatus.status).json(loginStatus)
             // if(tenant)
         } catch (error) {
     console.log(error);
