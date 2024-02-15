@@ -7,6 +7,7 @@ import sendOtp from "../utils/sendMail"
 import HashPassword from "../utils/hashPassword"
 import JwtCreate from "../utils/jwtCreate"
 import  {getSchema} from "../utils/switchDb"
+import { tenantAuth } from "../middlewares/tenant.auth"
 
 const repository = new tenantRepository(getSchema)
 const otp = new otpGen()
@@ -23,8 +24,8 @@ router.post('/signin',(req:Request,res)=>controller.signIn(req,res))
 router.post('/verifyOtp',(req:Request,res)=>controller.verifyOtp(req,res))
 router.put('/updateProfile',(req:Request,res)=>controller.updateProfile(req,res))
 router.put('/updatePassword',(req:Request,res)=>controller.updatePassword(req,res))
-router.post('/saveAdmin',(req:Request,res)=>controller.saveAdmin(req,res))
-router.get('/SchoolAdminList',(req:Request,res)=>controller.getAdminList(req,res))
+router.post('/saveAdmin',tenantAuth,(req:Request,res)=>controller.saveAdmin(req,res))
+router.get('/adminList',(req:Request,res)=>controller.getAdminList(req,res))
 router.get('/createDb',(req:Request,res)=>controller.createDb(req,res))
 router.get('/resendOtp',(req:Request,res)=>controller.resendOtp(req,res))
 export default router

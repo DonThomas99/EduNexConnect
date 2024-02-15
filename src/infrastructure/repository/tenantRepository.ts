@@ -60,9 +60,9 @@ class tenantRepository implements TenantRepository{
     
     async findById(id:string){
 try {
-    const TenantModel = await getSchema("EduNextConnect","tenants")
+    const schoolModel = await getSchema(id,"schoolAdmin")
 
-    const Data = await TenantModel.findById(id)
+    const Data = await schoolModel.find()
     if(Data){
         return Data
     }

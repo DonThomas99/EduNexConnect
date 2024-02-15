@@ -9,6 +9,10 @@ const schoolAdminSchema = new mongoose.Schema(
     password:{
         type:String,
         required:true,
+    },
+    isBlocked:{
+      type:Boolean,
+      default:false
     }
 },
 

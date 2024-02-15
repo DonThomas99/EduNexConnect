@@ -6,7 +6,7 @@ export interface ITenants {
     mobile: string ;
     isBlocked:boolean ;
     password : string ;
-    name:string ;
+    name:string;
     school:string;
     address: string;
     state: string;

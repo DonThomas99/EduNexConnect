@@ -110,6 +110,7 @@ async saveAdmin(req:Request,res:Response){
 try {
     
     const {TenantId,id,password,repeatPassword} = req.body
+   console.log('in admin:',id);
    
     const response = await this.tenantCase.saveAdmin(TenantId,id,password,repeatPassword)
 if(response){
@@ -120,14 +121,18 @@ if(response){
 
 
 } catch (error) {
+    console.log(error);
     
 }
 }
 
 async getAdminList(req:Request,res:Response){
     try {
-        const id = req.body.id as unknown as string
+        const id = req.query.id as unknown as string
         const data = await this.tenantCase.adminList(id)
+        console.log("list from repo:",data);
+        
+        return res.status(200).json(data)
 
     } catch (error) {
         console.log(error);
