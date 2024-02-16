@@ -4,8 +4,9 @@ import cookieParser from 'cookie-parser'
 import http from 'http'
 import tenantRoute from '../route/tenantRoute'
 import session, {SessionOptions} from 'express-session'
-import superAdminRouter from "../route/superAdminRoute"
-import { checkTenantMiddleware } from "../middlewares/checkTenant"
+import superAdminRouter from "../route/superAdminRoute";
+import { checkTenantMiddleware } from "../middlewares/checkTenant";
+import schoolRouting  from '../middlewares/schoolRouting';
 
 export const createServer = ()=>{
 //  try {
@@ -38,6 +39,8 @@ export const createServer = ()=>{
       app.use('/super-admin',superAdminRouter)
       
       app.use('/tenant',tenantRoute)
+      
+      app.use('/',schoolRouting)
       app.use(checkTenantMiddleware)
       // const pathName = req.originalUrl.split('?')[0]
       return app
