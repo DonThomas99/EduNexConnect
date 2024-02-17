@@ -4,6 +4,7 @@ import teacherRoute from "../route/teacherRoute";
 import studentRoute from "../route/studentRoute";
 
 
+
 // middleware.js
 const express = require('express');
 const router = express.Router();
@@ -13,14 +14,15 @@ router.use('/:id/:role', (req:Request, res:Response, next:NextFunction) => {
 
     const id = req.params.id;
     const role = req.params.role as string;
-    console.log('role:',role);
 
     // Validate ID format (you can customize this validation)
     const validIdRegex = /^[a-f\d]{24}$/i;
     if (!validIdRegex.test(id)) {
         return res.status(400).json({ error: 'Invalid ID format' });
     }
+    req.body.id = id 
 
+    
     // Forward request to appropriate route based on role
     if (role === 'admin') {
         return schoolAdminRoute(req, res, next);        

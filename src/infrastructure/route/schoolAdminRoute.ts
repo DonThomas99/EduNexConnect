@@ -7,7 +7,14 @@ const jwt = new JwtCreate()
 const usecase = new schoolAdminUseCase()
 const controller  = new schoolAdminController(usecase)
 
+
+
 const schoolAdminRouter = express.Router()
 
-schoolAdminRouter.get('/login',(req:Request,res)=>controller.schoolAdminLogin(req,res))
-export default schoolAdminRouter
+schoolAdminRouter.post('/login',(req:Request,res)=>{
+ console.log(req.body.id);
+ 
+    controller.schoolAdminLogin(req, res)
+})
+
+    export default schoolAdminRouter
