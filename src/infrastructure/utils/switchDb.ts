@@ -31,6 +31,8 @@ const getSchema =  async (schoolName: string,modelName:string): Promise<any> => 
       const schoolDB: Connection = await switchDB(schoolName, ChildrenSchemas);
         
         const schoolModel: Model<any> = await getDBModel(schoolDB, modelName);
+     console.log('model:',schoolModel);
+     
         return schoolModel;
     
   }

@@ -18,4 +18,4 @@ const schoolAdminSchema = new mongoose.Schema(
 
 );
 
-export { schoolAdminSchema };
+export  { schoolAdminSchema };
