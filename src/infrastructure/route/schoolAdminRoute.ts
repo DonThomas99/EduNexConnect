@@ -16,10 +16,9 @@ const controller  = new schoolAdminController(usecase)
 
 const schoolAdminRouter = express.Router()
 
-schoolAdminRouter.post('/login',(req:Request,res)=>{
- console.log(req.body.id);
- 
-    controller.schoolAdminLogin(req, res)
-})
+schoolAdminRouter.post('/login',(req:Request,res)=>{controller.schoolAdminLogin(req, res)})
+schoolAdminRouter.post('/addSubjects',(req:Request,res)=>{controller.addSubject(req,res)})
+schoolAdminRouter.post('/addTeacher',(req:Request,res)=>{controller.addTeacher(req,res)})
+schoolAdminRouter.get('/fetchClasses',(req:Request,res)=>{controller.fetchClasses(req,res)})
 
     export default schoolAdminRouter

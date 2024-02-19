@@ -25,6 +25,39 @@ this.schoolAdminCase = schoolAdminCase
             
         }
     }
+    async addSubject(req:Request,res:Response){
+        try {
+            const {classNumber,subject,id}= req.body
+            const result = await this.schoolAdminCase.addSubjects(classNumber,subject,id)                
+            if(result)
+            res.status(result.status).json(result.data)
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+
+    async addTeacher(req:Request,res:Response){
+        try {
+            
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+    async fetchClasses(req:Request,res:Response){
+        try {
+            const id = req.body.id as unknown as string
+            const response = await this.schoolAdminCase.fetchClasses(id)
+            if(response){
+
+                res.status(response.status).json(response.message)
+            }
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
 
 }
 

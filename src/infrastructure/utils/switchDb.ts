@@ -6,10 +6,11 @@ import { schoolConnectDB } from '../config/connectDb';
 import { schoolAdminSchema } from '../database/schoolAdminModel';
 import { TenantSchema } from '../database/tenantModel';
 import { superAdminSchema } from '../database/superAdminModel';
+import { subjectSchema } from '../database/subjectSchema';
 
 // Indicates which Schemas are used by whom
 
-const ChildrenSchemas: Map<string, any> = new Map([['schoolAdmin', schoolAdminSchema]]);
+const ChildrenSchemas: Map<string, any> = new Map([['schoolAdmin', schoolAdminSchema],['subjects',subjectSchema]]);
 const TenantSchemas: Map<string, any> = new Map([['tenants', TenantSchema],['admins',superAdminSchema]]);
 
 /** Switch db on the same connection pool

@@ -65,5 +65,75 @@ console.log(document);
     }
 }
 
+async addSubjects(classNumber:string,subject:string,id:string){
+    try {
+            const status = await this.schoolAdminRepo.subjectExists(subject,classNumber,id)
+            
+            if(!status){
+                const documentToInsert ={
+                    class:classNumber,
+                    subjects:[
+                        {
+                            name:subject
+                        }
+                    ]
+                }
+                const save = await this.schoolAdminRepo.addSubject(classNumber,subject,documentToInsert,id)
+                    if(save){
+                     return {
+                        status:200,
+                        data:{
+                            message:'subject added Successfully!!! '
+                        }
+                     }   
+                    } else{
+                        return{
+                            status:500,
+                            data:{
+                                message:'Subject addition failed. Please try again later'
+                            }
+                        }
+                    }
+         
+            } else{
+                return {
+                    status:500,
+                    data:{
+                        message:'Please try again later.'
+                    }
+                }
+            }
+            
+                      
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
+async fetchClasses(id:string){
+    try {
+        const data= await this.schoolAdminRepo.fetchClasses(id)
+        if(data){
+            return{
+                status:200,
+                message:{
+                    array:data
+                }
+            }
+        }else{
+            return {
+                status:500,
+                message:'Try again after sometime'
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
+
+
 }
 export default schoolAdminUseCase
