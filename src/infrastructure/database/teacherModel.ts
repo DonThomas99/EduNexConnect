@@ -2,11 +2,15 @@ import mongoose from "mongoose";
 
 const teacherSchema = new mongoose.Schema(
   {
+    email:{
+        type:String,
+        required:true
+    },
     name:{
         type:String,
         required:true
     },
-    teacherId: {
+    userId: {
       type: String,
       required: true,
     },
@@ -14,15 +18,15 @@ const teacherSchema = new mongoose.Schema(
         type:String,
         required:true,
     },
-    subject:[
+    classNsub:[
         {
-            subjectName:{
-
+            classNum:{
                 type:String
             },
-            class:{
+            subject:[{
+
                 type:String
-            }
+            }]
         }
     ]
     },

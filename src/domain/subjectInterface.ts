@@ -1,4 +1,4 @@
-export default interface Subject {
+export  interface Subject {
     class: string;
     subjects: SubjectName[];
   }
@@ -7,3 +7,7 @@ export default interface Subject {
     name: string;
   }
   
+  export  interface classNsubjects{
+    classNumber:string,
+    subjects:string[]
+  }

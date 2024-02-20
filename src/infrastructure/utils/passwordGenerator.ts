@@ -30,3 +30,5 @@ class passwordGenerator {
     
     
 }
+
+export default passwordGenerator

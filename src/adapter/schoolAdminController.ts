@@ -39,6 +39,8 @@ this.schoolAdminCase = schoolAdminCase
 
     async addTeacher(req:Request,res:Response){
         try {
+                const {id,data} = req.body
+                const response = await this.schoolAdminCase.addTeacher(data,id)
             
         } catch (error) {
             console.log(error);
@@ -51,7 +53,7 @@ this.schoolAdminCase = schoolAdminCase
             const response = await this.schoolAdminCase.fetchClasses(id)
             if(response){
 
-                res.status(response.status).json(response.message)
+                res.status(response.status).json(response.data)
             }
         } catch (error) {
             console.log(error);

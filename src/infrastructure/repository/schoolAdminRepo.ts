@@ -1,7 +1,8 @@
 import schoolAdminRepository from "../../use_case/interface/schoolAdminRepo";
 import { getSchema,switchDB } from "../utils/switchDb";
-import Subject from "../../domain/subjectInterface";
+import {Subject} from "../../domain/subjectInterface";
 import { Error as  MongooseError } from "mongoose";
+import { Iteachers, classNsub, teachers } from "../../domain/teachers";
 
 export default class schoolAdminRepo implements schoolAdminRepository {
     async findById(id:string,name:string){
@@ -29,15 +30,15 @@ export default class schoolAdminRepo implements schoolAdminRepository {
             if (status) {
                 status.subjects.push(document.subjects[0])
                 await status.save()
-                return true; // Return false indicating subject already exists
+                return true; 
             } else {
-                // Insert the subject if it doesn't already exist
+                
                 await Model.create(document);
-                return true; // Return true if insertion is successful
+                return true; 
             }
         } catch (error) {
             console.error('Error inserting document:', error);
-            return false; // Return false if an error occurs
+            return false; 
         }
     }
 
@@ -51,5 +52,52 @@ export default class schoolAdminRepo implements schoolAdminRepository {
             
         }
     }
+    async teacherExists(id:string,data:Iteachers){
+        try {
+            const Model = await getSchema(id, 'teachers');
+            const teacher = await Model.findOne({ email:data.email });
+            const stat= !!teacher;
+
+            
+            if(stat){
+                                
+                const existingClass = teacher.classNsub.find((c: classNsub) => c.classNum === data.class);
+                console.log('bee',existingClass);
+                
+                if (existingClass) {
+
+                    if (!existingClass.subject.includes(data.subject)) {
+                        existingClass.subject.push(data.subject);
+                    } 
+                    
+                }
+                await teacher.save();
+                return true
+        }
+        } catch (error) {
+            
+        }
+    }
+
+
+    async addTeachers(userId:string,password:string,data:Iteachers,id:string){
+        try {
+            const Model = await getSchema(id, 'teachers'); 
+                const newTeacher: teachers = {
+                    name: data.name,
+                    email: data.email,
+                    userId: userId,
+                    password: password,
+                    classNsub: [{ classNum: data.class, subject: [data.subject] }]
+                }
+                await Model.create(newTeacher);
+    
+            return true; 
+        } catch (error) {
+            console.error('Error saving or updating teacher:', error);
+            return false; 
+        }
+    }
+    
     
 }
