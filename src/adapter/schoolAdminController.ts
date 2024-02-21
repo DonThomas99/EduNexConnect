@@ -41,7 +41,7 @@ this.schoolAdminCase = schoolAdminCase
         try {
                 const {id,data} = req.body
                 const response = await this.schoolAdminCase.addTeacher(data,id)
-            
+                // return res.status(response.status)
         } catch (error) {
             console.log(error);
             

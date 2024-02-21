@@ -28,7 +28,8 @@ const teacherSchema = new mongoose.Schema(
                 type:String
             }]
         }
-    ]
+    ],
+    
     },
 
 );

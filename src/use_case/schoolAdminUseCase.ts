@@ -116,16 +116,73 @@ async addSubjects(classNumber:string,subject:string,id:string){
 
 async addTeacher(data:Iteachers,id:string){
     try {
-            
-        const status =  await this.schoolAdminRepo.teacherExists(id,data)
-        console.log(status);
-        
-        if(!status){
-            const  userId = data.name.replace(/\s+/g, '').toLowerCase();
-            const generatePassword = await this.pwdGen.generateRandomPassword()
-            const result = await this.schoolAdminRepo.addTeachers(userId,generatePassword,data,id)
+            const isAssigned = await this.schoolAdminRepo.isSubjectAssignedToAnotherFaculty(id,data)
+            if(!isAssigned){
 
-        }
+                const teacherExist =  await this.schoolAdminRepo.teacherExists(id,data)
+                if(teacherExist){
+                        
+                            const existingClass = await  this.schoolAdminRepo.existingClass(id,data)
+                       if (!existingClass.subject.includes(data.subject)) {
+                    const addToClass = await this.schoolAdminRepo.addToClass(id,data)  
+                    if(addToClass){
+                        return {
+                            status:200,
+                            message:'successfully added'
+
+                        }
+                    }
+                    }
+                        }
+            }else{
+                
+
+                const teacherExist =  await this.schoolAdminRepo.teacherExists(id,data)
+                    if(teacherExist){
+                        return {
+                            status:409,
+                            message:'Subject for is already assigned to another Faculty and teacher already exists'
+                        }
+                    }else{
+                       const generatePassword = await this.pwdGen.generateRandomPassword()
+                        const createTeacher = await this.schoolAdminRepo.teacherUnassigned(id,generatePassword,data)
+                        if(createTeacher){
+
+                        }
+                    }
+                
+            }
+        //     if(teacherExist){
+        //         if(status.status == 407){
+        //             return {
+        //                 status:409,
+        //                 message:'Subject already assigned to another faculty in the class.'
+        //             }
+        //         }else if(status.status == 409){
+
+        //         }
+        //         else{
+        //             return {
+        //                 status:200,
+        //                 message:'Subject added Successfully'
+        //             }
+        //         }
+        //     }else{
+        //     
+        //     const generatePassword = await this.pwdGen.generateRandomPassword()
+        //     const result = await this.schoolAdminRepo.addTeachers(generatePassword,data,id)
+        //         if(result){
+        //             return {
+        //                 status:200,
+        //                 message:'Subject added successfully'
+        //             }
+        //         }else{
+        //             return {
+        //                 status:409,
+        //                 message:'Error in adding teacher'
+        //             }
+        //         }
+        // }
         
         
         
@@ -144,7 +201,7 @@ async fetchClasses(id:string){
         if(data){
 
             const result = await modifyData(data)
-            console.log(result);
+            
             
             return{
                 status:200,
