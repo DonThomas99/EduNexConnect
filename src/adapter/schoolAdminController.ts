@@ -41,9 +41,13 @@ this.schoolAdminCase = schoolAdminCase
         try {
                 const {id,data} = req.body
                 const response = await this.schoolAdminCase.addTeacher(data,id)
-                // return res.status(response.status)
+                if(response){
+console.log('response from backend',response);
+
+                    return res.status(response.status).json(response.message)
+                }
         } catch (error) {
-            console.log(error);
+            return res.status(500).json({message:'Error Please try Later!!!'})
             
         }
     }
@@ -60,7 +64,20 @@ this.schoolAdminCase = schoolAdminCase
             
         }
     }
-
+        async fetchTeacherData(req:Request,res:Response){
+            try {
+                const id = req.body.id as unknown as string 
+                const response = await this.schoolAdminCase.fetchTeacherData(id)
+                console.log('hee',response.data);
+                
+                if(response){
+                    res.status(response.status).json(response.data)
+                }
+            } catch (error) {
+                console.log('controller error',error);
+                
+            }
+        }
 }
 
 export default schoolAdminController

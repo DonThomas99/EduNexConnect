@@ -3,6 +3,7 @@ import JwtCreate from '../infrastructure/utils/jwtCreate';
 import modifyData from '../infrastructure/utils/dataTransform'
 import {Iteachers} from '../domain/teachers';
 import passwordGenerator from '../infrastructure/utils/passwordGenerator';
+import sendOtp from '../infrastructure/utils/sendMail';
 
 
 class schoolAdminUseCase{
@@ -11,6 +12,7 @@ class schoolAdminUseCase{
         private readonly pwdGen:passwordGenerator,
     private readonly schoolAdminRepo:schoolAdminRepo,
     private readonly  JwtCreate:JwtCreate,
+    private readonly sendPwd:sendOtp
     
 
 ){
@@ -121,18 +123,36 @@ async addTeacher(data:Iteachers,id:string){
 
                 const teacherExist =  await this.schoolAdminRepo.teacherExists(id,data)
                 if(teacherExist){
-                        
-                            const existingClass = await  this.schoolAdminRepo.existingClass(id,data)
-                       if (!existingClass.subject.includes(data.subject)) {
-                    const addToClass = await this.schoolAdminRepo.addToClass(id,data)  
-                    if(addToClass){
+                    console.log('is Existing');
+                    
                         return {
-                            status:200,
-                            message:'successfully added'
-
+                            status:409,
+                            message:'Teacher Already Exists'
                         }
+                        }else{
+                            console.log('creating a new teacher ');
+                            
+            const generatePassword = await this.pwdGen.generateRandomPassword()
+            const result = await this.schoolAdminRepo.addTeachers(generatePassword,data,id)
+                if(result){
+                    console.log('going to send the teacher password');
+                    
+                    const sendMail = await this.sendPwd.sendPwd(data.name,data.email,generatePassword)
+                    if(sendMail)
+                   {
+                        
+                        
+                       return {
+                           status:200,
+                           message:'Faculty assigned with subject successfully'
+                       }
+                   } 
+                }else{
+                    return {
+                        status:409,
+                        message:'Error in adding teacher'
                     }
-                    }
+                }
                         }
             }else{
                 
@@ -141,14 +161,19 @@ async addTeacher(data:Iteachers,id:string){
                     if(teacherExist){
                         return {
                             status:409,
-                            message:'Subject for is already assigned to another Faculty and teacher already exists'
+                            message:'Subject is already assigned to another Faculty and teacher already exists.'
                         }
                     }else{
-                       const generatePassword = await this.pwdGen.generateRandomPassword()
-                        const createTeacher = await this.schoolAdminRepo.teacherUnassigned(id,generatePassword,data)
-                        if(createTeacher){
 
+                        return {
+                            status :409,
+                            message:'Subject already assigned to a Faculty. Please Update the Credentials '
                         }
+                    //    const generatePassword = await this.pwdGen.generateRandomPassword()
+                    //     const createTeacher = await this.schoolAdminRepo.teacherUnassigned(id,generatePassword,data)
+                    //     if(createTeacher){
+
+                    //     }
                     }
                 
             }
@@ -188,6 +213,11 @@ async addTeacher(data:Iteachers,id:string){
         
         
     } catch (error) {
+        console.log('Internal error ');
+        return {
+            status:500,
+            message:'Please try again after sometime '
+        }
         
     }
 
@@ -221,7 +251,30 @@ async fetchClasses(id:string){
     }
 }
 
+async fetchTeacherData(id:string){
+    try {
+        const data = await this.schoolAdminRepo.fetchTeacherData(id) 
+        if(data){
 
+            return {
+                status:200,
+                data:data
+            }
+        }else {
+            return{
+                status:400,
+                data:null
+            } 
+        }
+    } catch (error) {
+        
+        
+        return {
+            status:500,
+            data:null
+        }
+    }
+}
 
 }
 export default schoolAdminUseCase

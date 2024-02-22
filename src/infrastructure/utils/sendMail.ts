@@ -19,7 +19,7 @@ class sendOtp{
                 from: 'edunexconnect@gmail.com',
                 to:email,
                 subject:'EduNexConnect Email Verification',
-                text: `${email},your verification code is: ${verif_code}.`
+                text: `${name},your verification code is: ${verif_code}.`
         }
         this.transporter.sendMail(mailOptions,(err)=>{
             if (err){
@@ -31,6 +31,29 @@ class sendOtp{
             }
         })
     }
+
+   async sendPwd(name:string,email:string,password:string):Promise<boolean>{
+    try {
+        
+        const mailOptions : nodemailer.SendMailOptions ={
+            from:'edunexconnect@gmail.com',
+            to:email,
+            subject:'Faculty Password',
+            text:`Dear ${name}, ${password} is your Password for the school website with ${email}.`
+        } 
+        this.transporter.sendMail(mailOptions,(err)=>{
+            if(err){
+                console.log('sending password failed'); 
+                return false
+            }else{
+                return true
+            }
+        })
+        return true
+    } catch (error) {
+        return false
+    }
+   }
 }
 
 export default sendOtp

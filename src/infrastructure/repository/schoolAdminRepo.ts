@@ -54,12 +54,18 @@ export default class schoolAdminRepo implements schoolAdminRepository {
     }
     async teacherExists(id:string,data:Iteachers){
         try {
+            console.log('in teacher exist check');
+            
             const Model = await getSchema(id, 'teachers');
             const teacher = await Model.findOne({ email:data.email });
             const stat= !!teacher;
-            if(stat){                 
+            if(stat){  
+                console.log('teacher found');
+                               
                 return true           
                 }else{
+                    console.log('teacher not found');
+                    
                     return false
                 }
                 
@@ -78,7 +84,7 @@ export default class schoolAdminRepo implements schoolAdminRepository {
                 name: data.name,
                 email: data.email,
                 password: password,  
-                // classNsub :[{classNum:'',subject:['']}]
+                classNsub :[{classNum:'',subject:['']}]
             };
     
             // Create and save the new teacher document
@@ -194,8 +200,12 @@ async addToClass(id:string,data:Iteachers){
                 email: { $ne: data.email } // Exclude current teacher from the search
             });
             if(isExist){
+                console.log('is assigned');
+                
                 return true
             } else {
+                console.log('sub not assigned');
+                
                 return false
             }
         } catch (error) {
@@ -207,12 +217,13 @@ async addToClass(id:string,data:Iteachers){
 
 
     async addTeachers(password:string,data:Iteachers,id:string){
-        try {
+        try { 
+            console.log('new teacher adding function');
+            
             const Model = await getSchema(id, 'teachers'); 
                 const newTeacher: teachers = {
                     name: data.name,
-                    email: data.email,
-                    
+                    email: data.email,         
                     password: password,
                     classNsub: [{ classNum: data.class, subject: [data.subject] }]
                 }
@@ -222,6 +233,19 @@ async addToClass(id:string,data:Iteachers){
         } catch (error) {
             console.error('Error saving or updating teacher:', error);
             return false; 
+        }
+    }
+
+    async fetchTeacherData(id:string){
+        try {
+            const Model = await getSchema(id,'teachers');
+            const data:teachers[] = await Model.find({})
+            
+            
+            return data
+        } catch (error) {
+            console.log('repo error',error);
+            
         }
     }
     
