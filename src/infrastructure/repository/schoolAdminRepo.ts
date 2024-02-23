@@ -75,25 +75,25 @@ export default class schoolAdminRepo implements schoolAdminRepository {
         }
     }
 
-    async teacherUnassigned(id:string,password:string,data:Iteachers){
-        try {
-            const Model = await getSchema(id, 'teachers');
+    // async teacherUnassigned(id:string,password:string,data:Iteachers){
+    //     try {
+    //         const Model = await getSchema(id, 'teachers');
 
-            // Create a new teacher document without classNsub property
-            const newTeacher: teachers = {
-                name: data.name,
-                email: data.email,
-                password: password,  
-                classNsub :[{classNum:'',subject:['']}]
-            };
+    //         // Create a new teacher document without classNsub property
+    //         const newTeacher: teachers = {
+    //             name: data.name,
+    //             email: data.email,
+    //             password: password,  
+    //             classNsub :[{classNum:'',subject:['']}]
+    //         };
     
-            // Create and save the new teacher document
-            await Model.create(newTeacher);
-            return true
-        } catch (error) {
-            return false
-        }
-    }
+    //         // Create and save the new teacher document
+    //         await Model.create(newTeacher);
+    //         return true
+    //     } catch (error) {
+    //         return false
+    //     }
+    // }
 
     async existingClass(id:string,data:Iteachers){
         try {
@@ -104,16 +104,6 @@ export default class schoolAdminRepo implements schoolAdminRepository {
                 if (existingClassIndex !== -1) {
                     const existingClass = teacher.classNsub[existingClassIndex]; 
                    return existingClass
-                    //    if (!existingClass.subject.includes(data.subject)) {
-                    //                 // Subject doesn't exist for the class, add it
-                    //                 existingClass.subject.push(data.subject);
-                    //                 await teacher.save();
-                // }
-                // else{
-                //     return false
-                // }
-
-
                 }else {
                                     // Class doesn't exist, create new entry for class with the subject
                                     teacher.classNsub.push({ classNum: data.class, subject: [data.subject] });
@@ -225,6 +215,7 @@ async addToClass(id:string,data:Iteachers){
                     name: data.name,
                     email: data.email,         
                     password: password,
+                    isBlocked:false,
                     classNsub: [{ classNum: data.class, subject: [data.subject] }]
                 }
                 await Model.create(newTeacher);

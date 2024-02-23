@@ -1,8 +1,8 @@
 export interface teachers{
 name:string;
 email:string;
-
 password:string;
+isBlocked:boolean;
 classNsub:[{
     classNum:string;
     subject:string[];

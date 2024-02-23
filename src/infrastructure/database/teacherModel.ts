@@ -15,6 +15,10 @@ const teacherSchema = new mongoose.Schema(
         type:String,
         required:true,
     },
+    isBlocked:{
+        type:Boolean,
+        default:false
+    },
     classNsub:[
         {
             classNum:{
@@ -26,7 +30,7 @@ const teacherSchema = new mongoose.Schema(
             }]
         }
     ],
-    
+   
     },
 
 );
