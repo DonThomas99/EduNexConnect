@@ -116,6 +116,28 @@ async addSubjects(classNumber:string,subject:string,id:string){
     }
 }
 
+async deleteSubject(id:string,classNum:string,subject:string){
+    try {
+        const isDeleted = await this.schoolAdminRepo.deleteSubject(id,classNum,subject)
+        if(isDeleted){
+            return {
+                status:200,
+                message:'subject Deleted Successfully '
+            }
+        } else{
+            return {
+                status:409,
+                message:'Error Deleting subject!!'
+            }
+        }
+    } catch (error) {
+        return{
+            status:500,
+            message:'Technical Error. Please try after sometime'
+        }
+    }
+}
+
 async addTeacher(data:Iteachers,id:string){
     try {
             const isAssigned = await this.schoolAdminRepo.isSubjectAssignedToAnotherFaculty(id,data)

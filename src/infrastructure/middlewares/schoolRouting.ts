@@ -26,8 +26,10 @@ router.use('/:id/:role', (req:Request, res:Response, next:NextFunction) => {
     // Forward request to appropriate route based on role
     if (role === 'admin') {
         return schoolAdminRoute(req, res, next);        
-    } else if (role === 'teacher') {
+    } else if (role === 'teacher') {  
+        console.log('We are going to reroute');
         return teacherRoute(req,res,next)
+        
     } else if (role === 'student') {
         return studentRoute(req,res,next)
     } else {

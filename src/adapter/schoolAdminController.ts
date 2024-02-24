@@ -37,6 +37,17 @@ this.schoolAdminCase = schoolAdminCase
         }
     }
 
+async deleteSubject(req:Request,res:Response){
+    try {
+        const {classNum,subject,id} = req.body
+        const result = await this.schoolAdminCase.deleteSubject(id,classNum,subject)
+        return res.status(result.status).json(result.message)
+        
+    } catch (error) {
+        
+    }
+}
+
     async addTeacher(req:Request,res:Response){
         try {
                 const {id,data} = req.body

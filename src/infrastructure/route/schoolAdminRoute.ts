@@ -23,5 +23,6 @@ schoolAdminRouter.post('/addSubjects',(req:Request,res)=>{controller.addSubject(
 schoolAdminRouter.post('/addTeachers',(req:Request,res)=>{controller.addTeacher(req,res)})
 schoolAdminRouter.get('/fetchClasses',(req:Request,res)=>{controller.fetchClasses(req,res)})
 schoolAdminRouter.get('/fetchTeacherData',(req:Request,res)=>{controller.fetchTeacherData(req,res)})
+schoolAdminRouter.put('/deleteSubject',(req:Request,res)=>{controller.deleteSubject(req,res)})
 
     export default schoolAdminRouter

@@ -5,12 +5,9 @@ import { Error as  MongooseError } from "mongoose";
 import { Iteachers, classNsub, teachers, unAssignedTeacher } from "../../domain/teachers";
 
 export default class schoolAdminRepo implements schoolAdminRepository {
-    async findById(id:string,name:string){
-        console.log('came here');
-        
+    async findById(id:string,name:string){        
         const Model = await getSchema(id,'schoolAdmin')
-        console.log('Model:',Model);
-        
+                
         const document = await Model.findOne({adminId:name})
         return document 
         
@@ -39,6 +36,26 @@ export default class schoolAdminRepo implements schoolAdminRepository {
         } catch (error) {
             console.error('Error inserting document:', error);
             return false; 
+        }
+    }
+
+    async deleteSubject(id:string,classNum:string,subject:string){
+        try {
+            const Model = await getSchema(id,'subjects');
+            const updatedDocument = await Model.findOneAndUpdate(
+                { class: classNum },
+                { $pull: { subjects: { name: subject } } },
+                { new: true }
+            );
+    
+            if (!updatedDocument) {
+              return false
+                
+            }
+    
+            return true;
+        } catch (error) {
+            
         }
     }
 
@@ -145,40 +162,7 @@ async addToClass(id:string,data:Iteachers){
 }
 
 
-    // async existingClass(id: string, data: Iteachers) {
-    //     try {
-    //        
-    //         if (teacher) {
-    
-    //                 // Class exists
-    
-    //                 // Check if the subject is already assigned to another faculty in the same class
-    //                 const isSubjectAssignedToAnotherFaculty = await Model.exists({
-    //                     'classNsub.classNum': data.class,
-    //                     'classNsub.subject': data.subject,
-    //                     email: { $ne: data.email } // Exclude current teacher from the search
-    //                 });
-    
-    //                 if (isSubjectAssignedToAnotherFaculty) {
-    //                     return { success: false, status: 407, message: 'Subject already assigned to another faculty in the same class' }; // Conflict
-    //                 }
-    
-    //              
-    //                     return { success: true, status: 200 }; // Subject added successfully
-    //                 } else {
-    //                     // Subject already exists for the class
-    //                     return { success: false, status: 409, message: 'Subject already exists for the class' }; // Conflict
-    //                 }
-    //             }
-    //             }
-    //         } else {
-    //             // Teacher not found
-    //             }
-    //     } catch (error) {
-    //         console.error('Error checking existing class:', error);
-    //         return { success: false, status: 500, message: 'Internal Server Error' }; // Internal server error
-    //     }
-    // }
+
 
     async isSubjectAssignedToAnotherFaculty(id:string, data: Iteachers) {
         try {
