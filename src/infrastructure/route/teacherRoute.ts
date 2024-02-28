@@ -10,4 +10,5 @@ const controller = new teacherController(useCase)
 
 const teacherRoute = express.Router();
 teacherRoute.post('/login',(req:Request,res)=>{controller.login(req,res)})
+teacherRoute.get('/fetchTeacherData',(req:Request,res)=>{controller.fetchTeacherData(req,res)})
 export default teacherRoute

@@ -20,4 +20,15 @@ async login(id:string,email:string){
         
     }
 }
+
+async fetchData(id:string,email:string){
+    try {
+        const Model = await this.getSchema(id,'teachers')
+        const teacherData = await Model.findOne({email:email})
+        return teacherData
+    } catch (error) {
+        
+    }
+}
+
 }

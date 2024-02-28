@@ -25,7 +25,25 @@ async login(id:string,email:string,password:string){
                 }
             }
     } catch (error) {
-        
+        return {
+            status:500,
+            message:'Login failed'
+        }
+    }
+}
+
+async fetchData(id:string,email:string){
+    try {
+        const array = await this.teacherRepository.fetchData(id,email)
+        return {
+            status:200,
+            data:array
+        }
+    } catch (error) {
+    return {
+        status:500,
+        message:'Unable to fetch data '
+    }      
     }
 }
 
