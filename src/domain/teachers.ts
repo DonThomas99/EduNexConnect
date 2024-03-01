@@ -10,7 +10,7 @@ classNsub:[{
 }
 export interface Iteachers{
     email:string;
-    name:string;
+    name:string ;
     class:string;
     subject:string;
 

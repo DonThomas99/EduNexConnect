@@ -116,6 +116,46 @@ async addSubjects(classNumber:string,subject:string,id:string){
     }
 }
 
+async addSubToTeacher(id:string,teacherEmail:string,classNum:string,subject:string){
+    try {
+
+        const document = {
+            email:teacherEmail,
+            name:'undefined',
+            class:classNum,
+            subject:subject
+        }
+const isAssigned = await this.schoolAdminRepo.isSubjectAssignedToAnotherFaculty(id,document)
+if(!isAssigned){
+
+    const isAdded = await this.schoolAdminRepo.addSubToTeacher(id,teacherEmail,classNum,subject)
+    if(isAdded){
+        return {
+            status:200,
+            message:'Subject added Successfully'
+        }
+    } else{
+
+        return {
+            status:409,
+            message:'Error Occured!!!. Please Try Again Later'
+        }
+    }
+
+} else{
+    return {
+        status:409,
+        message:'Subject Already Assigned!!!.'
+    }
+}
+        
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
+
 async deleteSubject(id:string,classNum:string,subject:string){
     try {
         const isDeleted = await this.schoolAdminRepo.deleteSubject(id,classNum,subject)

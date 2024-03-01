@@ -69,6 +69,35 @@ export default class schoolAdminRepo implements schoolAdminRepository {
             
         }
     }
+
+    async addSubToTeacher(id: string, teacherEmail: string, classNum: string, subject: string) {
+        try {
+            const Model = await getSchema(id, 'teachers');
+            // First, check if the classNum exists
+            const teacher = await Model.findOne({ email: teacherEmail, "classNsub.classNum": classNum });
+            if (teacher) {
+                // If the classNum exists, push the subject to the existing array
+                await Model.updateOne(
+                    { email: teacherEmail, "classNsub.classNum": classNum },
+                    { $push: { "classNsub.$.subject": subject } }
+                );
+                return true
+            } else {
+                // If the classNum does not exist, add a new object with the classNum and the subject
+                await Model.updateOne(
+                    { email: teacherEmail },
+                    { $push: { classNsub: { classNum: classNum, subject: [subject] } } }
+                );
+                return true
+            }
+            console.log('Subject added successfully');
+        } catch (error) {
+            console.log(error);
+            return false
+        }
+    }
+    
+
     async teacherExists(id:string,data:Iteachers){
         try {
             console.log('in teacher exist check');

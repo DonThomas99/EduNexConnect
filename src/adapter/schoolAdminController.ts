@@ -37,6 +37,20 @@ this.schoolAdminCase = schoolAdminCase
         }
     }
 
+    async addSubjectToTeacher(req:Request,res:Response){
+        try {
+            const {teacherEmail,classNum,subject,id} = req.body
+            const added = await this.schoolAdminCase.addSubToTeacher(id,teacherEmail,classNum,subject)
+            if(added){
+                res.status(added.status).json(added.message)
+            }
+            
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+
 async deleteSubject(req:Request,res:Response){
     try {
         const {classNum,subject,id} = req.body
