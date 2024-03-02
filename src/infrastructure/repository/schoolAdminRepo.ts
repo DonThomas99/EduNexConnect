@@ -3,6 +3,7 @@ import { getSchema,switchDB } from "../utils/switchDb";
 import {Subject} from "../../domain/subjectInterface";
 import { Error as  MongooseError } from "mongoose";
 import { Iteachers, classNsub, teachers, unAssignedTeacher } from "../../domain/teachers";
+import { Istudent } from "../../domain/Student";
 
 export default class schoolAdminRepo implements schoolAdminRepository {
     async findById(id:string,name:string){        
@@ -252,6 +253,41 @@ async addToClass(id:string,data:Iteachers){
             
         }
     }
-    
-    
+      
+      //Class & Subject CRUD Operations  
+     // Teacher CRUD Operations
+    //Student CRUD  Operations
+    async studentExists(id:string,email:string){
+        try {
+            const Model = await getSchema(id,'students')
+            const exists = await Model.findOne({email:email})
+            return !!exists
+        } catch (error) {
+            console.log(error);                        
+        }
+    }
+
+    async addStudent(id:string,student:Istudent){
+        try {
+            const Model = await getSchema(id,'students')
+            const addStudent = await Model.create(student)
+            return !!addStudent
+            
+        } catch (error) {
+            console.log(error);
+            return false            
+        }
+    }
+
+    async fetchStudents(id:string){
+        try {
+    const Model = await getSchema(id,'students')
+    const data = await Model.find({})
+    return data            
+        } catch (error) {
+            console.log(error);
+            return null
+        }
+    }
+
 }

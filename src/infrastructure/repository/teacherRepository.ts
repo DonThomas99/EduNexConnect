@@ -27,6 +27,7 @@ async fetchData(id:string,email:string){
         const teacherData = await Model.findOne({email:email})
         return teacherData
     } catch (error) {
+       console.log(error);
         
     }
 }

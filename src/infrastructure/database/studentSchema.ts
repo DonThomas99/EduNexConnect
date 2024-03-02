@@ -2,15 +2,25 @@ import mongoose from "mongoose";
 
 const studentSchema = new mongoose.Schema(
   {
-    studentId: {
+    email: {
       type: String,
       required: true,
     },
-    password:{
+    name: {
+      type: String,
+      required: true,
+    },
+
+    gaurdianName:{
         type:String,
         required:true,
     },
-    class:{
+    mobile:{
+      type:String,
+      required:true,
+    },
+    
+    classNum:{
         type:String,
         required:true
     }

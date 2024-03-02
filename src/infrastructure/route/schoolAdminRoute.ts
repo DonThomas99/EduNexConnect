@@ -18,12 +18,20 @@ const controller  = new schoolAdminController(usecase)
 
 const schoolAdminRouter = express.Router()
 
+
 schoolAdminRouter.post('/login',(req:Request,res)=>{controller.schoolAdminLogin(req, res)})
-schoolAdminRouter.post('/addSubjects',(req:Request,res)=>{controller.addSubject(req,res)})
-schoolAdminRouter.post('/addTeachers',(req:Request,res)=>{controller.addTeacher(req,res)})
-schoolAdminRouter.get('/fetchClasses',(req:Request,res)=>{controller.fetchClasses(req,res)})
-schoolAdminRouter.get('/fetchTeacherData',(req:Request,res)=>{controller.fetchTeacherData(req,res)})
+
+//class and subject CRUD operations 
 schoolAdminRouter.put('/deleteSubject',(req:Request,res)=>{controller.deleteSubject(req,res)})
+schoolAdminRouter.post('/addSubjects',(req:Request,res)=>{controller.addSubject(req,res)})
+schoolAdminRouter.get('/fetchClasses',(req:Request,res)=>{controller.fetchClasses(req,res)})
+
+//Teachers CRUD operations
+schoolAdminRouter.post('/addTeachers',(req:Request,res)=>{controller.addTeacher(req,res)})
+schoolAdminRouter.get('/fetchTeacherData',(req:Request,res)=>{controller.fetchTeacherData(req,res)})
 schoolAdminRouter.patch('/addSubToTeacher',(req:Request,res)=>{controller.addSubjectToTeacher(req,res)})
 
-    export default schoolAdminRouter
+//Student CRUD operations
+schoolAdminRouter.post('/addStudent',(req:Request,res)=>{controller.addStudent(req,res)})
+schoolAdminRouter.get('/fetchStudents',(req:Request,res)=>{controller.fetchStudents(req,res)})
+export default schoolAdminRouter
