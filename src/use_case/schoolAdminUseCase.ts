@@ -340,9 +340,8 @@ async fetchTeacherData(id:string){
 
 //-----------------------------Student UseCase---------------------------------------------------------------
 
-async addStudent(id:string,student:Istudent){
+async addStudent(id:string,name:string,email:string,gaurdianName:string,mobile:string,classNum:string){
 try {
-    const email = student.email;
     const isExist = await this.schoolAdminRepo.studentExists(id,email)
     if(isExist){
        return{
@@ -350,11 +349,24 @@ try {
         message:'Student Already Exists'
        } 
     }else{
+        const password = await this.pwdGen.generateRandomPassword()
+        const student={
+            name:name,
+            email:email,
+            gaurdianName:gaurdianName,
+            mobile:mobile,
+            classNum:classNum,
+            password:password,
+        }
         const isStudentAdded = await this.schoolAdminRepo.addStudent(id,student) 
         if(isStudentAdded){
-            return {
-                status:200,
-                message:'Student Added Successfully!!'
+            const sendMail = await this.sendPwd.sendStudentPwd(name,email,password)
+            if(sendMail){
+
+                return {
+                    status:200,
+                    message:'Student Added Successfully!!'
+                }
             }
         } else{
             return{

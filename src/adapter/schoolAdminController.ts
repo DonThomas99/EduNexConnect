@@ -117,11 +117,20 @@ console.log('response from backend',response);
 
 async addStudent(req:Request,res:Response){
 try {
+    const{
+
+        name,
+        email,
+        gaurdianName,
+        mobile,
+        classNum,
+     
+    } = req.body.student
     // console.log(req.body);
-    const student= req.body.student
+    // const student= req.body.student
     const id = req.body.id as unknown as string
     
-    const response = this.schoolAdminCase.addStudent(id,student)
+    const response = this.schoolAdminCase.addStudent(id,name,email,gaurdianName,mobile,classNum)
     // return res.status(response.status).json(response.message)
 } catch (error) {
     console.log(error);

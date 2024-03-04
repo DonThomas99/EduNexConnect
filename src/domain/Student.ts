@@ -3,5 +3,6 @@ export interface Istudent{
     email:string,
     gaurdianName:string,
     mobile:string,
-    classNum:string
+    classNum:string,
+    password:string
 }

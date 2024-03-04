@@ -54,6 +54,31 @@ class sendOtp{
         return false
     }
    }
+
+   async sendStudentPwd(name:string,email:string,password:string):Promise<boolean>{
+    try {
+        
+        const mailOptions : nodemailer.SendMailOptions ={
+            from:'edunexconnect@gmail.com',
+            to:email,
+            subject:'Student Password',
+            text:`Dear ${name}, ${password} is your Password for the school website with ${email}.`
+        } 
+        this.transporter.sendMail(mailOptions,(err)=>{
+            if(err){
+                console.log('sending password failed'); 
+                return false
+            }else{
+                return true
+            }
+        })
+        return true
+    } catch (error) {
+        return false
+    }
+   }
+
+
 }
 
 export default sendOtp
