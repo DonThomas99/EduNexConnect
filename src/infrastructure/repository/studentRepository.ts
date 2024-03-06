@@ -16,4 +16,26 @@ export default class studentRepo implements studentRepository{
             
         }
     }
+    async findStudent(email:string,id:string){
+        try {
+            const Model = await getSchema(id,'students')
+            const data = await Model.findOne({email:email})
+            return data
+        } catch (error) {
+        console.log(error);
+        return null                
+        }
+    }
+
+    async fetchSubjects(classNum:string,id:string){
+        try {
+            const Model = await getSchema(id,'subjects')
+            const data = await Model.findOne({class:classNum})
+            return data 
+        } catch (error) {
+            console.log(error);
+            return null            
+        }
+    }
+
 }

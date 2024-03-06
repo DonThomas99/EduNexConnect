@@ -10,6 +10,8 @@ const controller = new studentController(useCase)
 const studentRoute = express()
 
 studentRoute.post('/login',(req:Request,res)=>{controller.login(req,res)})
+studentRoute.get('/fetchStudentData',(req:Request,res)=>{controller.fetchStudentData(req,res)})
+studentRoute.get('/fetchSubjects',(req:Request,res)=>{controller.fetchSubjects(req,res)})
 
 
 export default studentRoute

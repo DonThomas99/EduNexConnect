@@ -11,12 +11,13 @@ const router = express.Router();
 
 // Middleware to extract ID and forward request
 router.use('/:id/:role', (req:Request, res:Response, next:NextFunction) => {
-    console.log('heee');
+    console.log(req.query);
     
     
     const id = req.params.id;
     const role = req.params.role as string;
     const email = req.query.email as string;
+    const classNum = req.query.classNum as string;
     
     console.log('role:',role);
     console.log('body:',req.body);
@@ -31,7 +32,9 @@ router.use('/:id/:role', (req:Request, res:Response, next:NextFunction) => {
         
         req.body.email = email
     }
-
+if(classNum){
+    req.body.classNum = classNum
+}
     
     // Forward request to appropriate route based on role
     if (role === 'admin') {
