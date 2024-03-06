@@ -7,12 +7,14 @@ import session, {SessionOptions} from 'express-session'
 import superAdminRouter from "../route/superAdminRoute";
 import { checkTenantMiddleware } from "../middlewares/checkTenant";
 import schoolRouting  from '../middlewares/schoolRouting';
+const morgan = require('morgan'); 
 
 export const createServer = ()=>{
 //  try {
     
      const app = express()
      const httpServer = http.createServer(app)
+     app.use(morgan('dev'))
      app.use(express.json())
      app.use(express.urlencoded({extended:true}))
      app.use(cookieParser())

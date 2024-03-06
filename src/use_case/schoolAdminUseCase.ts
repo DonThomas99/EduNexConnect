@@ -4,6 +4,7 @@ import modifyData from '../infrastructure/utils/dataTransform'
 import {Iteachers} from '../domain/teachers';
 import passwordGenerator from '../infrastructure/utils/passwordGenerator';
 import sendOtp from '../infrastructure/utils/sendMail';
+import { Istudent } from '../domain/Student';
 
 
 class schoolAdminUseCase{
@@ -69,7 +70,34 @@ async login(name:string,password:string,id:string){
         
     }
 }
+//-------------------------Subject and Class Use Case------------------------------------------------------
+async fetchClasses(id:string){
+    try {
+        const data= await this.schoolAdminRepo.fetchClasses(id)
+        
+        
+        if(data){
 
+            const result = await modifyData(data)
+            
+            
+            return{
+                status:200,
+                data:{
+                    array:result
+                }
+            }
+        }else{
+            return {
+                status:500,
+                message:'Try again after sometime'
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
 async addSubjects(classNumber:string,subject:string,id:string){
     try {
             const status = await this.schoolAdminRepo.subjectExists(subject,classNumber,id)
@@ -116,6 +144,29 @@ async addSubjects(classNumber:string,subject:string,id:string){
     }
 }
 
+async deleteSubject(id:string,classNum:string,subject:string){
+    try {
+        const isDeleted = await this.schoolAdminRepo.deleteSubject(id,classNum,subject)
+        if(isDeleted){
+            return {
+                status:200,
+                message:'subject Deleted Successfully '
+            }
+        } else{
+            return {
+                status:409,
+                message:'Error Deleting subject!!'
+            }
+        }
+    } catch (error) {
+        return{
+            status:500,
+            message:'Technical Error. Please try after sometime'
+        }
+    }
+}
+//---------------------------Teacher UseCase----------------------------------------------------------------
+
 async addSubToTeacher(id:string,teacherEmail:string,classNum:string,subject:string){
     try {
 
@@ -152,29 +203,6 @@ if(!isAssigned){
     } catch (error) {
         console.log(error);
         
-    }
-}
-
-
-async deleteSubject(id:string,classNum:string,subject:string){
-    try {
-        const isDeleted = await this.schoolAdminRepo.deleteSubject(id,classNum,subject)
-        if(isDeleted){
-            return {
-                status:200,
-                message:'subject Deleted Successfully '
-            }
-        } else{
-            return {
-                status:409,
-                message:'Error Deleting subject!!'
-            }
-        }
-    } catch (error) {
-        return{
-            status:500,
-            message:'Technical Error. Please try after sometime'
-        }
     }
 }
 
@@ -285,34 +313,6 @@ async addTeacher(data:Iteachers,id:string){
 
 }
 
-async fetchClasses(id:string){
-    try {
-        const data= await this.schoolAdminRepo.fetchClasses(id)
-        
-        
-        if(data){
-
-            const result = await modifyData(data)
-            
-            
-            return{
-                status:200,
-                data:{
-                    array:result
-                }
-            }
-        }else{
-            return {
-                status:500,
-                message:'Try again after sometime'
-            }
-        }
-    } catch (error) {
-        console.log(error);
-        
-    }
-}
-
 async fetchTeacherData(id:string){
     try {
         const data = await this.schoolAdminRepo.fetchTeacherData(id) 
@@ -336,6 +336,79 @@ async fetchTeacherData(id:string){
             data:null
         }
     }
+}
+
+//-----------------------------Student UseCase---------------------------------------------------------------
+
+async addStudent(id:string,name:string,email:string,gaurdianName:string,mobile:string,classNum:string){
+try {
+    const isExist = await this.schoolAdminRepo.studentExists(id,email)
+    if(isExist){
+       return{
+        status:409,
+        message:'Student Already Exists'
+       } 
+    }else{
+        const password = await this.pwdGen.generateRandomPassword()
+        const student={
+            name:name,
+            email:email,
+            gaurdianName:gaurdianName,
+            mobile:mobile,
+            classNum:classNum,
+            password:password,
+        }
+        const isStudentAdded = await this.schoolAdminRepo.addStudent(id,student) 
+        if(isStudentAdded){
+            const sendMail = await this.sendPwd.sendStudentPwd(name,email,password)
+            if(sendMail){
+
+                return {
+                    status:200,
+                    message:'Student Added Successfully!!'
+                }
+            }
+        } else{
+            return{
+                status:409,
+                message:'Student Enrolling Failed Please Try!!!'
+            }
+        }
+    }
+    
+} catch (error) {
+return {
+    status:500,
+    message:'Server Error !!! Try Again Later!!!'
+}
+    
+}
+}
+
+
+async fetchStudents(id:string){
+try {
+    const data = await this.schoolAdminRepo.fetchStudents(id)
+    if(data){
+        return {
+            status:200,
+            data:data,
+            message:'data fetched successfully'
+        }
+    } else{
+        return {
+            status:400,
+            data:null,
+            message:'Error fetching Data'
+        }
+    }
+} catch (error) {
+    return {
+        status:500,
+        data:null,
+        message:'Error fetching data'
+    }
+}
 }
 
 }

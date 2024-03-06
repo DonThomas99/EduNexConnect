@@ -11,11 +11,16 @@ const router = express.Router();
 
 // Middleware to extract ID and forward request
 router.use('/:id/:role', (req:Request, res:Response, next:NextFunction) => {
-
+    console.log(req.query);
+    
+    
     const id = req.params.id;
     const role = req.params.role as string;
     const email = req.query.email as string;
+    const classNum = req.query.classNum as string;
     
+    console.log('role:',role);
+    console.log('body:',req.body);
 
     // Validate ID format (you can customize this validation)
     const validIdRegex = /^[a-f\d]{24}$/i;
@@ -27,16 +32,18 @@ router.use('/:id/:role', (req:Request, res:Response, next:NextFunction) => {
         
         req.body.email = email
     }
-
+if(classNum){
+    req.body.classNum = classNum
+}
     
     // Forward request to appropriate route based on role
     if (role === 'admin') {
         return schoolAdminRoute(req, res, next);        
     } else if (role === 'teacher') {  
-        console.log('We are going to reroute');
         return teacherRoute(req,res,next)
         
     } else if (role === 'student') {
+        console.log('We are going to reroute');
         return studentRoute(req,res,next)
     } else {
         

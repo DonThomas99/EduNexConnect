@@ -25,6 +25,10 @@ this.schoolAdminCase = schoolAdminCase
             
         }
     }
+
+    //Class and Subjects CRUD operations
+
+
     async addSubject(req:Request,res:Response){
         try {
             const {classNumber,subject,id}= req.body
@@ -36,6 +40,33 @@ this.schoolAdminCase = schoolAdminCase
             
         }
     }
+    async deleteSubject(req:Request,res:Response){
+        try {
+            const {classNum,subject,id} = req.body
+            const result = await this.schoolAdminCase.deleteSubject(id,classNum,subject)
+            return res.status(result.status).json(result.message)
+            
+        } catch (error) {
+            
+        }
+    }
+    async fetchClasses(req:Request,res:Response){
+        try {
+            const id = req.body.id as unknown as string
+            const response = await this.schoolAdminCase.fetchClasses(id)
+            if(response){
+                
+                res.status(response.status).json(response.data)
+            }
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+    
+
+    //Teachers CRUD operations
+
 
     async addSubjectToTeacher(req:Request,res:Response){
         try {
@@ -50,59 +81,75 @@ this.schoolAdminCase = schoolAdminCase
             
         }
     }
-
-async deleteSubject(req:Request,res:Response){
+async addTeacher(req:Request,res:Response){
     try {
-        const {classNum,subject,id} = req.body
-        const result = await this.schoolAdminCase.deleteSubject(id,classNum,subject)
-        return res.status(result.status).json(result.message)
-        
+            const {id,data} = req.body
+            const response = await this.schoolAdminCase.addTeacher(data,id)
+            if(response){
+console.log('response from backend',response);
+
+                return res.status(response.status).json(response.message)
+            }
     } catch (error) {
+        return res.status(500).json({message:'Error Please try Later!!!'})
+        
+    }
+}
+    async fetchTeacherData(req:Request,res:Response){
+        try {
+            const id = req.body.id as unknown as string 
+            const response = await this.schoolAdminCase.fetchTeacherData(id)
+            console.log('hee',response.data);
+            
+            if(response){
+                res.status(response.status).json(response.data)
+            }
+        } catch (error) {
+            console.log('controller error',error);
+            
+        }
+    }
+
+
+
+        //Student CRUD operations 
+
+
+async addStudent(req:Request,res:Response){
+try {
+    const{
+
+        name,
+        email,
+        gaurdianName,
+        mobile,
+        classNum,
+     
+    } = req.body.student
+    // console.log(req.body);
+    // const student= req.body.student
+    const id = req.body.id as unknown as string
+    
+    const response = this.schoolAdminCase.addStudent(id,name,email,gaurdianName,mobile,classNum)
+    // return res.status(response.status).json(response.message)
+} catch (error) {
+    console.log(error);
+}
+}
+
+async fetchStudents(req:Request,res:Response){
+    try {
+        const id = req.body.id as unknown as string
+        const response = await this.schoolAdminCase.fetchStudents(id)
+        if(response){
+            res.status(response.status).json(response.data)
+        }
+    } catch (error) {
+        console.log(error);
         
     }
 }
 
-    async addTeacher(req:Request,res:Response){
-        try {
-                const {id,data} = req.body
-                const response = await this.schoolAdminCase.addTeacher(data,id)
-                if(response){
-console.log('response from backend',response);
-
-                    return res.status(response.status).json(response.message)
-                }
-        } catch (error) {
-            return res.status(500).json({message:'Error Please try Later!!!'})
-            
-        }
-    }
-    async fetchClasses(req:Request,res:Response){
-        try {
-            const id = req.body.id as unknown as string
-            const response = await this.schoolAdminCase.fetchClasses(id)
-            if(response){
-
-                res.status(response.status).json(response.data)
-            }
-        } catch (error) {
-            console.log(error);
-            
-        }
-    }
-        async fetchTeacherData(req:Request,res:Response){
-            try {
-                const id = req.body.id as unknown as string 
-                const response = await this.schoolAdminCase.fetchTeacherData(id)
-                console.log('hee',response.data);
-                
-                if(response){
-                    res.status(response.status).json(response.data)
-                }
-            } catch (error) {
-                console.log('controller error',error);
-                
-            }
-        }
 }
 
 export default schoolAdminController
