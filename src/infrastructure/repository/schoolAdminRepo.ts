@@ -6,6 +6,7 @@ import { Iteachers, classNsub, teachers, unAssignedTeacher } from "../../domain/
 import { Istudent } from "../../domain/Student";
 
 export default class schoolAdminRepo implements schoolAdminRepository {
+
     async findById(id:string,name:string){        
         const Model = await getSchema(id,'schoolAdmin')
                 
@@ -13,6 +14,9 @@ export default class schoolAdminRepo implements schoolAdminRepository {
         return document 
         
     }
+      //Class & Subject CRUD Operations  
+
+
     async subjectExists(subject:string,classNumber:string,id:string){
         const Model = await getSchema(id,'subjects')
         const status = await Model.findOne({
@@ -70,6 +74,9 @@ export default class schoolAdminRepo implements schoolAdminRepository {
             
         }
     }
+
+     // Teacher CRUD Operations
+
 
     async addSubToTeacher(id: string, teacherEmail: string, classNum: string, subject: string) {
         try {
@@ -191,9 +198,6 @@ async addToClass(id:string,data:Iteachers){
     }
 }
 
-
-
-
     async isSubjectAssignedToAnotherFaculty(id:string, data: Iteachers) {
         try {
             
@@ -217,9 +221,7 @@ async addToClass(id:string,data:Iteachers){
         }
         
     }
-    
-
-
+  
     async addTeachers(password:string,data:Iteachers,id:string){
         try { 
             console.log('new teacher adding function');
@@ -245,17 +247,33 @@ async addToClass(id:string,data:Iteachers){
         try {
             const Model = await getSchema(id,'teachers');
             const data:teachers[] = await Model.find({})
-            
-            
             return data
         } catch (error) {
             console.log('repo error',error);
             
         }
     }
-      
-      //Class & Subject CRUD Operations  
-     // Teacher CRUD Operations
+  
+    async toggleBlock(email:string,id:string){
+        try {
+                       
+            const Model = await getSchema(id,'teachers')
+            const data = await  Model.findOne({email:email})
+                        
+            const setStatus  = !data.isBlocked
+            
+            const changedStatus = await Model.updateOne(
+                {email:email},
+                {$set:{isBlocked:setStatus}}                
+                )
+
+            return changedStatus
+        } catch (error) {
+            console.log(error);
+            return false            
+        }
+    }
+
     //Student CRUD  Operations
     async studentExists(id:string,email:string){
         try {

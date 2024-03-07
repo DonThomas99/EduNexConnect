@@ -338,6 +338,34 @@ async fetchTeacherData(id:string){
     }
 }
 
+async toggleBlock(email:string,id:string){
+    try {
+        console.log('in the usecase');
+        
+        const result = await this.schoolAdminRepo.toggleBlock(email,id)
+        if(result.modifiedCount ==1){
+            return {
+                status:200,
+                message:'Status Changed successfully'
+            }
+        } else{
+            return{
+                status:409,
+                message:'Unable to change status'
+            }
+        }
+        
+        // console.log(result);
+
+        
+    } catch (error) {
+        return {
+            status:500,
+            message:'Error Occured Try Again Later!!!'
+        }
+    }
+}
+
 //-----------------------------Student UseCase---------------------------------------------------------------
 
 async addStudent(id:string,name:string,email:string,gaurdianName:string,mobile:string,classNum:string){

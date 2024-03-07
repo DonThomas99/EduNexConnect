@@ -99,13 +99,26 @@ console.log('response from backend',response);
         try {
             const id = req.body.id as unknown as string 
             const response = await this.schoolAdminCase.fetchTeacherData(id)
-            console.log('hee',response.data);
             
             if(response){
                 res.status(response.status).json(response.data)
             }
         } catch (error) {
             console.log('controller error',error);
+            
+        }
+    }
+
+    async toggleBlock(req:Request,res:Response){
+        try {
+            const {email,id} = req.body
+            console.log('in the controller');
+            
+            const response = await this.schoolAdminCase.toggleBlock(email,id)
+            return res.status(response.status).json(response.message)
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({message:'Error Changing Status!!!'})
             
         }
     }
