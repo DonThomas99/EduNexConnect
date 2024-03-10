@@ -78,13 +78,13 @@ async fetchClasses(id:string){
         
         if(data){
 
-            const result = await modifyData(data)
+            // const result = await modifyData(data)
             
             
             return{
                 status:200,
                 data:{
-                    array:result
+                    array:data
                 }
             }
         }else{
@@ -167,19 +167,20 @@ async deleteSubject(id:string,classNum:string,subject:string){
 }
 //---------------------------Teacher UseCase----------------------------------------------------------------
 
-async addSubToTeacher(id:string,teacherEmail:string,classNum:string,subject:string){
+async addSubToTeacher(id:string,teacherEmail:string,classNum:string,subjectId:string,subjectName:string){
     try {
 
         const document = {
             email:teacherEmail,
             name:'undefined',
             class:classNum,
-            subject:subject
+            subjectId:subjectId,
+            subjectName:subjectName
         }
 const isAssigned = await this.schoolAdminRepo.isSubjectAssignedToAnotherFaculty(id,document)
 if(!isAssigned){
 
-    const isAdded = await this.schoolAdminRepo.addSubToTeacher(id,teacherEmail,classNum,subject)
+    const isAdded = await this.schoolAdminRepo.addSubToTeacher(id,teacherEmail,classNum,subjectId,subjectName)
     if(isAdded){
         return {
             status:200,

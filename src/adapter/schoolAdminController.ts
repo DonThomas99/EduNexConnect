@@ -70,8 +70,10 @@ this.schoolAdminCase = schoolAdminCase
 
     async addSubjectToTeacher(req:Request,res:Response){
         try {
-            const {teacherEmail,classNum,subject,id} = req.body
-            const added = await this.schoolAdminCase.addSubToTeacher(id,teacherEmail,classNum,subject)
+            const {teacherEmail,classNum,subjectId,subjectName,id} = req.body
+            console.log(req.body);
+            
+            const added = await this.schoolAdminCase.addSubToTeacher(id,teacherEmail,classNum,subjectId,subjectName)
             if(added){
                 res.status(added.status).json(added.message)
             }

@@ -5,15 +5,15 @@ password:string;
 isBlocked:boolean;
 classNsub:[{
     classNum:string;
-    subject:string[];
+    subject:SubjectsDoc[];
 }]
 }
 export interface Iteachers{
     email:string;
     name:string ;
     class:string;
-    subject:string;
-
+    subjectId:string;
+    subjectName:string;
 }
 export interface classNsub{
     classNum:string;
@@ -25,3 +25,8 @@ export interface unAssignedTeacher{
     email:string;
     password:string;
 }
+
+export interface SubjectsDoc{
+    name:string,
+    Id:string
+  }

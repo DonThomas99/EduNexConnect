@@ -26,7 +26,12 @@ const teacherSchema = new mongoose.Schema(
             },
             subject:[{
 
-                type:String
+                name:{
+                    type:String
+                },
+                Id:{
+                    type:String
+                }
             }]
         }
     ],

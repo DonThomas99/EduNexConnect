@@ -78,7 +78,7 @@ export default class schoolAdminRepo implements schoolAdminRepository {
      // Teacher CRUD Operations
 
 
-    async addSubToTeacher(id: string, teacherEmail: string, classNum: string, subject: string) {
+    async addSubToTeacher(id: string, teacherEmail: string, classNum: string, subjectId: string,subjectName:string) {
         try {
             const Model = await getSchema(id, 'teachers');
             // First, check if the classNum exists
@@ -87,14 +87,14 @@ export default class schoolAdminRepo implements schoolAdminRepository {
                 // If the classNum exists, push the subject to the existing array
                 await Model.updateOne(
                     { email: teacherEmail, "classNsub.classNum": classNum },
-                    { $push: { "classNsub.$.subject": subject } }
+                    { $push: { "classNsub.$.subject": {name:subjectName,Id:subjectId} } }
                 );
                 return true
             } else {
                 // If the classNum does not exist, add a new object with the classNum and the subject
                 await Model.updateOne(
                     { email: teacherEmail },
-                    { $push: { classNsub: { classNum: classNum, subject: [subject] } } }
+                    { $push: { classNsub: { classNum: classNum, subject: [{name:subjectName,Id:subjectId}] } } }
                 );
                 return true
             }
@@ -160,7 +160,7 @@ export default class schoolAdminRepo implements schoolAdminRepository {
                    return existingClass
                 }else {
                                     // Class doesn't exist, create new entry for class with the subject
-                                    teacher.classNsub.push({ classNum: data.class, subject: [data.subject] });
+                                    teacher.classNsub.push({ classNum: data.class, subject: [data.subjectId] });
                                     await teacher.save();
                                     return true; // New class and subject added successfully
         
@@ -183,7 +183,7 @@ async addToClass(id:string,data:Iteachers){
             if(existingClassIndex != -1){
                 const result = await Model.updateOne(
                     { email: data.email, 'classNsub.classNum': data.class },
-                    { $push: { 'classNsub.$.subject': data.subject } }
+                    { $push: { 'classNsub.$.subject': data.subjectId } }
                 );
                     if(result.modifiedCount >0){
                         return true
@@ -204,7 +204,7 @@ async addToClass(id:string,data:Iteachers){
             const Model = await getSchema(id, 'teachers');
            const isExist = await Model.exists({
                 'classNsub.classNum': data.class,
-                'classNsub.subject': data.subject,
+                'classNsub.subject.Id': data.subjectId,
                 email: { $ne: data.email } // Exclude current teacher from the search
             });
             if(isExist){
@@ -232,7 +232,7 @@ async addToClass(id:string,data:Iteachers){
                     email: data.email,         
                     password: password,
                     isBlocked:false,
-                    classNsub: [{ classNum: data.class, subject: [data.subject] }]
+                    classNsub: [{ classNum: data.class, subject: [{name:data.subjectName,Id:data.subjectId}] }]
                 }
                 await Model.create(newTeacher);
     
