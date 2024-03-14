@@ -31,6 +31,29 @@ async fetchTeacherData(req:Request,res:Response){
         
     }
 }
+//Material CRUD operations 
+async uploadMaterial(req:Request,res:Response){
+    try {
+        // console.log('gdbdf:',req.body);
+        const {subjectId,id} = req.body
+        const{content,materialTitle,pdf} = req.body.data
+        const response = await this.teacherCase.uploadMaterial(subjectId,id,materialTitle,pdf,content)
+        // res.status()
+    } catch (error) {
+        console.log(error);
+           }
+}
+
+async updateMaterial(req:Request,res:Response){
+    try {
+        console.log(req.body);
+        
+        // const response = a
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
 
 
 }

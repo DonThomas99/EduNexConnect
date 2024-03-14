@@ -47,4 +47,23 @@ async fetchData(id:string,email:string){
     }
 }
 
+//----------------Material Upload-------------------
+
+async uploadMaterial(subjectId:string,id:string,materialTitle:string,pdf:string,content:string){
+    try {
+    const document ={
+        subjectId:subjectId,
+        materialTitle:materialTitle,
+        pdf:pdf,
+        content:content
+    }       
+    console.log(document);
+    
+    const status = await this.teacherRepository.uploadMaterial(document,id)
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
 }

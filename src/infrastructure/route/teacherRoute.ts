@@ -11,4 +11,8 @@ const controller = new teacherController(useCase)
 const teacherRoute = express.Router();
 teacherRoute.post('/login',(req:Request,res)=>{controller.login(req,res)})
 teacherRoute.get('/fetchTeacherData',(req:Request,res)=>{controller.fetchTeacherData(req,res)})
+
+// Material CRUD operations 
+teacherRoute.post('/uploadMaterial',(req:Request,res)=>{controller.uploadMaterial(req,res)})
+teacherRoute.patch('/updateMaterial',(req:Request,res)=>{controller.updateMaterial(req,res)})
 export default teacherRoute
