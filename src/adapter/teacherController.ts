@@ -35,13 +35,29 @@ async fetchTeacherData(req:Request,res:Response){
 async uploadMaterial(req:Request,res:Response){
     try {
         // console.log('gdbdf:',req.body);
-        const {subjectId,id} = req.body
+        const {subjectId,teacherId,id} = req.body
         const{content,materialTitle,pdf} = req.body.data
-        const response = await this.teacherCase.uploadMaterial(subjectId,id,materialTitle,pdf,content)
+        const response = await this.teacherCase.uploadMaterial(teacherId,subjectId,id,materialTitle,pdf,content)
         // res.status()
     } catch (error) {
         console.log(error);
            }
+}
+
+
+async fetchMaterials(req:Request,res:Response){
+    try {
+        console.log(req.body);
+        
+        const {subjectId,teacherId,id}= req.body
+        const response = await this.teacherCase.fetchMaterials(subjectId,teacherId,id)
+        if(response){
+            res.status(response.status).json(response.data)
+        }
+    } catch (error) {
+     console.log(error);
+        
+    }
 }
 
 async updateMaterial(req:Request,res:Response){
@@ -55,6 +71,26 @@ async updateMaterial(req:Request,res:Response){
     }
 }
 
+
+//Assignment CRUD operations
+async uploadAssignments(req:Request,res:Response){
+try {
+    const {subjectId,teacherId,id} = req.body
+    const{content,assignmentTitle,pdf,date,time} = req.body.data
+const response = await this.teacherCase.uploadAssignment(subjectId,teacherId,content,assignmentTitle,pdf,date,time,id)
+        if(response){
+
+    res.status(response.status).json(response.message)
+    } else{
+        res.status(409).json({message:'Error Uploading Assignment'})
+    }    
+
+    
+} catch (error) {
+    console.log(error);
+        
+}
+}
 
 }
 export default teacherController

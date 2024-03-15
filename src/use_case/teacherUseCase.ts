@@ -49,9 +49,10 @@ async fetchData(id:string,email:string){
 
 //----------------Material Upload-------------------
 
-async uploadMaterial(subjectId:string,id:string,materialTitle:string,pdf:string,content:string){
+async uploadMaterial(teacherId:string,subjectId:string,id:string,materialTitle:string,pdf:string,content:string){
     try {
     const document ={
+        teacherId:teacherId,
         subjectId:subjectId,
         materialTitle:materialTitle,
         pdf:pdf,
@@ -60,6 +61,59 @@ async uploadMaterial(subjectId:string,id:string,materialTitle:string,pdf:string,
     console.log(document);
     
     const status = await this.teacherRepository.uploadMaterial(document,id)
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
+async fetchMaterials(subjectId:string,teacherId:string,id:string){
+    try {
+       
+        const data = await this.teacherRepository.fetchMaterials(subjectId,teacherId,id)
+            
+        if(data){
+            return {
+                status:200,
+                data:data,
+              }
+        } else{
+            return {
+                status:409,
+                data:null
+            }
+        }
+        
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
+//---------------------Assignment CRUD Operations----------------
+async uploadAssignment(subjectId:string,teacherId:string,content:string,assignmentTitle:string,pdf:string,date:string,time:string,id:string){
+    try {
+        const document ={
+            teacherId:teacherId,
+            subjectId:subjectId,
+            assignmentTitle:assignmentTitle,
+            pdf:pdf,
+            content:content,
+            date:date,
+            time:time
+        }  
+        const upload = await this.teacherRepository.uploadAssignment(id,document)
+            if(upload){
+                return {
+                    status:200,
+                     message:'Assignment successfully uploaded'   
+                }
+            } else{
+                return {
+                    status:409,
+                    message:'Error Uploading Assignment'
+                }
+            }
     } catch (error) {
         console.log(error);
         

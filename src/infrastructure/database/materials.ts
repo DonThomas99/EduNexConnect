@@ -4,6 +4,9 @@ const materialSchema = new mongoose.Schema({
     subjectId:{
         type:String,
     },
+    teacherId:{
+        type:String,
+    },
     materialTitle:{
         type:String
     },

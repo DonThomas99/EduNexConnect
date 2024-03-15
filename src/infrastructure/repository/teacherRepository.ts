@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import teacherRepository from "../../use_case/interface/teacherRepo";
 import { getSchema } from "../utils/switchDb";
-import { Imaterial } from "../../domain/material";
+import { IAssignment, Imaterial } from "../../domain/material";
 
 export default class teacherRepo implements teacherRepository{
  
@@ -32,14 +32,37 @@ async fetchData(id:string,email:string){
         
     }
 }
-
+//-------------Materials CRUD operations-------------------
 async uploadMaterial(document:Imaterial,id:string){
     try { console.log('herr');
     
         const Model = await this.getSchema(id,'materials')
         const upload = await Model.create(document)
-        console.log('hee:',upload);
-                
+        return upload                
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+async fetchMaterials(subjectId:string,teacherId:string,id:string){
+    try {
+        const Model = await this.getSchema(id,'materials')
+        const data = await Model.find({subjectId:subjectId,teacherId:teacherId})
+        return data
+
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
+//-------------Assignment CRUD operations---------------
+
+async uploadAssignment(id:string,document:IAssignment){
+    try {
+        const Model = await this.getSchema(id,'assignments')
+        const upload = await Model.create(document)
+        return upload
     } catch (error) {
         console.log(error);
         

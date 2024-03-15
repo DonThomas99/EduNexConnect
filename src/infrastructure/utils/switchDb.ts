@@ -10,10 +10,11 @@ import { subjectSchema } from '../database/subjectSchema';
 import { teacherSchema } from '../database/teacherModel';
 import { studentSchema } from '../database/studentSchema';
 import { materialSchema } from '../database/materials';
+import { assignmentSchema } from '../database/assignment';
 
 // Indicates which Schemas are used by whom
 
-const ChildrenSchemas: Map<string, any> = new Map([['schoolAdmin', schoolAdminSchema],['subjects',subjectSchema],['teachers',teacherSchema],['students',studentSchema],['materials',materialSchema]]);
+const ChildrenSchemas: Map<string, any> = new Map([['schoolAdmin', schoolAdminSchema],['subjects',subjectSchema],['teachers',teacherSchema],['students',studentSchema],['materials',materialSchema],['assignments',assignmentSchema]]);
 const TenantSchemas: Map<string, any> = new Map([['tenants', TenantSchema],['admins',superAdminSchema]]);
 
 /** Switch db on the same connection pool

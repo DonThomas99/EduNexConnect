@@ -18,6 +18,8 @@ router.use('/:id/:role', (req:Request, res:Response, next:NextFunction) => {
     const role = req.params.role as string;
     const email = req.query.email as string;
     const classNum = req.query.classNum as string;
+    const subjectId = req.query.subjectId
+    const teacherId = req.query.teacherId
     
     console.log('role:',role);
     console.log('body:',req.body);
@@ -34,6 +36,14 @@ router.use('/:id/:role', (req:Request, res:Response, next:NextFunction) => {
     }
 if(classNum){
     req.body.classNum = classNum
+}
+if(subjectId){
+    console.log('ehew');
+    
+    req.body.subjectId = subjectId
+}
+if(teacherId){
+    req.body.teacherId = teacherId
 }
     
     // Forward request to appropriate route based on role
