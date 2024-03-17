@@ -24,8 +24,7 @@ const TenantSchemas: Map<string, any> = new Map([['tenants', TenantSchema],['adm
 
 const getSchema =  async (schoolName: string,modelName:string): Promise<any> => {
     if(modelName=="tenants"||modelName=="admins"){
-     
-      
+           
       const tenantDB: Connection = await switchDB('EduNextConnect', TenantSchemas);
      
       const tenantModel: Model<any> = await getDBModel(tenantDB, modelName);
