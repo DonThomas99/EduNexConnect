@@ -21,6 +21,7 @@ router.use('/:id/:role', (req:Request, res:Response, next:NextFunction) => {
     const subjectId = req.query.subjectId
     const teacherId = req.query.teacherId
     
+    
     console.log('role:',role);
     console.log('body:',req.body);
 

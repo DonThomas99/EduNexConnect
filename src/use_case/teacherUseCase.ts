@@ -120,4 +120,19 @@ async uploadAssignment(subjectId:string,teacherId:string,content:string,assignme
     }
 }
 
+async fetchStudents(id:string,classNum:string){
+    try {
+        const data = await this.teacherRepository.fetchStudents(id,classNum)
+        if(data){
+            return{
+                status:200,
+                data:data
+            }
+        }
+        
+    } catch (error) {
+        console.log(error); 
+    }
+}
+
 }

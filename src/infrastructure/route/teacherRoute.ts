@@ -16,6 +16,7 @@ teacherRoute.get('/fetchTeacherData',(req:Request,res)=>{controller.fetchTeacher
 teacherRoute.post('/uploadMaterial',(req:Request,res)=>{controller.uploadMaterial(req,res)})
 teacherRoute.patch('/updateMaterial',(req:Request,res)=>{controller.updateMaterial(req,res)})
 teacherRoute.get('/fetchMaterials',(req:Request,res)=>{controller.fetchMaterials(req,res)})
+teacherRoute.get('/getStudentsByClass',(req:Request,res)=>{controller.fetchStudents(req,res)})
 
 //Assignment CRUD operations 
 teacherRoute.post('/uploadAssignment',(req:Request,res)=>{controller.uploadAssignments(req,res)})

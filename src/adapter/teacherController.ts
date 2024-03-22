@@ -34,9 +34,13 @@ async fetchTeacherData(req:Request,res:Response){
 //Material CRUD operations 
 async uploadMaterial(req:Request,res:Response){
     try {
-        // console.log('gdbdf:',req.body);
+        console.log('gdbdf:',req.body);
         const {subjectId,teacherId,id} = req.body
         const{content,materialTitle,pdf} = req.body.data
+        if(pdf){
+            console.log(':tdyd',pdf.type);
+            
+        }
         const response = await this.teacherCase.uploadMaterial(teacherId,subjectId,id,materialTitle,pdf,content)
         // res.status()
     } catch (error) {
@@ -71,6 +75,17 @@ async updateMaterial(req:Request,res:Response){
     }
 }
 
+async fetchStudents(req:Request,res:Response){
+    try {            
+            const{id,classNum}=req.body
+            const response = await this.teacherCase.fetchStudents(id,classNum)
+            if(response)
+            res.status(response.status).json(response.data)
+    } catch (error) {
+        res.status(500).json({message:'Error in adding student'})
+        
+    }
+}
 
 //Assignment CRUD operations
 async uploadAssignments(req:Request,res:Response){

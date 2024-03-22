@@ -32,6 +32,19 @@ async fetchData(id:string,email:string){
         
     }
 }
+
+async fetchStudents(id:string,classNum:string){
+    try {
+        const Model = await this.getSchema(id,'students')
+        const studentData = await Model.find({classNum:classNum})
+        return studentData
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
+
 //-------------Materials CRUD operations-------------------
 async uploadMaterial(document:Imaterial,id:string){
     try { console.log('herr');
