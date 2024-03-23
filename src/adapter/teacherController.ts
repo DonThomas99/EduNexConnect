@@ -31,6 +31,17 @@ async fetchTeacherData(req:Request,res:Response){
         
     }
 }
+async fetchStudents(req:Request,res:Response){
+    try {            
+            const{id,classNum}=req.body
+            const response = await this.teacherCase.fetchStudents(id,classNum)
+            if(response)
+            res.status(response.status).json(response.data)
+    } catch (error) {
+        res.status(500).json({message:'Error in adding student'})
+        
+    }
+}
 //Material CRUD operations 
 async uploadMaterial(req:Request,res:Response){
     try {
@@ -75,24 +86,14 @@ async updateMaterial(req:Request,res:Response){
     }
 }
 
-async fetchStudents(req:Request,res:Response){
-    try {            
-            const{id,classNum}=req.body
-            const response = await this.teacherCase.fetchStudents(id,classNum)
-            if(response)
-            res.status(response.status).json(response.data)
-    } catch (error) {
-        res.status(500).json({message:'Error in adding student'})
-        
-    }
-}
+
 
 //Assignment CRUD operations
 async uploadAssignments(req:Request,res:Response){
 try {
     const {subjectId,teacherId,id} = req.body
-    const{content,assignmentTitle,pdf,date,time} = req.body.data
-const response = await this.teacherCase.uploadAssignment(subjectId,teacherId,content,assignmentTitle,pdf,date,time,id)
+    const{content,assignmentTitle,pdf,dateTime} = req.body.data
+const response = await this.teacherCase.uploadAssignment(subjectId,teacherId,content,assignmentTitle,pdf,dateTime,id)
         if(response){
 
     res.status(response.status).json(response.message)
@@ -105,6 +106,16 @@ const response = await this.teacherCase.uploadAssignment(subjectId,teacherId,con
     console.log(error);
         
 }
+}
+
+async fetchAssignments(req:Request,res:Response){
+    try {
+        const{subjectId, teacherId,id} = req.body
+        
+        const response = await this.teacherCase.fetchAssignment(subjectId,id,teacherId)
+    } catch (error) {
+        res.status(500).json({messge:'Error fetching Assignments'})
+    }
 }
 
 }

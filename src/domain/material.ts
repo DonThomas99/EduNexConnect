@@ -10,6 +10,6 @@ export interface IAssignment{
         content:string,
         assignmentTitle:string,
         pdf:string,
-        time:string,
-        date:string
+       submissionDate:Date,
+        
 }

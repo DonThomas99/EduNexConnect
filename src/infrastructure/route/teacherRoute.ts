@@ -20,4 +20,5 @@ teacherRoute.get('/getStudentsByClass',(req:Request,res)=>{controller.fetchStude
 
 //Assignment CRUD operations 
 teacherRoute.post('/uploadAssignment',(req:Request,res)=>{controller.uploadAssignments(req,res)})
+teacherRoute.get('/fetchAssignments',(req:Request,res)=>{controller.fetchAssignments(req,res)})
 export default teacherRoute

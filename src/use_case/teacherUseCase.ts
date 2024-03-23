@@ -91,7 +91,7 @@ async fetchMaterials(subjectId:string,teacherId:string,id:string){
 }
 
 //---------------------Assignment CRUD Operations----------------
-async uploadAssignment(subjectId:string,teacherId:string,content:string,assignmentTitle:string,pdf:string,date:string,time:string,id:string){
+async uploadAssignment(subjectId:string,teacherId:string,content:string,assignmentTitle:string,pdf:string,dateTime:Date,id:string){
     try {
         const document ={
             teacherId:teacherId,
@@ -99,8 +99,7 @@ async uploadAssignment(subjectId:string,teacherId:string,content:string,assignme
             assignmentTitle:assignmentTitle,
             pdf:pdf,
             content:content,
-            date:date,
-            time:time
+            submissionDate:dateTime,   
         }  
         const upload = await this.teacherRepository.uploadAssignment(id,document)
             if(upload){
@@ -119,6 +118,20 @@ async uploadAssignment(subjectId:string,teacherId:string,content:string,assignme
         
     }
 }
+
+async fetchAssignment(subjectId:string,id:string,teacherId:string){
+    try {
+        
+    } catch (error) {
+        return {
+            status:500,
+            message:'Unable to fetch data '
+        }
+
+    }
+}
+
+//--------------------Student Operations 
 
 async fetchStudents(id:string,classNum:string){
     try {

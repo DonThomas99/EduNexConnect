@@ -17,11 +17,11 @@ const assignmentSchema = new mongoose.Schema({
     content:{
         type:String
     },
-    submissiondate:{
+    submissionDate:{
         type:Date
     },
     // submissionTime:{
-    //     type:tim
+    //     type:String
     // },
     createdAt:{
         type:Date,
