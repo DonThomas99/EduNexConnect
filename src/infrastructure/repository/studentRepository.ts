@@ -37,5 +37,25 @@ export default class studentRepo implements studentRepository{
             return null            
         }
     }
+    async fetchAssignments(subjectId:string,id:string){
+        try {
+            const Model = await getSchema(id,'assignments')
+            const data = await Model.find({subjectId:subjectId})
+            return data
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+    async fetchMaterials(subjectId:string,id:string){
+        try {
+            const Model = await getSchema(id,'assignments')
+            const data = await Model.find({subjectId:subjectId})
+            return data
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
 
 }

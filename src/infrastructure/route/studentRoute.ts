@@ -12,6 +12,7 @@ const studentRoute = express()
 studentRoute.post('/login',(req:Request,res)=>{controller.login(req,res)})
 studentRoute.get('/fetchStudentData',(req:Request,res)=>{controller.fetchStudentData(req,res)})
 studentRoute.get('/fetchSubjects',(req:Request,res)=>{controller.fetchSubjects(req,res)})
+studentRoute.get('/fetchAsnmtMat',(req:Request,res)=>{controller.fetchAsnmtMat(req,res)})
 
 
 export default studentRoute

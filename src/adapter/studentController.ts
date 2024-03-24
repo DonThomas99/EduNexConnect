@@ -47,4 +47,21 @@ res.status(response.status).json({data:response.data,message:response.message})
             
         }
     }
+
+    async fetchAsnmtMat(req:Request,res:Response){
+        try {
+                console.log(req.body);
+                const{subjectId,id} = req.body
+                            const response = await this.studentCase.fetchAsnmtMat(subjectId,id)
+                            if(response){
+
+                                res.status(response.status).json(response.data)
+                            }else{
+res.status(409).json({message:'Error fetching Data'})
+                            }
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
 }
