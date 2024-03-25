@@ -49,7 +49,7 @@ export default class studentRepo implements studentRepository{
     }
     async fetchMaterials(subjectId:string,id:string){
         try {
-            const Model = await getSchema(id,'assignments')
+            const Model = await getSchema(id,'materials')
             const data = await Model.find({subjectId:subjectId})
             return data
         } catch (error) {
