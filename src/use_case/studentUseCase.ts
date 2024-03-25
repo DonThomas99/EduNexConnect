@@ -95,7 +95,9 @@ async fetchAsnmtMat(subjectId:string,id:string){
         const materialData = await this.studentRepo.fetchMaterials(subjectId,id)
                 
          const uploadsArray = [...materialData,...asmntData]
-        //  uploadsArray.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+         console.log(uploadsArray,':Hee');
+         
+       
         uploadsArray.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
         if(uploadsArray)
         {
