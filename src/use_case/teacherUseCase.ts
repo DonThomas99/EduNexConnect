@@ -69,21 +69,29 @@ async uploadMaterial(teacherId:string,subjectId:string,id:string,materialTitle:s
 
 async fetchMaterials(subjectId:string,teacherId:string,id:string){
     try {
+        const asmntData = await this.teacherRepository.fetchAssignments(subjectId,id)
+        const materialData = await this.teacherRepository.fetchMaterials(subjectId,id)
+                
+         const uploadsArray = [...materialData,...asmntData]
+         
+         
        
-        const data = await this.teacherRepository.fetchMaterials(subjectId,teacherId,id)
+        uploadsArray.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        if(uploadsArray)
+        {
+
             
-        if(data){
             return {
                 status:200,
-                data:data,
-              }
+                data:uploadsArray
+            }
         } else{
             return {
                 status:409,
                 data:null
             }
         }
-        
+         
     } catch (error) {
         console.log(error);
         
@@ -131,7 +139,7 @@ async fetchAssignment(subjectId:string,id:string,teacherId:string){
     }
 }
 
-//--------------------Student Operations 
+//--------------------Student Operations------------- 
 
 async fetchStudents(id:string,classNum:string){
     try {

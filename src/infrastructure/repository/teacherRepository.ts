@@ -57,10 +57,10 @@ async uploadMaterial(document:Imaterial,id:string){
     }
 }
 
-async fetchMaterials(subjectId:string,teacherId:string,id:string){
+async fetchMaterials(subjectId:string,id:string){
     try {
         const Model = await this.getSchema(id,'materials')
-        const data = await Model.find({subjectId:subjectId,teacherId:teacherId})
+        const data = await Model.find({subjectId:subjectId})
         return data
 
     } catch (error) {
@@ -76,6 +76,17 @@ async uploadAssignment(id:string,document:IAssignment){
         const Model = await this.getSchema(id,'assignments')
         const upload = await Model.create(document)
         return upload
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
+async fetchAssignments(subjectId:string,id:string){
+    try {
+        const Model = await this.getSchema(id,'assignments')
+        const data = await Model.find({subjectId:subjectId})
+            return data
     } catch (error) {
         console.log(error);
         
