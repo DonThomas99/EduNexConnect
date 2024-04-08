@@ -35,4 +35,5 @@ schoolAdminRouter.post('/toggleBlock',(req:Request,res)=>{controller.toggleBlock
 //Student CRUD operations
 schoolAdminRouter.post('/addStudent',(req:Request,res)=>{controller.addStudent(req,res)})
 schoolAdminRouter.get('/fetchStudents',(req:Request,res)=>{controller.fetchStudents(req,res)})
+
 export default schoolAdminRouter

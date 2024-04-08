@@ -21,4 +21,9 @@ teacherRoute.get('/getStudentsByClass',(req:Request,res)=>{controller.fetchStude
 //Assignment CRUD operations 
 teacherRoute.post('/uploadAssignment',(req:Request,res)=>{controller.uploadAssignments(req,res)})
 teacherRoute.get('/fetchAssignments',(req:Request,res)=>{controller.fetchAssignments(req,res)})
+
+//Online class
+teacherRoute.put('/startClass',(req:Request,res)=>{controller.startClass(req,res)})
+teacherRoute.put('/endClass',(req:Request,res)=>{controller.endClass(req,res)})
+
 export default teacherRoute

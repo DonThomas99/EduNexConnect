@@ -54,14 +54,51 @@ res.status(response.status).json({data:response.data,message:response.message})
                 const{subjectId,id} = req.body
                             const response = await this.studentCase.fetchAsnmtMat(subjectId,id)
                             if(response){
-
-                                res.status(response.status).json(response.data)
+                                const formattedResponse = {
+                                    Mat: response.data, // This is the array of assignments
+                                    count: response.materialCount // This is the count of assignments
+                                };
+                                res.status(response.status).json(formattedResponse)
                             }else{
 res.status(409).json({message:'Error fetching Data'})
                             }
         } catch (error) {
             console.log(error);
             
+        }
+    }
+
+    async fetchAssignments(req:Request,res:Response){
+        try {
+            const {subjectId, id,page,limit } = req.body
+          
+            
+            const response = await this.studentCase.fetchAssignments(subjectId,id,page)
+            if(response){
+                const formattedResponse = {
+                    Mat: response.data, // This is the array of assignments
+                    count: response.assignmentCount // This is the count of assignments
+                };
+                res.status(response.status).json(formattedResponse)
+            }
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+
+    //-----------OnlineClass---------
+    async fetchRoomId(req:Request,res:Response){
+        try {  
+            console.log(req.body);
+                      
+            const {subjectId,classNum,id} = req.body
+            const response = await this.studentCase.fetchRoomId(subjectId,id,classNum)
+            if(response)
+            res.status(response.status).json(response.data)
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({data:null})
         }
     }
 }

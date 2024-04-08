@@ -2,11 +2,15 @@ import mongoose from "mongoose";
 import teacherRepository from "../../use_case/interface/teacherRepo";
 import { getSchema } from "../utils/switchDb";
 import { IAssignment, Imaterial } from "../../domain/material";
+import { ISubject } from "../../domain/subjectInterface";
+import { SubjectName } from "../../domain/subjectInterface";
 
 export default class teacherRepo implements teacherRepository{
- 
+    // private Subject:Subject
     private getSchema =getSchema
-    constructor(){
+    constructor(
+        
+    ){
 
     }
 
@@ -87,6 +91,65 @@ async fetchAssignments(subjectId:string,id:string){
         const Model = await this.getSchema(id,'assignments')
         const data = await Model.find({subjectId:subjectId})
             return data
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
+//---------------Online Class ---------------------------
+
+async startClass(id: string, subjectId: string, classNum: string, roomId: string) {
+    try {
+        const Model = await this.getSchema(id, 'subjects');
+        
+        const updatedDoc = await Model.findOneAndUpdate(
+            { 
+                class: classNum, 
+                "subjects._id": subjectId 
+            },
+            { 
+                $set: { "subjects.$.roomId": roomId } 
+            },
+            { 
+                new: true 
+            }
+        );
+
+        if (!updatedDoc) {
+            console.log('Document not found or subjectId does not exist in the subjects array');
+            return false;
+        }
+        return true
+        console.log('RoomId updated successfully:', updatedDoc);        
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+async endClass(id:string,subjectId:string,classNum:string){
+    try {
+        const Model = await this.getSchema(id, 'subjects');
+        
+        const updatedDoc = await Model.findOneAndUpdate(
+            { 
+                class: classNum, 
+                "subjects._id": subjectId 
+            },
+            { 
+                $set: { "subjects.$.roomId": null } 
+            },
+            { 
+                new: true 
+            }
+        );
+
+        if (!updatedDoc) {
+            console.log('Document not found or subjectId does not exist in the subjects array');
+            return false;
+        }
+        return true
+
     } catch (error) {
         console.log(error);
         

@@ -156,4 +156,46 @@ async fetchStudents(id:string,classNum:string){
     }
 }
 
+
+//-----------------------Online Class Operations-------------------------
+async startClass(id:string,subjectId:string,classNum:string,roomId:string){
+    try {
+    const data = await this.teacherRepository.startClass(id,subjectId,classNum,roomId)     
+    if(data){
+        return{
+            status:200,
+            data:true
+        }
+    } else{
+        return {
+            status:409,
+            data:false
+        }
+    }   
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
+async endClass(id:string,subjectId:string,classNum:string){
+    try {
+        const status = await this.teacherRepository.endClass(id,subjectId,classNum)
+        if(status){
+            return {
+                status:200,
+                data: 'Call Ended Successfully'
+            }
+        } else{
+            return {
+                status:409,
+                data:'Error Ending Call'
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
 }

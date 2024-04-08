@@ -107,7 +107,8 @@ async addSubjects(classNumber:string,subject:string,id:string){
                     class:classNumber,
                     subjects:[
                         {
-                            name:subject
+                            name:subject,
+                            roomId:""
                         }
                     ]
                 }

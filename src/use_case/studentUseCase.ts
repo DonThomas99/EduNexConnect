@@ -89,23 +89,46 @@ async fetchSubjects(classNum:string,id:string){
         
     }
 }
-async fetchAsnmtMat(subjectId:string,id:string){
-    try {
-        const asmntData = await this.studentRepo.fetchAssignments(subjectId,id)
-        const materialData = await this.studentRepo.fetchMaterials(subjectId,id)
-                
-         const uploadsArray = [...materialData,...asmntData]
-         
-         
-       
-        uploadsArray.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-        if(uploadsArray)
-        {
 
-            
+async fetchAsnmtMat(subjectId: string, id: string, page: number = 1, limit: number = 4) {
+    try {
+        
+        const materialData = await this.studentRepo.fetchMaterials(subjectId, id, page, limit);
+        const materialDataCount = await this.studentRepo.fetchMaterialCount(subjectId,id)
+        const uploadsArray = [...materialData];
+        
+        uploadsArray.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        if (uploadsArray) {
+            return {
+                status: 200,
+                data: uploadsArray,
+                materialCount:materialDataCount
+            };
+        } else {
+            return {
+                status: 409,
+                data: null
+            };
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+async fetchAssignments(subjectId:string,id:string,page:number, limit:number =4){
+    try {
+        const asmntData = await this.studentRepo.fetchAssignments(subjectId,id,page,limit)
+        const assignmentCount = await this.studentRepo.fetchAssignmentsCount(subjectId,id)
+        // asmntData.sort((a,b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+
+        asmntData.sort((a: { createdAt: string }, b: { createdAt: string }) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+
+
+        if(asmntData){
             return {
                 status:200,
-                data:uploadsArray
+                data:asmntData,
+                assignmentCount:assignmentCount
             }
         } else{
             return {
@@ -113,12 +136,36 @@ async fetchAsnmtMat(subjectId:string,id:string){
                 data:null
             }
         }
-         
     } catch (error) {
         console.log(error);
         
     }
 }
 
+
+//--------------------OnlineClass----------------
+async fetchRoomId(subjectId:string,id:string,classNum:string){
+    try {
+        const data = await this.studentRepo.fetchRoomId(subjectId,id,classNum)
+        if(data){
+            return{
+                status:200,
+                data:data
+            }
+        } else{
+            return {
+                status:200,
+                data:null
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        return{
+            status:500,
+            data:null
+        }
+        
+    }
+}
 
 }

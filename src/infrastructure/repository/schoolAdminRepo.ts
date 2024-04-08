@@ -1,6 +1,6 @@
 import schoolAdminRepository from "../../use_case/interface/schoolAdminRepo";
 import { getSchema,switchDB } from "../utils/switchDb";
-import {Subject} from "../../domain/subjectInterface";
+import {SubjectsDocument} from "../../domain/subjectInterface";
 import { Error as  MongooseError } from "mongoose";
 import { Iteachers, classNsub, teachers, unAssignedTeacher } from "../../domain/teachers";
 import { Istudent } from "../../domain/Student";
@@ -24,7 +24,7 @@ export default class schoolAdminRepo implements schoolAdminRepository {
             'subjects.name':subject})
         return !!status
     }
-    async addSubject(classNumber: string,subject:string, document: Subject, id: string): Promise<boolean> {
+    async addSubject(classNumber: string,subject:string, document: SubjectsDocument, id: string): Promise<boolean> {
         try {
             const Model = await getSchema(id, 'subjects');
             const status = await Model.findOne({ class: classNumber });
@@ -80,6 +80,8 @@ export default class schoolAdminRepo implements schoolAdminRepository {
 
     async addSubToTeacher(id: string, teacherEmail: string, classNum: string, subjectId: string,subjectName:string) {
         try {
+            console.log(subjectId,'fhwoehw');
+            
             const Model = await getSchema(id, 'teachers');
             // First, check if the classNum exists
             const teacher = await Model.findOne({ email: teacherEmail, "classNsub.classNum": classNum });

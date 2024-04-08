@@ -20,7 +20,9 @@ router.use('/:id/:role', (req:Request, res:Response, next:NextFunction) => {
     const classNum = req.query.classNum as string;
     const subjectId = req.query.subjectId
     const teacherId = req.query.teacherId
-    
+    const page = req.query.page
+    const limit = req.query.limit    
+
     
     console.log('role:',role);
     console.log('body:',req.body);
@@ -39,13 +41,20 @@ if(classNum){
     req.body.classNum = classNum
 }
 if(subjectId){
-    console.log('ehew');
+    
     
     req.body.subjectId = subjectId
 }
 if(teacherId){
     req.body.teacherId = teacherId
 }
+if(page){
+    req.body.page = page
+}
+if(limit){
+    req.body.limit = limit
+}
+
     
     // Forward request to appropriate route based on role
     if (role === 'admin') {

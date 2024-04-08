@@ -118,5 +118,33 @@ async fetchAssignments(req:Request,res:Response){
     }
 }
 
+//---------------Start Class-------------
+
+async startClass(req:Request,res:Response){
+try {
+    const {classNum,id,subjectId,roomId} = req.body
+    // console.log('subjectId:',subjectId);
+    
+    const response = await this.teacherCase.startClass(id,subjectId,classNum,roomId)
+    if(response)
+    res.status(response.status).json(response.data)
+} catch (error) {
+    console.log(error);
+    
+}
+}
+
+async endClass(req:Request,res:Response){
+    try {
+        const {classNum,id,subjectId} = req.body
+        const response = await this.teacherCase.endClass(id,subjectId,classNum)
+        if(response)
+            res.status(response.status).json(response.data)
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
 }
 export default teacherController
