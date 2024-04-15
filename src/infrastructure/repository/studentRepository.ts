@@ -199,7 +199,8 @@ if(data){
                 assignmentId:assignmentId,
                 studentEmail:studentEmail
             }).select('file_url')
-            if(url){
+            if(url.length>0){
+                
                 return url
             }else{
                 return null

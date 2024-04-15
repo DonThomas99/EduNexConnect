@@ -210,14 +210,10 @@ async uploadAssignment(assignmentId:string,studentEmail:string,file:Array<Object
     }
 }
 
-
-
 async fetchSubmissions(id:string,assignmentId:string,studentEmail:string){
     try {
-        const url = await this.studentRepo.fetchSubmissions(id,assignmentId,studentEmail)
-        console.log(url);
-        
-               if(url){
+        const url = await this.studentRepo.fetchSubmissions(id,assignmentId,studentEmail)        
+        if(url){
                 return {
                     status:200,
                     url:url[0].file_url
