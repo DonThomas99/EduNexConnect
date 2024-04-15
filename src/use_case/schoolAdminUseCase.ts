@@ -70,6 +70,24 @@ async login(name:string,password:string,id:string){
         
     }
 }
+
+async fetchSummary(id:string){
+    try {
+        const studentCount = await this.schoolAdminRepo.fetchStudentCount(id)
+        const teacherCount = await this.schoolAdminRepo.fetchTeacherCount(id)
+        console.log(teacherCount,studentCount);
+        return{
+            status:200,
+            teacherCount:teacherCount,
+            studentCount:studentCount
+        }
+        
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
 //-------------------------Subject and Class Use Case------------------------------------------------------
 async fetchClasses(id:string){
     try {

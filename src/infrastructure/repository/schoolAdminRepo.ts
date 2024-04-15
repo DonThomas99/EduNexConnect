@@ -14,6 +14,35 @@ export default class schoolAdminRepo implements schoolAdminRepository {
         return document 
         
     }
+
+    async fetchStudentCount(id:string){
+            try {
+                console.log('hee');
+                
+                const Model = await getSchema(id,'students')
+                   const count = await Model.find({}).count() 
+
+                   
+                return count
+            } catch (error) {
+                
+                
+            }
+    }
+
+    async fetchTeacherCount(id:string){
+        try {
+            console.log('hwww');
+            
+            const Model = await getSchema(id,'teachers')
+            const count = await Model.find({}).count()
+            return count
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+
       //Class & Subject CRUD Operations  
 
 

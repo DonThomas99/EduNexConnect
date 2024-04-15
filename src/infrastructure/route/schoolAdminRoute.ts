@@ -21,6 +21,8 @@ const schoolAdminRouter = express.Router()
 
 schoolAdminRouter.post('/login',(req:Request,res)=>{controller.schoolAdminLogin(req, res)})
 
+schoolAdminRouter.get('/fetchSummary',(req:Request,res)=>{controller.fetchSummary(req,res)})
+
 //class and subject CRUD operations 
 schoolAdminRouter.put('/deleteSubject',(req:Request,res)=>{controller.deleteSubject(req,res)})
 schoolAdminRouter.post('/addSubjects',(req:Request,res)=>{controller.addSubject(req,res)})

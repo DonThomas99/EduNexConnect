@@ -10,6 +10,21 @@ class schoolAdminController{
 this.schoolAdminCase = schoolAdminCase
     }
 
+    async fetchSummary(req:Request,res:Response){
+        try {
+            const id = req.body.id
+            console.log(id);
+            
+          const response = await this.schoolAdminCase.fetchSummary(id)
+          if(response){
+            res.status(response.status).json({studentsCount:response.studentCount,teacherCount:response.teacherCount})
+          }
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+
     async schoolAdminLogin(req:Request,res:Response){
         try {
          console.log('body:',req.body);
