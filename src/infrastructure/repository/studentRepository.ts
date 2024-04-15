@@ -1,6 +1,8 @@
 import studentRepository from "../../use_case/interface/studentRepository";
 import { getSchema } from "../utils/switchDb";
 import { SubjectName } from "../../domain/subjectInterface";
+import { ListSearchIndexesCursor } from "mongodb";
+import { assign } from "nodemailer/lib/shared";
 
 export default class studentRepo implements studentRepository{
 //  private subject:SubjectName
@@ -120,6 +122,92 @@ if(data){
         
     }
 
+    }
+
+        //----------------------------Submissions CRUD operations---------------------------
+
+    async uploadAssignment(assignmentId:string,id:string,studentEmail:string,file:string){
+        try {
+
+            
+            const document = {
+                assignmentId :assignmentId,
+                studentEmail:studentEmail,
+                file_url:file
+            }
+            const Model = await getSchema(id,'submissions')
+            const newSubmission = new Model(document)
+            const uploadStatus = await newSubmission.save()
+            if(uploadStatus){
+                return true
+            } else {
+                return false
+            }
+            
+        } catch (error) {
+            console.log(error);
+            return false 
+        }
+    }
+
+    async submissionExists(id:string,assignmentId:string,studentEmail:string){
+    try {
+        const Model = await getSchema(id,'submissions')
+        const isExist = await  Model.find({
+            assignmentId:assignmentId,
+            studentEmail:studentEmail
+        })
+        console.log(isExist);
+        
+        if(isExist){
+            return true
+        } else{
+            return false
+        }
+    } catch (error) {
+        console.log(error);
+        return false
+    }
+
+    }
+
+    async updateSubmissions(id:string,assignmentId:string,studentEmail:string,file:string){
+        try {
+            const Model = await getSchema(id,'submissions')
+            const update = await Model.findOneAndUpdate(
+                {assignmentId:assignmentId,studentEmail:studentEmail},
+                {$push:{file_url:file}},
+                {new:true}
+            )
+            if (update.lastErrorObject && update.lastErrorObject.updatedExisting) {
+                return true; // Document was updated
+            } else {
+                return false; // Document was not updated
+            }
+            
+        } catch (error) {
+            console.log(error);
+            return false
+            
+        }
+    }
+
+    async fetchSubmissions(id:string,assignmentId:string,studentEmail:string){
+        try {
+            const Model = await getSchema(id,'submissions')
+            const url = await Model.find({
+                assignmentId:assignmentId,
+                studentEmail:studentEmail
+            }).select('file_url')
+            if(url){
+                return url
+            }else{
+                return null
+            }
+        } catch (error) {
+            console.log(error);
+            return null
+        }
     }
     
 }

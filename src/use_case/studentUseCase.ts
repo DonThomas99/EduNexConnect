@@ -1,7 +1,9 @@
 import studentRepo from "../infrastructure/repository/studentRepository";
+import Cloudinary from "../infrastructure/utils/cloudinary";
 export default class studentUseCase{
     constructor(
-      private  studentRepo:studentRepo
+      private  studentRepo:studentRepo,
+      private cloudinary:Cloudinary
     ){
 this.studentRepo = studentRepo
     }
@@ -142,6 +144,96 @@ async fetchAssignments(subjectId:string,id:string,page:number, limit:number =4){
     }
 }
 
+async uploadAssignment(assignmentId:string,studentEmail:string,file:Array<Object> | any,id:string,){
+    try {        
+        if (!file || !Array.isArray(file)) {
+            console.error('No file(s) provided or file is not an array');
+         console.log('soihefwoiu');
+         
+            return; // Exit the function early if file is not valid
+        }
+
+        const uploadAssignment = await Promise.all(
+            file.map(async(file:any)=>{
+                try {
+                    return await this.cloudinary.savetoCloudinary(file)
+                } catch (error) {
+                    console.log(error);
+                    return null
+                }
+            })
+            )
+            
+            file = uploadAssignment.filter((file)=> file!= null)
+            if(file){
+                const isExists = await this.studentRepo.submissionExists(id,assignmentId,studentEmail)
+                console.log('isExists');
+                if(isExists){
+                    
+                    const updateStatus = await this.studentRepo.updateSubmissions(id,assignmentId,studentEmail,file[0])
+                        if(updateStatus){
+                            return {
+                                status:200,
+                                url:file,
+                                message:'Assignment Uploaded successfully '
+                            }
+                        } else{
+                            return {
+                                status:409,
+                                url:null,
+                                message:'Assignment Upload Failed'
+                            }
+                        }
+                    
+                } else{
+                const upload = await this.studentRepo.uploadAssignment(assignmentId,id,studentEmail,file)
+                if(upload){
+                    
+                    return {
+                        status:200,
+                        url:file,
+                        message:'Assignment uploaded successfully'
+                    }
+                } else{
+                    return {
+                        status:409,
+                        url:null,
+                        message:'Assignment upload failed'
+                    }
+                }
+            }
+            }
+            
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
+
+
+async fetchSubmissions(id:string,assignmentId:string,studentEmail:string){
+    try {
+        const url = await this.studentRepo.fetchSubmissions(id,assignmentId,studentEmail)
+        console.log(url);
+        
+               if(url){
+                return {
+                    status:200,
+                    url:url[0].file_url
+                }
+               } else{
+                return {
+                    status:204,
+                    url:null
+                }
+               }
+
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
 
 //--------------------OnlineClass----------------
 async fetchRoomId(subjectId:string,id:string,classNum:string){

@@ -1,6 +1,7 @@
 import { Request,Response } from "express";
 import studentUseCase from "../use_case/studentUseCase";
 
+
 export default class studentController{
     private studentCase:studentUseCase
     constructor(
@@ -81,6 +82,37 @@ res.status(409).json({message:'Error fetching Data'})
                 };
                 res.status(response.status).json(formattedResponse)
             }
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+
+   async uploadAssignment(req:Request,res:Response){
+        try {
+            const {assignmentId,studentEmail,file,id} = req.body
+            
+            const response = await this.studentCase.uploadAssignment(assignmentId,studentEmail,req.files,id)
+            if(response){
+                res.status(response.status).json({message:response.message,url:response.url})
+            }else{
+                res.status(500).json({message:'Assignment upload failed'})
+            }            
+                        
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+
+    async fetchSubmissions(req:Request,res:Response){
+        try {
+        const {id,assignmentId,studentEmail} = req.body
+        const response = await this.studentCase.fetchSubmissions(id,assignmentId,studentEmail)
+        if(response){
+            res.status(response.status).json({url:response.url})
+        }
+                    
         } catch (error) {
             console.log(error);
             
