@@ -1,11 +1,14 @@
 import teacherRepo from "../infrastructure/repository/teacherRepository"
+import Cloudinary from "../infrastructure/utils/cloudinary"
 import teacherRepository from "./interface/teacherRepo"
 
 
 export default class teacherUseCase{
 
 constructor(
- private  teacherRepository:teacherRepo
+ private  teacherRepository:teacherRepo,
+ private cloudinary:Cloudinary
+
 ){
 this.teacherRepository =teacherRepository
 }
@@ -49,13 +52,32 @@ async fetchData(id:string,email:string){
 
 //----------------Material Upload-------------------
 
-async uploadMaterial(teacherId:string,subjectId:string,id:string,materialTitle:string,pdf:string,content:string){
+async uploadMaterial(teacherId:string,subjectId:string,id:string,file:Array<Object> | any,materialTitle:string,content:string){
     try {
+
+        if (!file || !Array.isArray(file)) {
+            console.error('No file(s) provided or file is not an array');
+         console.log('soihefwoiu');
+         
+            return; // Exit the function early if file is not valid
+        }
+        const uploadMaterial = await Promise.all(
+            file.map(async(file:any)=>{
+                try {
+                    return await this.cloudinary.savetoCloudinary(file)
+                } catch (error) {
+                    console.log(error);
+                    return null
+                }
+            })
+            )
+            file = uploadMaterial.filter((file)=> file!= null)
+
     const document ={
         teacherId:teacherId,
         subjectId:subjectId,
         materialTitle:materialTitle,
-        pdf:pdf,
+        pdf:file,
         content:content
     }       
     console.log(document);

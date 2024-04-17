@@ -46,13 +46,15 @@ async fetchStudents(req:Request,res:Response){
 async uploadMaterial(req:Request,res:Response){
     try {
         console.log('gdbdf:',req.body);
-        const {subjectId,teacherId,id} = req.body
-        const{content,materialTitle,pdf} = req.body.data
-        if(pdf){
-            console.log(':tdyd',pdf.type);
-            
-        }
-        const response = await this.teacherCase.uploadMaterial(teacherId,subjectId,id,materialTitle,pdf,content)
+        console.log('files:',req.files);
+        const id = req.body.tenantId[0]
+        const teacherId = req.body.subjectId[0]
+        const subjectId = req.body.subjectId[0] 
+        const {content,materialTitle} = req.body
+        console.log(subjectId,teacherId,id);
+        
+    
+        const response = await this.teacherCase.uploadMaterial(teacherId,subjectId,id,req.files,materialTitle,content)
         // res.status()
     } catch (error) {
         console.log(error);

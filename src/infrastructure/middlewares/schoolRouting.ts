@@ -17,7 +17,10 @@ const router = express.Router();
 router.use('/:id/:role', (req:Request, res:Response, next:NextFunction) => {
      
     const id = req.params.id;
-    
+    if(req.params.tenantId){
+        console.log(req.params.tenantId);
+        
+    }
     const role = req.params.role as string;
     const email = req.query.email as string;
     const classNum = req.query.classNum as string;
@@ -31,6 +34,8 @@ router.use('/:id/:role', (req:Request, res:Response, next:NextFunction) => {
     console.log('role:',role);
     console.log('body:',req.body);
     console.log('query:',tenantId);
+    
+
     
     // Validate ID format (you can customize this validation)
     const validIdRegex = /^[a-f\d]{24}$/i;

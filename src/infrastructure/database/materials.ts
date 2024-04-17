@@ -11,7 +11,8 @@ const materialSchema = new mongoose.Schema({
         type:String
     },
     pdf:{
-        type:String
+type:Array<string>,
+        
     },
     content:{
         type:String

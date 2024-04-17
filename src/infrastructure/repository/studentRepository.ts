@@ -159,7 +159,7 @@ if(data){
         })
         console.log(isExist);
         
-        if(isExist){
+        if(isExist.length>0){
             return true
         } else{
             return false
