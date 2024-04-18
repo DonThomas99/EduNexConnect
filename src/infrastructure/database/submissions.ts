@@ -12,6 +12,10 @@ const submissionSchema = new mongoose.Schema({
     file_url:{
 type:Array<string>,
 required:true
+    },
+    grade:{
+        type:String,
+        default:null
     }
 })
 

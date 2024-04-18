@@ -120,6 +120,20 @@ async fetchAssignments(req:Request,res:Response){
     }
 }
 
+async fetchSubmissions(req:Request,res:Response){
+    try {
+        const {email,id} = req.body     
+            const response = await this.teacherCase.fetchSubmissions(email,id)
+            if(response){
+                res.status(response.status).json({url:response.url})
+            }
+           
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
 //---------------Start Class-------------
 
 async startClass(req:Request,res:Response){

@@ -161,6 +161,26 @@ async fetchAssignment(subjectId:string,id:string,teacherId:string){
     }
 }
 
+async fetchSubmissions(email:string,id:string){
+    try {
+        const url = await  this.teacherRepository.fetchSubmissions(email,id)   
+        if(url){
+            return {
+                status:200,
+                url:url[0].file_url
+            }
+           } else{
+            return {
+                status:204,
+                url:null
+            }
+           }
+             
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
 //--------------------Student Operations------------- 
 
 async fetchStudents(id:string,classNum:string){

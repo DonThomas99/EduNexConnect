@@ -97,6 +97,22 @@ async fetchAssignments(subjectId:string,id:string){
     }
 }
 
+async fetchSubmissions(email:string,id:string){
+    try {
+        const Model = await  getSchema(id,'submissions')
+        const url = await Model.find({studentEmail:email}).select('file_url')
+        if(url.length>0){
+            
+            return url
+        }else{
+            return null
+        }         
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
 //---------------Online Class ---------------------------
 
 async startClass(id: string, subjectId: string, classNum: string, roomId: string) {
