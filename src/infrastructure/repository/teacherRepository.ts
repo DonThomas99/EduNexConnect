@@ -113,6 +113,21 @@ async fetchSubmissions(email:string,id:string){
     }
 }
 
+async deleteAssignment(id:string,assignmentId:string){
+    try {
+        const Model = await getSchema(id,'assignments')
+        const status = await Model.deleteOne({"assignmentId":assignmentId})
+        if(status.acknowledged){
+            return true
+        }else{
+            return false
+        }
+        
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 //---------------Online Class ---------------------------
 
 async startClass(id: string, subjectId: string, classNum: string, roomId: string) {

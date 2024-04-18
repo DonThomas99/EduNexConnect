@@ -25,6 +25,7 @@ teacherRoute.get('/fetchMaterials',(req:Request,res)=>{controller.fetchMaterials
 teacherRoute.post('/uploadAssignment',(req:Request,res)=>{controller.uploadAssignments(req,res)})
 teacherRoute.get('/fetchAssignments',Multer.array('pdf'),(req:Request,res)=>{controller.fetchAssignments(req,res)})
 teacherRoute.get('/fetchSubmissions',(req:Request,res)=>{controller.fetchSubmissions(req,res)})
+teacherRoute.delete('/deleteAssignment',(req:Request,res)=>{controller.deleteAssignment(req,res)})
 
 
 //Online class

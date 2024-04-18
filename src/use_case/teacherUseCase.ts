@@ -181,6 +181,27 @@ async fetchSubmissions(email:string,id:string){
         
     }
 }
+
+async deleteAssignment(id:string,assignmentId:string){
+    try {
+        const status = await this.teacherRepository.deleteAssignment(id,assignmentId)
+        if(status){
+            return {
+                status:200,
+                message:'Assignment Deleted Successfully'
+            }
+        } else{
+            return {
+                status:200,
+                message:'Error deleting assignment'
+            }
+        }
+        
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
 //--------------------Student Operations------------- 
 
 async fetchStudents(id:string,classNum:string){
