@@ -14,6 +14,10 @@ const assignmentSchema = new mongoose.Schema({
     pdf:{
         type:String
     },
+    grade:{
+        type:String,
+        default:null
+    },
     content:{
         type:String
     },

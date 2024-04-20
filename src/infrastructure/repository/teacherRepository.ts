@@ -97,10 +97,10 @@ async fetchAssignments(subjectId:string,id:string){
     }
 }
 
-async fetchSubmissions(email:string,id:string){
+async fetchSubmissions(email:string,assignmentId:string,id:string){
     try {
         const Model = await  getSchema(id,'submissions')
-        const url = await Model.find({studentEmail:email}).select('file_url')
+        const url = await Model.find({studentEmail:email,assignmentId:assignmentId}).select('file_url')
         if(url.length>0){
             
             return url

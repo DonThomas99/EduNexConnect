@@ -92,7 +92,7 @@ async updateMaterial(req:Request,res:Response){
 
 //Assignment CRUD operations
 async uploadAssignments(req:Request,res:Response){
-try {
+try {    
     const {subjectId,teacherId,id} = req.body
     const{content,assignmentTitle,pdf,dateTime} = req.body.data
 const response = await this.teacherCase.uploadAssignment(subjectId,teacherId,content,assignmentTitle,pdf,dateTime,id)
@@ -122,8 +122,8 @@ async fetchAssignments(req:Request,res:Response){
 
 async fetchSubmissions(req:Request,res:Response){
     try {
-        const {email,id} = req.body     
-            const response = await this.teacherCase.fetchSubmissions(email,id)
+        const {email,assignmentId,id} = req.body             
+            const response = await this.teacherCase.fetchSubmissions(email,assignmentId,id)
             if(response){
                 res.status(response.status).json({url:response.url})
             }

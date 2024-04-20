@@ -161,9 +161,9 @@ async fetchAssignment(subjectId:string,id:string,teacherId:string){
     }
 }
 
-async fetchSubmissions(email:string,id:string){
+async fetchSubmissions(email:string,assignmentId:string,id:string){
     try {
-        const url = await  this.teacherRepository.fetchSubmissions(email,id)   
+        const url = await  this.teacherRepository.fetchSubmissions(email,assignmentId,id)   
         if(url){
             return {
                 status:200,
