@@ -128,6 +128,26 @@ async deleteAssignment(id:string,assignmentId:string){
     }
 }
 
+async addGrade(id:string,assignmentId:string,studentEmail:string,grade:string){
+    try {
+        const Model = await getSchema(id,'submissions')
+        const status = await Model.findOneAndUpdate(
+            { assignmentId: assignmentId, studentEmail: studentEmail }, 
+            {$set:{grade:grade}},
+            {new:true}
+        )
+        if(!!status){
+            return true
+        } else{
+            return false
+        }
+                
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
 //---------------Online Class ---------------------------
 
 async startClass(id: string, subjectId: string, classNum: string, roomId: string) {

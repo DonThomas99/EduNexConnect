@@ -150,6 +150,23 @@ async deleteAssignment(req:Request,res:Response){
     }
 }
 
+async gradeAssignment(req:Request,res:Response){
+    try {
+        const {assignmentId,id,studentEmail,grade} =req.body
+        
+        const response = await this.teacherCase.gradeAssignment(assignmentId,studentEmail,id,grade)
+        if(response){
+            res.status(response.status).json({message:response.message})
+        } else{
+        res.status(500).json({message:'Error Grading student'})
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message:'Error Grading student'})
+        
+    }
+}
+
 //---------------Start Class-------------
 
 async startClass(req:Request,res:Response){

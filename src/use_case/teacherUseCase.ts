@@ -202,6 +202,31 @@ async deleteAssignment(id:string,assignmentId:string){
         
     }
 }
+
+async gradeAssignment(assignmentId:string,studentEmail:string,id:string,grade:string){
+    try {
+        const gradeStatus = await this.teacherRepository.addGrade(id,assignmentId,studentEmail,grade)
+        if(gradeStatus){
+            return{
+                status:200,
+                message:'Successfully Updated Grade'
+            }
+        } else{
+            return {
+                status:409,
+                message:'Error Updating grade'
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        return {
+            status:409,
+            message:'Error Updating grade'
+        }
+    }
+   
+
+}
 //--------------------Student Operations------------- 
 
 async fetchStudents(id:string,classNum:string){
