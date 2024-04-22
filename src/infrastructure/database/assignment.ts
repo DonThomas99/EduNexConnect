@@ -12,7 +12,7 @@ const assignmentSchema = new mongoose.Schema({
         type:String
     },
     pdf:{
-        type:String
+        type:Array<string>
     },
     grade:{
         type:String,

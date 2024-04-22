@@ -121,13 +121,33 @@ async fetchMaterials(subjectId:string,teacherId:string,id:string){
 }
 
 //---------------------Assignment CRUD Operations----------------
-async uploadAssignment(subjectId:string,teacherId:string,content:string,assignmentTitle:string,pdf:string,dateTime:Date,id:string){
+async uploadAssignment(subjectId:string,teacherId:string,content:string,assignmentTitle:string,file:Array<Object> | any,dateTime:Date,id:string){
     try {
+
+        
+        if (!file || !Array.isArray(file)) {
+            console.error('No file(s) provided or file is not an array');
+         console.log('soihefwoiu');
+         
+            return; // Exit the function early if file is not valid
+        }
+        const uploadMaterial = await Promise.all(
+            file.map(async(file:any)=>{
+                try {
+                    return await this.cloudinary.savetoCloudinary(file)
+                } catch (error) {
+                    console.log(error);
+                    return null
+                }
+            })
+            )
+            file = uploadMaterial.filter((file)=> file!= null)
+
         const document ={
             teacherId:teacherId,
             subjectId:subjectId,
             assignmentTitle:assignmentTitle,
-            pdf:pdf,
+            pdf:file,
             content:content,
             submissionDate:dateTime,   
         }  

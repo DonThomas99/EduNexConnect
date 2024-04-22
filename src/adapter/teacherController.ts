@@ -45,8 +45,6 @@ async fetchStudents(req:Request,res:Response){
 //Material CRUD operations 
 async uploadMaterial(req:Request,res:Response){
     try {
-        console.log('gdbdf:',req.body);
-        console.log('files:',req.files);
         const id = req.body.tenantId[0]
         const teacherId = req.body.subjectId[0]
         const subjectId = req.body.subjectId[0] 
@@ -93,12 +91,17 @@ async updateMaterial(req:Request,res:Response){
 //Assignment CRUD operations
 async uploadAssignments(req:Request,res:Response){
 try {    
-    const {subjectId,teacherId,id} = req.body
-    const{content,assignmentTitle,pdf,dateTime} = req.body.data
-const response = await this.teacherCase.uploadAssignment(subjectId,teacherId,content,assignmentTitle,pdf,dateTime,id)
-        if(response){
+    const id = req.body.tenantId[0]
+    const teacherId = req.body.subjectId[0]
+    const subjectId = req.body.subjectId[0] 
+    const{content,assignmentTitle,dateTime} = req.body
 
-    res.status(response.status).json(response.message)
+    
+    console.log(subjectId,teacherId,content,assignmentTitle,req.files,dateTime,id);
+    
+const response = await this.teacherCase.uploadAssignment(subjectId,teacherId,content,assignmentTitle,req.files,dateTime,id)
+        if(response){
+    res.status(response.status).json({message:response.message})
     } else{
         res.status(409).json({message:'Error Uploading Assignment'})
     }    
