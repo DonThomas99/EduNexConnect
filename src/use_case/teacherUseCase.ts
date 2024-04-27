@@ -1,6 +1,7 @@
 import teacherRepo from "../infrastructure/repository/teacherRepository"
 import Cloudinary from "../infrastructure/utils/cloudinary"
 import teacherRepository from "./interface/teacherRepo"
+import { Assignment } from "../domain/material"
 
 
 export default class teacherUseCase{
@@ -120,15 +121,33 @@ async fetchMaterials(subjectId:string,teacherId:string,id:string){
     }
 }
 
+async updateMaterial(materialId:string,id:string,data:Partial<Assignment>){
+    try {
+        const updateStatus = await this.teacherRepository.updateMaterial(id,materialId,data)
+        if(updateStatus){
+            return {
+                status:200,
+                message:' Material Updated Successfully'
+            }
+        } else{
+            return{
+                status:409,
+                message:'Error Updating Material'
+            }
+        }
+
+    } catch (error) {
+        
+    }
+}
+
 //---------------------Assignment CRUD Operations----------------
 async uploadAssignment(subjectId:string,teacherId:string,content:string,assignmentTitle:string,file:Array<Object> | any,dateTime:Date,id:string){
     try {
 
         
         if (!file || !Array.isArray(file)) {
-            console.error('No file(s) provided or file is not an array');
-         console.log('soihefwoiu');
-         
+            console.error('No file(s) provided or file is not an array');         
             return; // Exit the function early if file is not valid
         }
         const uploadMaterial = await Promise.all(
@@ -247,6 +266,34 @@ async gradeAssignment(assignmentId:string,studentEmail:string,id:string,grade:st
    
 
 }
+
+async updateAssignment(assignmentId:string,id:string,data:Partial<Assignment>){
+    try {
+      
+        const updateStatus = await this.teacherRepository.updateAssignment(id,assignmentId,data)
+        if(updateStatus){
+            return {
+                status:200,
+                message:'Updated Assignment Successfully'
+            }
+        } else{
+            return{
+                status:409,
+                message:'Error Updating Assignment'
+            }
+        }
+
+        
+    } catch (error) {
+        console.log(error);
+        return{
+            status:409,
+            message:'Error Updating Assignment'
+        }
+        
+    }
+}
+
 //--------------------Student Operations------------- 
 
 async fetchStudents(id:string,classNum:string){

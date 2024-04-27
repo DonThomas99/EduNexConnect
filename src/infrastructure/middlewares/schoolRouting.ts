@@ -28,6 +28,7 @@ router.use('/:id/:role', (req:Request, res:Response, next:NextFunction) => {
     const page = req.query.page
     const limit = req.query.limit   
     const assignmentId = req.query.assignmentId
+    const materialId = req.query.materialId
     const studentEmail = req.query.studentEmail
     const tenantId = req.query.id        
     
@@ -74,6 +75,9 @@ if(limit){
     req.body.limit = limit
 }
 
+if(materialId){
+    req.body.materialId = materialId
+}
 
     // Forward request to appropriate route based on role
     if (role === 'admin') {

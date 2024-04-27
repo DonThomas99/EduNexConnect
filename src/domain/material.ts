@@ -13,3 +13,9 @@ export interface IAssignment{
        submissionDate:Date,
         
 }
+
+export interface Assignment{
+        assignmentTitle?:string,
+        content?:string,
+        submissionDate?:string,
+}

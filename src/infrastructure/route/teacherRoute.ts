@@ -27,6 +27,7 @@ teacherRoute.get('/fetchAssignments',(req:Request,res)=>{controller.fetchAssignm
 teacherRoute.get('/fetchSubmissions',(req:Request,res)=>{controller.fetchSubmissions(req,res)})
 teacherRoute.delete('/deleteAssignment',(req:Request,res)=>{controller.deleteAssignment(req,res)})
 teacherRoute.post('/gradeAssignment',(req:Request,res)=>{controller.gradeAssignment(req,res)})
+teacherRoute.post('/updateAssignment',(req:Request,res)=>{controller.updateAssignment(req,res)})
 
 
 //Online class

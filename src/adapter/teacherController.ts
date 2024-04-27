@@ -78,11 +78,19 @@ async fetchMaterials(req:Request,res:Response){
 async updateMaterial(req:Request,res:Response){
     try {
         console.log(req.body);
-        
-        // const response = a
+        const data = req.body.data
+        const{materialId,id} = req.body
+        const response = await this.teacherCase.updateMaterial(materialId,id,data)
+        if(response){
+            res.status(response.status).json({message:response.message})
+        } else{
+            res.status(500).json({message:'Error Updating Material'})
+
+        }
+    
     } catch (error) {
         console.log(error);
-        
+        res.status(409).json({message:'Error Updating Material'})
     }
 }
 
@@ -166,6 +174,25 @@ async gradeAssignment(req:Request,res:Response){
     } catch (error) {
         console.log(error);
         res.status(500).json({message:'Error Grading student'})
+        
+    }
+}
+
+async updateAssignment(req:Request,res:Response){
+    try {
+       
+        const data = req.body.data
+        const{assignmentId,id} = req.body
+        const response = await this.teacherCase.updateAssignment(assignmentId,id,data)
+        if(response){
+            res.status(response.status).json({message:response.message})
+        }else{
+            res.status(500).json({message:'Error Updating Assignment'})
+
+        }
+    } catch (error) {
+        res.status(409).json({message:'Error Updating Assignment'})
+        console.log(error);
         
     }
 }

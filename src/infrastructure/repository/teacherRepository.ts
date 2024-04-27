@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import teacherRepository from "../../use_case/interface/teacherRepo";
 import { getSchema } from "../utils/switchDb";
-import { IAssignment, Imaterial } from "../../domain/material";
+import { Assignment, IAssignment, Imaterial } from "../../domain/material";
 import { ISubject } from "../../domain/subjectInterface";
 import { SubjectName } from "../../domain/subjectInterface";
 
@@ -69,6 +69,23 @@ async fetchMaterials(subjectId:string,id:string){
 
     } catch (error) {
         console.log(error);
+        
+    }
+}
+
+async updateMaterial(id:string,materialId:string,data:Partial<Assignment>){
+    try {
+        const Model = await getSchema(id, 'materials');
+        const updateStatus = await Model.findOneAndUpdate(
+            { _id:materialId }, // Query criteria to find the document
+            { $set: data }, 
+            { new: true } // Option to return the updated document
+        );
+       return !!updateStatus
+        
+    } catch (error) {
+        console.log(error);
+        return false
         
     }
 }
@@ -144,6 +161,23 @@ async addGrade(id:string,assignmentId:string,studentEmail:string,grade:string){
                 
     } catch (error) {
         console.log(error);
+        
+    }
+}
+
+async updateAssignment(id:string,assignmentId:string,data:Partial<Assignment>){
+    try {
+        const Model = await getSchema(id, 'assignments');
+        const updateStatus = await Model.findOneAndUpdate(
+            { _id:assignmentId }, // Query criteria to find the document
+            { $set: data }, 
+            { new: true } // Option to return the updated document
+        );
+       return !!updateStatus
+        
+    } catch (error) {
+        console.log(error);
+        return false
         
     }
 }
