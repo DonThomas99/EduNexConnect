@@ -126,13 +126,14 @@ if(data){
 
         //----------------------------Submissions CRUD operations---------------------------
 
-    async uploadAssignment(assignmentId:string,id:string,studentEmail:string,file:string){
+    async uploadAssignment(assignmentId:string,subjectId:string,id:string,studentEmail:string,file:string){
         try {
 
             
             const document = {
                 assignmentId :assignmentId,
                 studentEmail:studentEmail,
+                subjectId:subjectId,
                 file_url:file
             }
             const Model = await getSchema(id,'submissions')

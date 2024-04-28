@@ -123,9 +123,17 @@ const response = await this.teacherCase.uploadAssignment(subjectId,teacherId,con
 
 async fetchAssignments(req:Request,res:Response){
     try {
-        const{subjectId, teacherId,id} = req.body
-        
-        const response = await this.teacherCase.fetchAssignment(subjectId,id,teacherId)
+        const {subjectId, id,page } = req.body
+          
+            
+            const response = await this.teacherCase.fetchAssignments(subjectId,id,page)
+            if(response){
+                const formattedResponse = {
+                    Mat: response.data, // This is the array of assignments
+                    count: response.assignmentCount // This is the count of assignments
+                };
+                res.status(response.status).json(formattedResponse)
+            }
     } catch (error) {
         res.status(500).json({messge:'Error fetching Assignments'})
     }
@@ -197,7 +205,25 @@ async updateAssignment(req:Request,res:Response){
     }
 }
 
-//---------------Start Class-------------
+//--------------submissions CRUD-----------
+async fetchAllSubmissions(req:Request,res:Response){
+    try {
+        const {id,subjectId} = req.body
+        console.log('id:',id);
+        console.log('subjectId:',subjectId);     
+        
+        
+        const response = await this.teacherCase.fetchAllSubmissions(id,subjectId)
+        res.status(response.status).json({submissions:response.submissions})
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({data:'Error fetching submissions'})
+        
+    }
+}
+
+
+//---------------Start Class---------------
 
 async startClass(req:Request,res:Response){
 try {

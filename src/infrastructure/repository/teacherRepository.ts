@@ -103,11 +103,26 @@ async uploadAssignment(id:string,document:IAssignment){
     }
 }
 
-async fetchAssignments(subjectId:string,id:string){
+async fetchAssignmentsCount(subjectId:string,id:string){
+try {
+    const Model = await getSchema(id,'assignments')
+    const data = await Model.find({subjectId:subjectId})
+    .count()
+    return data
+} catch (error) {
+    console.log(error);
+    
+}
+}
+
+async fetchAssignments(subjectId:string,id:string,page:number =1,limit:number=1){
     try {
-        const Model = await this.getSchema(id,'assignments')
-        const data = await Model.find({subjectId:subjectId})
-            return data
+        const Model = await getSchema(id, 'assignments');
+            const data = await Model.find({ subjectId: subjectId })
+                .skip((page - 1) * limit)
+                .limit(limit)
+                .sort({ createdAt: -1 }); // Sort by createdAt in descending order
+            return data;
     } catch (error) {
         console.log(error);
         
@@ -179,6 +194,27 @@ async updateAssignment(id:string,assignmentId:string,data:Partial<Assignment>){
         console.log(error);
         return false
         
+    }
+}
+
+//--------------------Submissions----------------------
+async fetchAllSubmissions(id:string,subjectId:string){
+    try {
+        console.log('id:',id);
+        console.log('subjectId:',subjectId);     
+
+        const Model = await getSchema(id,'submissions')
+    const data = await Model.find({subjectId:subjectId})
+   
+    
+    if(data.length >0){
+        return data
+    } else{
+        return null
+    }
+    } catch (error) {
+        console.log(error);
+        return null
     }
 }
 

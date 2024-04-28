@@ -71,8 +71,7 @@ res.status(409).json({message:'Error fetching Data'})
 
     async fetchAssignments(req:Request,res:Response){
         try {
-            const {subjectId, id,page,limit } = req.body
-          
+            const {subjectId, id,page } = req.body         
             
             const response = await this.studentCase.fetchAssignments(subjectId,id,page)
             if(response){
@@ -90,9 +89,9 @@ res.status(409).json({message:'Error fetching Data'})
 
    async uploadAssignment(req:Request,res:Response){
         try {
-            const {assignmentId,studentEmail,file,id} = req.body
-            
-            const response = await this.studentCase.uploadAssignment(assignmentId,studentEmail,req.files,id)
+            const {assignmentId,studentEmail,subjectId,id} = req.body
+                       
+            const response = await this.studentCase.uploadAssignment(assignmentId,studentEmail,subjectId,req.files,id)
             if(response){
                 res.status(response.status).json({message:response.message,url:response.url})
             }else{

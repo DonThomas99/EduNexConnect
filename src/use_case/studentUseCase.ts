@@ -144,7 +144,7 @@ async fetchAssignments(subjectId:string,id:string,page:number, limit:number =4){
     }
 }
 
-async uploadAssignment(assignmentId:string,studentEmail:string,file:Array<Object> | any,id:string,){
+async uploadAssignment(assignmentId:string,studentEmail:string,subjectId:string,file:Array<Object> | any,id:string,){
     try {        
         if (!file || !Array.isArray(file)) {
             console.error('No file(s) provided or file is not an array');
@@ -186,7 +186,7 @@ async uploadAssignment(assignmentId:string,studentEmail:string,file:Array<Object
                         }
                     
                 } else{
-                const upload = await this.studentRepo.uploadAssignment(assignmentId,id,studentEmail,file)
+                const upload = await this.studentRepo.uploadAssignment(assignmentId,subjectId,id,studentEmail,file)
                 if(upload){
                     
                     return {

@@ -188,9 +188,29 @@ async uploadAssignment(subjectId:string,teacherId:string,content:string,assignme
     }
 }
 
-async fetchAssignment(subjectId:string,id:string,teacherId:string){
+async fetchAssignments(subjectId:string,id:string,teacherId:string){
     try {
-        
+        const limit =4
+        const page = 1 
+        const asmntData = await this.teacherRepository.fetchAssignments(subjectId,id,page,limit)
+        const assignmentCount = await this.teacherRepository.fetchAssignmentsCount(subjectId,id)
+        // asmntData.sort((a,b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+
+        asmntData.sort((a: { createdAt: string }, b: { createdAt: string }) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+
+
+        if(asmntData){
+            return {
+                status:200,
+                data:asmntData,
+                assignmentCount:assignmentCount
+            }
+        } else{
+            return {
+                status:409,
+                data:null
+            }
+        }
     } catch (error) {
         return {
             status:500,
@@ -291,6 +311,33 @@ async updateAssignment(assignmentId:string,id:string,data:Partial<Assignment>){
             message:'Error Updating Assignment'
         }
         
+    }
+}
+
+
+//-------------------Submissions CRUD operations
+async fetchAllSubmissions(id:string,subjectId:string){
+    try {   
+        
+        const data = await this.teacherRepository.fetchAllSubmissions(id,subjectId)
+            if(data){                
+                return {
+                    status:200,
+                    submissions:data
+                }
+            }else{
+                return {
+                    status :409,
+                    submissions:null,
+                    message:'Error Fetching Submissions'
+                }
+            }
+    } catch (error) {
+        console.log(error);
+        return {
+            status:500,
+            data:null
+        }
     }
 }
 

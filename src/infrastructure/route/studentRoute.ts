@@ -20,6 +20,8 @@ studentRoute.get('/fetchSubjects',(req:Request,res)=>{controller.fetchSubjects(r
 studentRoute.get('/fetchAsnmtMat',(req:Request,res)=>{controller.fetchAsnmtMat(req,res)})
 studentRoute.get('/fetchAssignments',(req:Request,res)=>{controller.fetchAssignments(req,res)})
 studentRoute.get('/fetchRoomId',(req:Request,res)=>{controller.fetchRoomId(req,res)})
+
+//submissions
 studentRoute.post('/uploadAssignment',Multer.array('file'),(req:Request,res)=>{ controller.uploadAssignment(req,res)})
 studentRoute.get('/fetchSubmissions',(req:Request,res)=>{controller.fetchSubmissions(req,res)})
 

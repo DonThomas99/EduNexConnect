@@ -1,7 +1,12 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const submissionSchema = new mongoose.Schema({
     assignmentId:{
+        type:Schema.Types.ObjectId,
+        required:true,
+        ref:'assignmentSchema'
+    },
+    subjectId:{
         type:String,
         required:true
     },

@@ -24,11 +24,13 @@ teacherRoute.get('/fetchMaterials',(req:Request,res)=>{controller.fetchMaterials
 //Assignment CRUD operations 
 teacherRoute.post('/uploadAssignment',Multer.array('pdf'),(req:Request,res)=>{controller.uploadAssignments(req,res)})
 teacherRoute.get('/fetchAssignments',(req:Request,res)=>{controller.fetchAssignments(req,res)})
-teacherRoute.get('/fetchSubmissions',(req:Request,res)=>{controller.fetchSubmissions(req,res)})
 teacherRoute.delete('/deleteAssignment',(req:Request,res)=>{controller.deleteAssignment(req,res)})
 teacherRoute.post('/gradeAssignment',(req:Request,res)=>{controller.gradeAssignment(req,res)})
 teacherRoute.post('/updateAssignment',(req:Request,res)=>{controller.updateAssignment(req,res)})
 
+//Submissions CRUD operations 
+teacherRoute.get('/fetchSubmissions',(req:Request,res)=>{controller.fetchSubmissions(req,res)})
+teacherRoute.get('/fetchAllSubmissions',(req:Request,res)=>{controller.fetchAllSubmissions(req,res)})
 
 //Online class
 teacherRoute.put('/startClass',(req:Request,res)=>{controller.startClass(req,res)})

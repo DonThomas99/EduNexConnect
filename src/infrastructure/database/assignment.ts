@@ -34,4 +34,5 @@ const assignmentSchema = new mongoose.Schema({
     }
 })
 
+
 export {assignmentSchema}
