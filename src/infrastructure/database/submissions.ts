@@ -2,9 +2,9 @@ import mongoose, { Schema } from "mongoose";
 
 const submissionSchema = new mongoose.Schema({
     assignmentId:{
-        type:Schema.Types.ObjectId,
+        type:String,
         required:true,
-        ref:'assignmentSchema'
+        
     },
     subjectId:{
         type:String,

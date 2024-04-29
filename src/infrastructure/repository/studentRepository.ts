@@ -40,7 +40,7 @@ export default class studentRepo implements studentRepository{
             return null            
         }
     }
-    async fetchAssignments(subjectId: string, id: string, page: number = 1, limit: number = 4) {
+    async fetchAssignments(subjectId: string, id: string, page: number, limit: number = 4) {
         try {
             const Model = await getSchema(id, 'assignments');
             const data = await Model.find({ subjectId: subjectId })
