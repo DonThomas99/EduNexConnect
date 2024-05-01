@@ -30,7 +30,8 @@ router.use('/:id/:role', (req:Request, res:Response, next:NextFunction) => {
     const assignmentId = req.query.assignmentId
     const materialId = req.query.materialId
     const studentEmail = req.query.studentEmail
-    const tenantId = req.query.id        
+    const tenantId = req.query.id   
+    const number = req.query.number     
     
     // Validate ID format (you can customize this validation)
     const validIdRegex = /^[a-f\d]{24}$/i;
@@ -60,9 +61,7 @@ router.use('/:id/:role', (req:Request, res:Response, next:NextFunction) => {
 if(classNum){
     req.body.classNum = classNum
 }
-if(subjectId){
-    
-    
+if(subjectId){    
     req.body.subjectId = subjectId
 }
 if(teacherId){
@@ -73,6 +72,10 @@ if(page){
 }
 if(limit){
     req.body.limit = limit
+}
+
+if(number){
+    req.body.number = number
 }
 
 if(materialId){

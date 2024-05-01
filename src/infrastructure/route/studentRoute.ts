@@ -24,6 +24,6 @@ studentRoute.get('/fetchRoomId',(req:Request,res)=>{controller.fetchRoomId(req,r
 //submissions
 studentRoute.post('/uploadAssignment',Multer.array('file'),(req:Request,res)=>{ controller.uploadAssignment(req,res)})
 studentRoute.get('/fetchSubmissions',(req:Request,res)=>{controller.fetchSubmissions(req,res)})
-
+studentRoute.delete('/deleteSubmissions',(req:Request,res)=>{controller.deleteSubmissions(req,res)})
 
 export default studentRoute

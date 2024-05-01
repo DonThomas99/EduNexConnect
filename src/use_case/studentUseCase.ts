@@ -1,5 +1,6 @@
 import studentRepo from "../infrastructure/repository/studentRepository";
 import Cloudinary from "../infrastructure/utils/cloudinary";
+import { extractPublicId } from 'cloudinary-build-url';
 export default class studentUseCase{
     constructor(
       private  studentRepo:studentRepo,
@@ -228,6 +229,44 @@ async fetchSubmissions(id:string,assignmentId:string,studentEmail:string){
     } catch (error) {
         console.log(error);
         
+    }
+}
+
+async deleteSubmissions(id:string,number:number,assignmentId:string,studentEmail:string){
+    try {
+        console.log(id,number,assignmentId,studentEmail);
+        
+        const str = await this.studentRepo.fetchUrl(id,number,assignmentId,studentEmail) 
+               
+        console.log(str)
+
+        const publicId = extractPublicId(str)
+      
+        
+        
+    const status = await this.cloudinary.removeFromCloudinary(publicId)
+        if(status){
+
+            const updateArray = await this.studentRepo.deleteSubmissions(id,str,assignmentId,studentEmail)
+            if(updateArray){
+                return {
+                    status:200,
+                    message:'Successfully Removed File'
+                }
+            } else{
+                return {
+                    status:409,
+                    message:'Error Removing File'
+                }
+            }
+        }
+    
+    
+    } catch (error) {
+        return{
+            status:500,
+            message:'Error Deleting Submissions'
+        }
     }
 }
 

@@ -151,6 +151,37 @@ if(data){
         }
     }
 
+    async fetchUrl(id: string, n: number, assignmentId: string, studentEmail: string) {
+        try {
+            console.log(n,assignmentId,studentEmail);
+            
+            const Model = await getSchema(id, 'submissions');
+            const result = await Model.aggregate([
+                {
+                    $match: {
+                        assignmentId: assignmentId,
+                        studentEmail: studentEmail
+                    }
+                },
+                {
+                    $project: {
+                        fileUrlElement: {
+                            $arrayElemAt: ["$file_url", Number(n)] // Fetch the n-th element of the file_url array
+                        }
+                    }
+                }
+            ]);
+       
+
+            // Assuming you want to return the first element of the result array
+            // If the result is empty, it means no matching document was found
+            return result.length > 0 ? result[0].fileUrlElement : null;
+        } catch (error) {
+            console.log(error);
+            return null;
+        }
+    }
+    
     async submissionExists(id:string,assignmentId:string,studentEmail:string){
     try {
         const Model = await getSchema(id,'submissions')
@@ -180,7 +211,9 @@ if(data){
                 {$push:{file_url:file}},
                 {new:true}
             )
-            if (update.lastErrorObject && update.lastErrorObject.updatedExisting) {
+            console.log(!!update);
+            
+            if (!!update) {
                 return true; // Document was updated
             } else {
                 return false; // Document was not updated
@@ -209,6 +242,21 @@ if(data){
         } catch (error) {
             console.log(error);
             return null
+        }
+    }
+
+    async deleteSubmissions(id:string,n:string,assignmentId:string,studentEmail:string){
+        try {
+            const Model = await getSchema(id,'submissions')
+            const urlUpdate = await Model.updateOne(
+                { assignmentId: assignmentId, studentEmail: studentEmail },
+                { $pull: { file_url:n } } 
+            );
+            console.log('Element removed:', urlUpdate);
+            return !!urlUpdate
+        } catch (error) {
+            console.log(error);
+            
         }
     }
     

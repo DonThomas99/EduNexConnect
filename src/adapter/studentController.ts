@@ -87,12 +87,16 @@ res.status(409).json({message:'Error fetching Data'})
         }
     }
 
+//-------------fetch Submissions-----------------
+
    async uploadAssignment(req:Request,res:Response){
         try {
             const {assignmentId,studentEmail,subjectId,id} = req.body
                        
             const response = await this.studentCase.uploadAssignment(assignmentId,studentEmail,subjectId,req.files,id)
+            console.log(response);
             if(response){
+                
                 res.status(response.status).json({message:response.message,url:response.url})
             }else{
                 res.status(500).json({message:'Assignment upload failed'})
@@ -115,6 +119,19 @@ res.status(409).json({message:'Error fetching Data'})
         } catch (error) {
             console.log(error);
             
+        }
+    }
+
+    async deleteSubmissions(req:Request,res:Response){
+        try {
+            const {id,number,assignmentId,studentEmail} = req.body
+            const response = await this.studentCase.deleteSubmissions(id,number,assignmentId,studentEmail)
+            if(response){
+                res.status(response.status).json({message:response.message})
+            }
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({message:'Error Deleting Submission'})
         }
     }
 
