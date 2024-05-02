@@ -30,6 +30,23 @@ export default class studentRepo implements studentRepository{
         }
     }
 
+    async fetchStudents(id:string,classNum:string){
+        try {
+            
+            const Model = await getSchema(id,'students')
+            const status = await Model.find({classNum:classNum})
+                if(status.length > 0){
+                    return status 
+                } else {
+                    return null
+                }
+        
+        } catch (error) {
+            return false 
+        }
+        
+    }
+
     async fetchSubjects(classNum:string,id:string){
         try {
             const Model = await getSchema(id,'subjects')
@@ -40,6 +57,8 @@ export default class studentRepo implements studentRepository{
             return null            
         }
     }
+    //-----------------------------Assignment CRUD Operations------------------
+
     async fetchAssignments(subjectId: string, id: string, page: number, limit: number = 4) {
         try {
             const Model = await getSchema(id, 'assignments');
@@ -65,6 +84,7 @@ export default class studentRepo implements studentRepository{
         }
     }
 
+    //--------------------Materials CRUD operations---------------
 
     async fetchMaterialCount(subjectId:string,id:string){
         try {

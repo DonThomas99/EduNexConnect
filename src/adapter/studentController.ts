@@ -149,4 +149,19 @@ res.status(409).json({message:'Error fetching Data'})
             res.status(500).json({data:null})
         }
     }
+
+    //----------Fetch Students--------
+    async fetchStudents(req:Request,res:Response){
+        try {
+            const {id,classNum} = req.body
+            const response = await this.studentCase.fetchStudents(id,classNum)
+            if(response){
+                res.status(response.status).json(response.data)
+            }
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({message:'Error Fetching Students'})
+            
+        }
+    }
 }

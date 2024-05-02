@@ -68,6 +68,31 @@ this.studentRepo = studentRepo
         }
     }
 
+    async fetchStudents(id:string,classNum:string){
+        try {
+            const data = await this.studentRepo.fetchStudents(id,classNum)
+            if(data){
+                return{
+                    status:200,
+                    data:data,
+                    // message:'Successfully Fetched Students '
+                }
+            } else {
+                return {
+                    status:204,
+                    message:'Please Add Students'
+                }
+            }
+        } catch (error) {
+            console.log(error);
+            return{
+                status:200,
+                message:'Error Fetching Students'
+            }
+            
+        }
+    }
+
 async fetchSubjects(classNum:string,id:string){
     try {
         const isExisting = await this.studentRepo.fetchSubjects(classNum,id)
