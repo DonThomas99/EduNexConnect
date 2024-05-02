@@ -242,7 +242,7 @@ async fetchSubmissions(id:string,assignmentId:string,studentEmail:string){
         if(url){
                 return {
                     status:200,
-                    url:url[0].file_url
+                    url:url[0]
                 }
                } else{
                 return {

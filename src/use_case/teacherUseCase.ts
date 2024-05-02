@@ -222,11 +222,14 @@ async fetchAssignments(subjectId:string,id:string,teacherId:string){
 
 async fetchSubmissions(email:string,assignmentId:string,id:string){
     try {
+               
         const url = await  this.teacherRepository.fetchSubmissions(email,assignmentId,id)   
+        console.log('hee:',url);
+        
         if(url){
             return {
                 status:200,
-                url:url[0].file_url
+                url:url[0],
             }
            } else{
             return {

@@ -252,7 +252,7 @@ if(data){
             const url = await Model.find({
                 assignmentId:assignmentId,
                 studentEmail:studentEmail
-            }).select('file_url')
+            }).select('file_url grade')
             if(url.length>0){
                 
                 return url
