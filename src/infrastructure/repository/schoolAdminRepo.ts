@@ -1,7 +1,7 @@
 import schoolAdminRepository from "../../use_case/interface/schoolAdminRepo";
 import { getSchema,switchDB } from "../utils/switchDb";
 import {SubjectsDocument} from "../../domain/subjectInterface";
-import { Error as  MongooseError } from "mongoose";
+import mongoose, { Error as  MongooseError } from "mongoose";
 import { Iteachers, classNsub, teachers, unAssignedTeacher } from "../../domain/teachers";
 import { Istudent } from "../../domain/Student";
 
@@ -103,6 +103,33 @@ export default class schoolAdminRepo implements schoolAdminRepository {
             
         }
     }
+
+    async updateSubject(id: string, classNum: string, newSubject: string, subjectId: string) {
+        try {
+                   // Get the model for the provided ID and collection
+    const Model = await getSchema(id, 'subjects');
+
+    // Find the class by classNum and subject by subjectId
+    const updateStatus = await Model.findOneAndUpdate(
+      { class: classNum, 'subjects._id': subjectId },
+      { $set: { 'subjects.$.name': newSubject } }, // Updating the name of the subject
+      { new: true } // To return the updated document
+    );
+
+    if (!updateStatus) {
+      // If no matching document found
+      
+      return false;
+    }
+
+ 
+    return true;
+          } catch (error) {
+            console.log(error);
+            return false;
+          }
+    }
+    
 
      // Teacher CRUD Operations
 

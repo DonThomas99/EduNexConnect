@@ -78,6 +78,24 @@ this.schoolAdminCase = schoolAdminCase
             
         }
     }
+    async updateSubjects(req:Request,res:Response){
+        try {
+
+            const {id,classNum,subjectId} =req.body
+            console.log(req.body);
+            
+            const subjectName = req.body.subjectName.subjectName            
+            const response = await this.schoolAdminCase.updateSubject(id,subjectName,classNum,subjectId)
+            if(response){
+                res.status(response.status).json({message:response.message})
+            } else {
+            res.status(500).json({message:'Error Updating Status'})
+            }
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({message:'Error Updating Status'})
+        }
+    }
     
 
     //Teachers CRUD operations

@@ -27,6 +27,7 @@ schoolAdminRouter.get('/fetchSummary',(req:Request,res)=>{controller.fetchSummar
 schoolAdminRouter.put('/deleteSubject',(req:Request,res)=>{controller.deleteSubject(req,res)})
 schoolAdminRouter.post('/addSubjects',(req:Request,res)=>{controller.addSubject(req,res)})
 schoolAdminRouter.get('/fetchClasses',(req:Request,res)=>{controller.fetchClasses(req,res)})
+schoolAdminRouter.patch('/updateSubjects',(req:Request,res)=>{controller.updateSubjects(req,res)})
 
 //Teachers CRUD operations
 schoolAdminRouter.post('/addTeachers',(req:Request,res)=>{controller.addTeacher(req,res)})

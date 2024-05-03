@@ -88,7 +88,7 @@ async fetchSummary(id:string){
     }
 }
 
-//-------------------------Subject and Class Use Case------------------------------------------------------
+//-------------------------Subject and Class CRUD Operations------------------------------------------------------
 async fetchClasses(id:string){
     try {
         const data= await this.schoolAdminRepo.fetchClasses(id)
@@ -162,7 +162,6 @@ async addSubjects(classNumber:string,subject:string,id:string){
         
     }
 }
-
 async deleteSubject(id:string,classNum:string,subject:string){
     try {
         const isDeleted = await this.schoolAdminRepo.deleteSubject(id,classNum,subject)
@@ -182,6 +181,29 @@ async deleteSubject(id:string,classNum:string,subject:string){
             status:500,
             message:'Technical Error. Please try after sometime'
         }
+    }
+}
+async updateSubject(id:string,newSubject:string,classNum:string,subjectId:string){
+    try {        
+        const updateStatus = await this.schoolAdminRepo.updateSubject(id,classNum,newSubject,subjectId)
+        if(updateStatus){
+            return {
+                status:200,
+                message:'Subject Updated Successfully'
+            }
+        } else {
+            return {
+                status:409,
+                message:'Error Updating Subject'
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        return {
+            status:409,
+            message:'Error Updating Subject in Class'
+        }
+        
     }
 }
 //---------------------------Teacher UseCase----------------------------------------------------------------
