@@ -333,6 +333,48 @@ export default class schoolAdminRepo implements schoolAdminRepository {
         }
     }
 
+    async updateTeachers(id:string,teacherId:string,data:Partial<teachers>){
+        try {
+            const Model = await getSchema(id,'teachers')
+                const update = await Model.findOneAndUpdate(
+                    { _id:teacherId },
+                    {$set:data}
+                )
+                if(!!update){
+                    return true
+                } else{
+                    return false
+                }
+                
+            
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+
+    async removeSubject(id:string,teacherId:string,classNum:string,subjectId:string){
+        try {
+
+            console.log(id, teacherId, classNum, subjectId);
+        
+        const Model = await getSchema(id, 'teachers');
+        const updateStatus = await Model.findOneAndUpdate(
+            { _id: teacherId, 'classNsub.classNum': classNum },
+            { $pull: { 'classNsub.$.subject': { Id: subjectId } } },
+            { new: true } // This option returns the updated document
+        );
+        console.log(updateStatus);
+        
+        if (updateStatus) {
+            // Handle successful update
+        }
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+
     //Student CRUD  Operations
     async studentExists(id: string, email: string) {
         try {

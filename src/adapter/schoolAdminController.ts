@@ -156,7 +156,28 @@ class schoolAdminController {
         }
     }
 
+    async updateTeacherData(req:Request,res:Response){
+        try {
+               const {data,teacherId,id} = req.body
+               const response = await this.schoolAdminCase.updateTeacherData(data,id,teacherId)
+               if(response){
+                   res.status(response.status).json({message:response.message})
+               } 
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({message:'Error Updating Teacher'})
+        }
+    }
 
+    async removeSubject(req:Request,res:Response){
+        try {
+            const {id,teacherId,classNum,subjectId} = req.body
+            const response = await this.schoolAdminCase.removeSubject(id,teacherId,classNum,subjectId)
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({message:'Error Deleting Subject'})
+        }
+    }
 
     //Student CRUD operations 
 

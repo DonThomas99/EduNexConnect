@@ -1,7 +1,7 @@
 import schoolAdminRepo from '../infrastructure/repository/schoolAdminRepo'
 import JwtCreate from '../infrastructure/utils/jwtCreate';
 import modifyData from '../infrastructure/utils/dataTransform'
-import { Iteachers } from '../domain/teachers';
+import { Iteachers, teachers } from '../domain/teachers';
 import passwordGenerator from '../infrastructure/utils/passwordGenerator';
 import sendOtp from '../infrastructure/utils/sendMail';
 import { Istudent } from '../domain/Student';
@@ -402,6 +402,42 @@ class schoolAdminUseCase {
             return {
                 status: 500,
                 message: 'Error Occured Try Again Later!!!'
+            }
+        }
+    }
+
+    async updateTeacherData(data:Partial<teachers>,id:string,teacherId:string){
+        try {
+            const updateStatus = await this.schoolAdminRepo.updateTeachers(id,teacherId,data)
+            if(updateStatus){
+                return {
+                    status:200,
+                    message:'Teacher Data Updated Successfully '
+                }
+            } else{
+                return {
+                    status:409,
+                    message:'Error Updating Teacher'
+                }
+            }
+        } catch (error) {
+            console.log(error);
+            return{
+                status:500,
+                message:'Error Updating Teacher'
+            }
+            
+        }
+    }
+
+    async removeSubject(id:string,teacherId:string,classNum:string,subjectId:string){
+        try {
+            const updateStatus = await this.schoolAdminRepo.removeSubject(id,teacherId,classNum,subjectId)
+        } catch (error) {
+            console.log(error);
+            return {
+                status:200,
+                message:'Error Deleting a Subject'
             }
         }
     }

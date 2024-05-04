@@ -34,6 +34,8 @@ schoolAdminRouter.post('/addTeachers', (req: Request, res) => { controller.addTe
 schoolAdminRouter.get('/fetchTeacherData', (req: Request, res) => { controller.fetchTeacherData(req, res) })
 schoolAdminRouter.patch('/addSubToTeacher', (req: Request, res) => { controller.addSubjectToTeacher(req, res) })
 schoolAdminRouter.post('/toggleBlock', (req: Request, res) => { controller.toggleBlock(req, res) })
+schoolAdminRouter.patch('/updateTeacherData',(req:Request,res)=>{controller.updateTeacherData(req,res)})
+schoolAdminRouter.delete('/removeSubject',(req:Request,res)=>{controller.removeSubject(req,res)})
 
 //Student CRUD operations
 schoolAdminRouter.post('/addStudent', (req: Request, res) => { controller.addStudent(req, res) })
