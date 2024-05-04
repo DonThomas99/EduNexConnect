@@ -1,200 +1,200 @@
 import schoolAdminUseCase from "../use_case/schoolAdminUseCase"
-import { Request,Response } from "express"
+import { Request, Response } from "express"
 
 
-class schoolAdminController{
+class schoolAdminController {
     private schoolAdminCase: schoolAdminUseCase
     constructor(
-        schoolAdminCase:schoolAdminUseCase
-    ){
-this.schoolAdminCase = schoolAdminCase
+        schoolAdminCase: schoolAdminUseCase
+    ) {
+        this.schoolAdminCase = schoolAdminCase
     }
 
-    async fetchSummary(req:Request,res:Response){
+    async fetchSummary(req: Request, res: Response) {
         try {
             const id = req.body.id
             console.log(id);
-            
-          const response = await this.schoolAdminCase.fetchSummary(id)
-          if(response){
-            res.status(response.status).json({studentsCount:response.studentCount,teacherCount:response.teacherCount})
-          }
+
+            const response = await this.schoolAdminCase.fetchSummary(id)
+            if (response) {
+                res.status(response.status).json({ studentsCount: response.studentCount, teacherCount: response.teacherCount })
+            }
         } catch (error) {
             console.log(error);
-            
+
         }
     }
 
-    async schoolAdminLogin(req:Request,res:Response){
+    async schoolAdminLogin(req: Request, res: Response) {
         try {
-         console.log('body:',req.body);
-                    const {name,password,id} = req.body
-                    const result = await this.schoolAdminCase.login(name,password,id)
-                    if(result){
-                        console.log('hdsd');
-                        
-                        return res.status(result.status).json(result.data)
-                    }
+            console.log('body:', req.body);
+            const { name, password, id } = req.body
+            const result = await this.schoolAdminCase.login(name, password, id)
+            if (result) {
+                console.log('hdsd');
+
+                return res.status(result.status).json(result.data)
+            }
         } catch (error) {
             console.log(error);
-            
+
         }
     }
 
     //Class and Subjects CRUD operations
 
 
-    async addSubject(req:Request,res:Response){
+    async addSubject(req: Request, res: Response) {
         try {
-            const {classNumber,subject,id}= req.body
-            const result = await this.schoolAdminCase.addSubjects(classNumber,subject,id)                
-            if(result)
-            res.status(result.status).json(result.data)
+            const { classNumber, subject, id } = req.body
+            const result = await this.schoolAdminCase.addSubjects(classNumber, subject, id)
+            if (result)
+                res.status(result.status).json(result.data)
         } catch (error) {
             console.log(error);
-            
+
         }
     }
-    async deleteSubject(req:Request,res:Response){
+    async deleteSubject(req: Request, res: Response) {
         try {
-            const {classNum,subject,id} = req.body
-            const result = await this.schoolAdminCase.deleteSubject(id,classNum,subject)
+            const { classNum, subject, id } = req.body
+            const result = await this.schoolAdminCase.deleteSubject(id, classNum, subject)
             return res.status(result.status).json(result.message)
-            
+
         } catch (error) {
-            
+
         }
     }
-    async fetchClasses(req:Request,res:Response){
+    async fetchClasses(req: Request, res: Response) {
         try {
             const id = req.body.id as unknown as string
             const response = await this.schoolAdminCase.fetchClasses(id)
-            if(response){
-                
+            if (response) {
+
                 res.status(response.status).json(response.data)
             }
         } catch (error) {
             console.log(error);
-            
+
         }
     }
-    async updateSubjects(req:Request,res:Response){
+    async updateSubjects(req: Request, res: Response) {
         try {
 
-            const {id,classNum,subjectId} =req.body
+            const { id, classNum, subjectId } = req.body
             console.log(req.body);
-            
-            const subjectName = req.body.subjectName.subjectName            
-            const response = await this.schoolAdminCase.updateSubject(id,subjectName,classNum,subjectId)
-            if(response){
-                res.status(response.status).json({message:response.message})
+
+            const subjectName = req.body.subjectName.subjectName
+            const response = await this.schoolAdminCase.updateSubject(id, subjectName, classNum, subjectId)
+            if (response) {
+                res.status(response.status).json({ message: response.message })
             } else {
-            res.status(500).json({message:'Error Updating Status'})
+                res.status(500).json({ message: 'Error Updating Status' })
             }
         } catch (error) {
             console.log(error);
-            res.status(500).json({message:'Error Updating Status'})
+            res.status(500).json({ message: 'Error Updating Status' })
         }
     }
-    
+
 
     //Teachers CRUD operations
 
 
-    async addSubjectToTeacher(req:Request,res:Response){
+    async addSubjectToTeacher(req: Request, res: Response) {
         try {
-            const {teacherEmail,classNum,subjectId,subjectName,id} = req.body            
-            const added = await this.schoolAdminCase.addSubToTeacher(id,teacherEmail,classNum,subjectId,subjectName)
-            if(added){
+            const { teacherEmail, classNum, subjectId, subjectName, id } = req.body
+            const added = await this.schoolAdminCase.addSubToTeacher(id, teacherEmail, classNum, subjectId, subjectName)
+            if (added) {
                 res.status(added.status).json(added.message)
             }
-            
+
         } catch (error) {
             console.log(error);
-            
+
         }
     }
-async addTeacher(req:Request,res:Response){
-    try {
-            const {id,data} = req.body
-            const response = await this.schoolAdminCase.addTeacher(data,id)
-            if(response){
-console.log('response from backend',response);
+    async addTeacher(req: Request, res: Response) {
+        try {
+            const { id, data } = req.body
+            const response = await this.schoolAdminCase.addTeacher(data, id)
+            if (response) {
+                console.log('response from backend', response);
 
                 return res.status(response.status).json(response.message)
             }
-    } catch (error) {
-        return res.status(500).json({message:'Error Please try Later!!!'})
-        
+        } catch (error) {
+            return res.status(500).json({ message: 'Error Please try Later!!!' })
+
+        }
     }
-}
-    async fetchTeacherData(req:Request,res:Response){
+    async fetchTeacherData(req: Request, res: Response) {
         try {
-            const id = req.body.id as unknown as string 
+            const id = req.body.id as unknown as string
             const response = await this.schoolAdminCase.fetchTeacherData(id)
-            
-            if(response){
+
+            if (response) {
                 res.status(response.status).json(response.data)
             }
         } catch (error) {
-            console.log('controller error',error);
-            
+            console.log('controller error', error);
+
         }
     }
 
-    async toggleBlock(req:Request,res:Response){
+    async toggleBlock(req: Request, res: Response) {
         try {
-            const {email,id} = req.body
+            const { email, id } = req.body
             console.log('in the controller');
-            
-            const response = await this.schoolAdminCase.toggleBlock(email,id)
+
+            const response = await this.schoolAdminCase.toggleBlock(email, id)
             return res.status(response.status).json(response.message)
         } catch (error) {
             console.log(error);
-            res.status(500).json({message:'Error Changing Status!!!'})
-            
+            res.status(500).json({ message: 'Error Changing Status!!!' })
+
         }
     }
 
 
 
-        //Student CRUD operations 
+    //Student CRUD operations 
 
 
-async addStudent(req:Request,res:Response){
-try {
-    const{
+    async addStudent(req: Request, res: Response) {
+        try {
+            const {
 
-        name,
-        email,
-        gaurdianName,
-        mobile,
-        classNum,
-     
-    } = req.body.student
-    // console.log(req.body);
-    // const student= req.body.student
-    const id = req.body.id as unknown as string
-    
-    const response = this.schoolAdminCase.addStudent(id,name,email,gaurdianName,mobile,classNum)
-    // return res.status(response.status).json(response.message)
-} catch (error) {
-    console.log(error);
-}
-}
+                name,
+                email,
+                gaurdianName,
+                mobile,
+                classNum,
 
-async fetchStudents(req:Request,res:Response){
-    try {
-        const id = req.body.id as unknown as string
-        const response = await this.schoolAdminCase.fetchStudents(id)
-        if(response){
-            res.status(response.status).json(response.data)
+            } = req.body.student
+            // console.log(req.body);
+            // const student= req.body.student
+            const id = req.body.id as unknown as string
+
+            const response = this.schoolAdminCase.addStudent(id, name, email, gaurdianName, mobile, classNum)
+            // return res.status(response.status).json(response.message)
+        } catch (error) {
+            console.log(error);
         }
-    } catch (error) {
-        console.log(error);
-        
     }
-}
+
+    async fetchStudents(req: Request, res: Response) {
+        try {
+            const id = req.body.id as unknown as string
+            const response = await this.schoolAdminCase.fetchStudents(id)
+            if (response) {
+                res.status(response.status).json(response.data)
+            }
+        } catch (error) {
+            console.log(error);
+
+        }
+    }
 
 }
 

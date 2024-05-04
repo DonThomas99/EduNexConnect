@@ -1,4 +1,4 @@
-import { Request,Response,NextFunction } from "express";
+import { Request, Response, NextFunction } from "express";
 import schoolAdminRoute from '../route/schoolAdminRoute';
 import teacherRoute from "../route/teacherRoute";
 import studentRoute from "../route/studentRoute";
@@ -14,11 +14,11 @@ const router = express.Router();
 
 
 // Middleware to extract ID and forward request
-router.use('/:id/:role', (req:Request, res:Response, next:NextFunction) => {
-     
+router.use('/:id/:role', (req: Request, res: Response, next: NextFunction) => {
+
     const id = req.params.id;
-    if(req.params.tenantId){
-        console.log(req.params.tenantId);        
+    if (req.params.tenantId) {
+        console.log(req.params.tenantId);
     }
     const role = req.params.role as string;
     const email = req.query.email as string;
@@ -26,75 +26,75 @@ router.use('/:id/:role', (req:Request, res:Response, next:NextFunction) => {
     const subjectId = req.query.subjectId
     const teacherId = req.query.teacherId
     const page = req.query.page
-    const limit = req.query.limit   
+    const limit = req.query.limit
     const assignmentId = req.query.assignmentId
     const materialId = req.query.materialId
     const studentEmail = req.query.studentEmail
-    const tenantId = req.query.id   
-    const number = req.query.number     
-    
+    const tenantId = req.query.id
+    const number = req.query.number
+
     // Validate ID format (you can customize this validation)
     const validIdRegex = /^[a-f\d]{24}$/i;
     if (!validIdRegex.test(id)) {
         return res.status(400).json({ error: 'Invalid ID format' });
     }
-    if(id){
+    if (id) {
 
-        req.body.id = id 
-    } else{
+        req.body.id = id
+    } else {
         console.log('no id detected');
-          
+
     }
-    if(tenantId){
+    if (tenantId) {
         req.body.id = tenantId
     }
-    if(assignmentId){
+    if (assignmentId) {
         req.body.assignmentId = assignmentId
     }
-    if(studentEmail){
+    if (studentEmail) {
         req.body.studentEmail = studentEmail
     }
-    if(email){
-        
+    if (email) {
+
         req.body.email = email
     }
-if(classNum){
-    req.body.classNum = classNum
-}
-if(subjectId){    
-    req.body.subjectId = subjectId
-}
-if(teacherId){
-    req.body.teacherId = teacherId
-}
-if(page){
-    req.body.page = page
-}
-if(limit){
-    req.body.limit = limit
-}
+    if (classNum) {
+        req.body.classNum = classNum
+    }
+    if (subjectId) {
+        req.body.subjectId = subjectId
+    }
+    if (teacherId) {
+        req.body.teacherId = teacherId
+    }
+    if (page) {
+        req.body.page = page
+    }
+    if (limit) {
+        req.body.limit = limit
+    }
 
-if(number){
-    req.body.number = number
-}
+    if (number) {
+        req.body.number = number
+    }
 
-if(materialId){
-    req.body.materialId = materialId
-}
+    if (materialId) {
+        req.body.materialId = materialId
+    }
 
     // Forward request to appropriate route based on role
     if (role === 'admin') {
-        
-        return schoolAdminRoute(req, res, next);        
-    } else if (role === 'teacher') {  
-        return teacherRoute(req,res,next)
-        
+
+        return schoolAdminRoute(req, res, next);
+    } else if (role === 'teacher') {
+        return teacherRoute(req, res, next)
+
     } else if (role === 'student') {
-        
+
         console.log('We are going to reroute');
-        return studentRoute(req,res,next)
+        return studentRoute(req, res, next)
     } else {
-        
+
         next();
     }
 
