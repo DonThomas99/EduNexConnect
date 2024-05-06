@@ -409,4 +409,41 @@ export default class schoolAdminRepo implements schoolAdminRepository {
         }
     }
 
+    async updateStudent(id:string,studentId:string,data:Partial<Istudent>){
+        try {
+            const Model = await getSchema(id,'students')
+            const updateStatus = await Model.findOneAndUpdate(
+                {_id:studentId},
+                {$set:data}
+            )
+            if(!!updateStatus){
+                return true
+            }else{
+                return false
+            }
+        } catch (error) {
+            console.log(error);
+            return false            
+        }
+    }
+
+    async deleteStudent(id:string,studentId:string){
+        try {
+            const Model = await getSchema(id,'students')
+            const status = await Model.deleteOne({_id:studentId})
+            if (status.deletedCount > 0) {
+              
+                return true;
+            } else {
+               
+                return false;
+            }
+            
+        } catch (error) {
+            console.log(error);
+            return false
+            
+        }
+    }
+
 }

@@ -40,5 +40,7 @@ schoolAdminRouter.delete('/removeSubject',(req:Request,res)=>{controller.removeS
 //Student CRUD operations
 schoolAdminRouter.post('/addStudent', (req: Request, res) => { controller.addStudent(req, res) })
 schoolAdminRouter.get('/fetchStudents', (req: Request, res) => { controller.fetchStudents(req, res) })
+schoolAdminRouter.patch('/updateStudentData',(req:Request,res)=>{controller.updateStudent(req,res)})
+schoolAdminRouter.delete('/deleteStudent',(req:Request,res)=>{controller.deleteStudent(req,res)})
 
 export default schoolAdminRouter

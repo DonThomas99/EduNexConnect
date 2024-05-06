@@ -15,7 +15,7 @@ const router = express.Router();
 
 // Middleware to extract ID and forward request
 router.use('/:id/:role', (req: Request, res: Response, next: NextFunction) => {
-
+    
     const id = req.params.id;
     if (req.params.tenantId) {
         console.log(req.params.tenantId);
@@ -30,6 +30,7 @@ router.use('/:id/:role', (req: Request, res: Response, next: NextFunction) => {
     const assignmentId = req.query.assignmentId
     const materialId = req.query.materialId
     const studentEmail = req.query.studentEmail
+    const studentId = req.query.studentId
     const tenantId = req.query.id
     const number = req.query.number
 
@@ -37,7 +38,7 @@ router.use('/:id/:role', (req: Request, res: Response, next: NextFunction) => {
     const validIdRegex = /^[a-f\d]{24}$/i;
     if (!validIdRegex.test(id)) {
         return res.status(400).json({ error: 'Invalid ID format' });
-    }
+    }    
     if (id) {
 
         req.body.id = id
@@ -80,6 +81,10 @@ router.use('/:id/:role', (req: Request, res: Response, next: NextFunction) => {
 
     if (materialId) {
         req.body.materialId = materialId
+    }
+
+    if(studentId){
+        req.body.studentId = studentId
     }
 
     // Forward request to appropriate route based on role

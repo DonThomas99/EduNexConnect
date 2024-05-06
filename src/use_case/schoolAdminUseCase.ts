@@ -489,7 +489,6 @@ class schoolAdminUseCase {
         }
     }
 
-
     async fetchStudents(id: string) {
         try {
             const data = await this.schoolAdminRepo.fetchStudents(id)
@@ -515,5 +514,50 @@ class schoolAdminUseCase {
         }
     }
 
+    async updateStudent(id:string,studentId:string,data:Partial<Istudent>){
+        try {
+            const updateStatus = await this.schoolAdminRepo.updateStudent(id,studentId,data)
+            if(updateStatus){
+                return {
+                    status:200,
+                    message:'Student Details Updated Successfully'
+                }
+            } else{
+                return {
+                    status:409,
+                    message:'Error Updating Student Details'
+                }
+            }
+        } catch (error) {
+            console.log(error);
+            return {
+                status:200,
+                message:'Error Updating Students details'
+            }
+        }
+    }
+
+    async deleteStudent(id:string,studentId:string){
+        try {
+            const status = await this.schoolAdminRepo.deleteStudent(id,studentId)
+            if(status){
+                return {
+                    status:200,
+                    message:'Successfully Removed Student'
+                }
+            } else{
+                return{
+                    status:409,
+                    message:'Error Deleting Student'
+                }
+            }
+        } catch (error) {
+            console.log(error);
+            return{
+                status:409,
+                message:'Error Deleting Student'
+            }
+        }
+    }
 }
 export default schoolAdminUseCase

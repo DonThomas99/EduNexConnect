@@ -162,7 +162,9 @@ class schoolAdminController {
                const response = await this.schoolAdminCase.updateTeacherData(data,id,teacherId)
                if(response){
                    res.status(response.status).json({message:response.message})
-               } 
+               } else{
+            res.status(500).json({message:'Error Updating Teacher'})
+               }
         } catch (error) {
             console.log(error);
             res.status(500).json({message:'Error Updating Teacher'})
@@ -173,6 +175,12 @@ class schoolAdminController {
         try {
             const {id,teacherId,classNum,subjectId} = req.body
             const response = await this.schoolAdminCase.removeSubject(id,teacherId,classNum,subjectId)
+            if(response){
+                res.status(response.status).json({message:response.message})
+            } else{
+            res.status(500).json({message:'Error Deleting Subject'})
+
+            }
         } catch (error) {
             console.log(error);
             res.status(500).json({message:'Error Deleting Subject'})
@@ -197,8 +205,9 @@ class schoolAdminController {
             // const student= req.body.student
             const id = req.body.id as unknown as string
 
-            const response = this.schoolAdminCase.addStudent(id, name, email, gaurdianName, mobile, classNum)
-            // return res.status(response.status).json(response.message)
+            const response = await this.schoolAdminCase.addStudent(id, name, email, gaurdianName, mobile, classNum)
+            if(response)             
+            return res.status(response.status).json({messge:response.message})
         } catch (error) {
             console.log(error);
         }
@@ -214,6 +223,38 @@ class schoolAdminController {
         } catch (error) {
             console.log(error);
 
+        }
+    }
+
+    async updateStudent(req:Request,res:Response){
+        try {
+            const {studentId,id} = req.body
+            const data = req.body.data
+            const response = await this.schoolAdminCase.updateStudent(id,studentId,data)
+            if(response){
+                res.status(response.status).json({message:response.message})
+            }else{
+            res.status(500).json({message:'Error Updating Student'})
+            }            
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({message:'Error Updating Student'})
+            
+        }
+    }
+
+    async deleteStudent(req:Request,res:Response){
+        try {
+            const {studentId,id} = req.body
+            console.log(studentId,id);
+            const response = await this.schoolAdminCase.deleteStudent(id,studentId)
+            if(response){
+                res.status(response.status).json({message:response.message})
+            }
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({message:'Error Removing Student '})
+            
         }
     }
 
