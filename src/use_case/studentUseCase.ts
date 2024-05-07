@@ -118,7 +118,7 @@ async fetchSubjects(classNum:string,id:string){
     }
 }
 
-async fetchAsnmtMat(subjectId: string, id: string, page: number = 1, limit: number = 4) {
+async fetchAsnmtMat(subjectId: string, id: string, page: number, limit: number = 4) {
     try {
         
         const materialData = await this.studentRepo.fetchMaterials(subjectId, id, page, limit);
@@ -129,7 +129,7 @@ async fetchAsnmtMat(subjectId: string, id: string, page: number = 1, limit: numb
         if (uploadsArray) {
             return {
                 status: 200,
-                data: uploadsArray,
+                data: materialData,
                 materialCount:materialDataCount
             };
         } else {

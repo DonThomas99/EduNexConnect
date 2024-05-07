@@ -61,12 +61,29 @@ async uploadMaterial(document:Imaterial,id:string){
     }
 }
 
-async fetchMaterials(subjectId:string,id:string){
+async fetchMaterials(subjectId:string,id:string,page:number,limit:number){
     try {
+        console.log(page,limit);
+        
         const Model = await this.getSchema(id,'materials')
         const data = await Model.find({subjectId:subjectId})
+        .skip((page - 1) * limit)
+                .limit(limit)
+                .sort({ createdAt: -1 }); 
         return data
 
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
+async fetchMaterialsCount(subjectId:string,id:string){
+    try {
+        const Model = await getSchema(id,'materials')
+        const data = await Model.find({subjectId:subjectId})
+        .count()
+        return data
     } catch (error) {
         console.log(error);
         

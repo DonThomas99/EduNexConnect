@@ -61,13 +61,17 @@ async uploadMaterial(req:Request,res:Response){
 
 
 async fetchMaterials(req:Request,res:Response){
-    try {
-        console.log(req.body);
+    try {        
+        console.log('body:',req.body);
         
-        const {subjectId,teacherId,id}= req.body
-        const response = await this.teacherCase.fetchMaterials(subjectId,teacherId,id)
+        const {subjectId,id,page}= req.body
+        const response = await this.teacherCase.fetchMaterials(subjectId,id,page)
         if(response){
-            res.status(response.status).json(response.data)
+            const formattedResponse = {
+                Mat: response.data, // This is the array of assignments
+                count: response.materialCount // This is the count of assignments
+            };
+            res.status(response.status).json(formattedResponse)
         }
     } catch (error) {
      console.log(error);
@@ -124,8 +128,6 @@ const response = await this.teacherCase.uploadAssignment(subjectId,teacherId,con
 async fetchAssignments(req:Request,res:Response){
     try {
         const {subjectId, id,page } = req.body
-          
-            
             const response = await this.teacherCase.fetchAssignments(subjectId,id,page)
             if(response){
                 const formattedResponse = {
@@ -135,6 +137,7 @@ async fetchAssignments(req:Request,res:Response){
                 res.status(response.status).json(formattedResponse)
             }
     } catch (error) {
+        console.log(error);        
         res.status(500).json({messge:'Error fetching Assignments'})
     }
 }

@@ -52,8 +52,8 @@ res.status(response.status).json({data:response.data,message:response.message})
     async fetchAsnmtMat(req:Request,res:Response){
         try {
                 console.log(req.body);
-                const{subjectId,id} = req.body
-                            const response = await this.studentCase.fetchAsnmtMat(subjectId,id)
+                const{subjectId,id,page} = req.body
+                            const response = await this.studentCase.fetchAsnmtMat(subjectId,id,page)
                             if(response){
                                 const formattedResponse = {
                                     Mat: response.data, // This is the array of assignments

@@ -90,23 +90,24 @@ async uploadMaterial(teacherId:string,subjectId:string,id:string,file:Array<Obje
     }
 }
 
-async fetchMaterials(subjectId:string,teacherId:string,id:string){
+async fetchMaterials(subjectId:string,id:string,page:number){
     try {
-        const asmntData = await this.teacherRepository.fetchAssignments(subjectId,id)
-        const materialData = await this.teacherRepository.fetchMaterials(subjectId,id)
+        // const asmntData = await this.teacherRepository.fetchAssignments(subjectId,id)
+        const limit:number = 4
+        const materialData = await this.teacherRepository.fetchMaterials(subjectId,id,page,limit)
+        const materialCount = await this.teacherRepository.fetchMaterialsCount(subjectId,id)
                 
-         const uploadsArray = [...materialData,...asmntData]
+         const uploadsArray = [...materialData]       
+      
          
-         
-       
         uploadsArray.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
         if(uploadsArray)
         {
-
-            
-            return {
+           return {
                 status:200,
-                data:uploadsArray
+                data:uploadsArray,
+                materialCount:materialCount
+
             }
         } else{
             return {
@@ -188,10 +189,9 @@ async uploadAssignment(subjectId:string,teacherId:string,content:string,assignme
     }
 }
 
-async fetchAssignments(subjectId:string,id:string,teacherId:string){
+async fetchAssignments(subjectId:string,id:string,page:number){
     try {
         const limit =4
-        const page = 1 
         const asmntData = await this.teacherRepository.fetchAssignments(subjectId,id,page,limit)
         const assignmentCount = await this.teacherRepository.fetchAssignmentsCount(subjectId,id)
         // asmntData.sort((a,b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
@@ -318,7 +318,8 @@ async updateAssignment(assignmentId:string,id:string,data:Partial<Assignment>){
 }
 
 
-//-------------------Submissions CRUD operations
+//-------------------Submissions CRUD operations-----------------------
+
 async fetchAllSubmissions(id:string,subjectId:string){
     try {   
         

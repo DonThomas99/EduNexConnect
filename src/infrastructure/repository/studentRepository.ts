@@ -98,7 +98,7 @@ export default class studentRepo implements studentRepository{
         }
     }
     
-    async fetchMaterials(subjectId: string, id: string, page: number = 1, limit: number = 4) {
+    async fetchMaterials(subjectId: string, id: string, page: number, limit: number = 4) {
         try {
             const Model = await getSchema(id, 'materials');
             const data = await Model.find({ subjectId: subjectId })
