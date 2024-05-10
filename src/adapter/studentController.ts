@@ -1,13 +1,17 @@
 import { Request,Response } from "express";
 import studentUseCase from "../use_case/studentUseCase";
+import generateFormattedResponse from "../infrastructure/utils/formatResponse"
+import formatResponse from "../infrastructure/utils/formatResponse";
 
 
 export default class studentController{
     private studentCase:studentUseCase
+    // private genResponse:generateFormattedResponse
     constructor(
         studentCase:studentUseCase,
-
+        //  genResponse :generateFormattedResponse
         ){
+            // this.genResponse =genResponse 
             this.studentCase = studentCase
     }
 
@@ -51,14 +55,12 @@ res.status(response.status).json({data:response.data,message:response.message})
 
     async fetchAsnmtMat(req:Request,res:Response){
         try {
-                console.log(req.body);
+               
                 const{subjectId,id,page} = req.body
                             const response = await this.studentCase.fetchAsnmtMat(subjectId,id,page)
                             if(response){
-                                const formattedResponse = {
-                                    Mat: response.data, // This is the array of assignments
-                                    count: response.materialCount // This is the count of assignments
-                                };
+                                const formatter = new formatResponse()
+                                const formattedResponse = await formatter.generateFormattedResponse(response.data,response.materialCount)
                                 res.status(response.status).json(formattedResponse)
                             }else{
 res.status(409).json({message:'Error fetching Data'})
@@ -75,10 +77,8 @@ res.status(409).json({message:'Error fetching Data'})
             
             const response = await this.studentCase.fetchAssignments(subjectId,id,page)
             if(response){
-                const formattedResponse = {
-                    Mat: response.data, // This is the array of assignments
-                    count: response.assignmentCount // This is the count of assignments
-                };
+                const formatter = new formatResponse()
+             const formattedResponse = await formatter.generateFormattedResponse(response.data,response.assignmentCount)               
                 res.status(response.status).json(formattedResponse)
             }
         } catch (error) {
