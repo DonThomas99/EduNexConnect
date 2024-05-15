@@ -4,3 +4,14 @@ export interface message{
     sender:string,
     text:string
 }
+
+export interface Imessage{
+    conversationId:string,
+    sender:string,
+    text:string
+}
+
+export interface userId{
+    recieverId:string,
+    senderId:string
+}

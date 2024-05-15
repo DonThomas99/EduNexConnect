@@ -4,11 +4,11 @@ import studentRepo from '../repository/studentRepository'
 import studentController from '../../adapter/studentController'
 import { Multer } from "../middlewares/multer";
 import Cloudinary from "../utils/cloudinary"
-
-
+import generateFormattedResponse from "../utils/formatResponse"
 
 const repository = new studentRepo()
 const cloudinary = new Cloudinary()
+const genResponse = new generateFormattedResponse()
 const useCase = new studentUsecase(repository,cloudinary)
 const controller = new studentController(useCase)
 
@@ -34,7 +34,7 @@ studentRoute.get('/fetchAssignments',(req:Request,res)=>{controller.fetchAssignm
 
 studentRoute.get('/fetchRoomId',(req:Request,res)=>{controller.fetchRoomId(req,res)})
 
-//submissions
+//-------------------submissions----------------------------
 studentRoute.post('/uploadAssignment',Multer.array('file'),(req:Request,res)=>{ controller.uploadAssignment(req,res)})
 studentRoute.get('/fetchSubmissions',(req:Request,res)=>{controller.fetchSubmissions(req,res)})
 studentRoute.delete('/deleteSubmissions',(req:Request,res)=>{controller.deleteSubmissions(req,res)})

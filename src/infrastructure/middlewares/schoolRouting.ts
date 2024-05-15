@@ -3,6 +3,7 @@ import schoolAdminRoute from '../route/schoolAdminRoute';
 import teacherRoute from "../route/teacherRoute";
 import studentRoute from "../route/studentRoute";
 import { Multer } from "../middlewares/multer";
+import chatRoute from "../route/chatRoutes";
 
 
 
@@ -96,8 +97,12 @@ router.use('/:id/:role', (req: Request, res: Response, next: NextFunction) => {
 
     } else if (role === 'student') {
 
-        console.log('We are going to reroute');
         return studentRoute(req, res, next)
+
+    }else if(role ==='chats'){
+
+        return chatRoute(req,res,next)
+
     } else {
 
         next();

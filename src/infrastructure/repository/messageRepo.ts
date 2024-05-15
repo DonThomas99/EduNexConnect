@@ -1,9 +1,9 @@
-import { message } from "../../domain/messages";
+import { Imessage, message } from "../../domain/messages";
 import messageRepo from "../../use_case/interface/messageRepository";
 import { getSchema } from "../utils/switchDb";
 
 export default class messageRepository implements messageRepo{
-    async newMessage(id:string,message:message){
+    async newMessage(id:string,message:Imessage){
         try {
             const Model = await getSchema(id,'messages')
             const newMessage = new Model(message)

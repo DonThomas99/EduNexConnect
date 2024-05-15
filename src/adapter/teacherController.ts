@@ -104,8 +104,12 @@ async updateMaterial(req:Request,res:Response){
 async uploadAssignments(req:Request,res:Response){
 try {    
     const id = req.body.tenantId[0]
-    const teacherId = req.body.subjectId[0]
+    const teacherId = req.body.teacherId[0]
     const subjectId = req.body.subjectId[0] 
+    console.log(teacherId,'teacherId');
+    console.log(subjectId,'subjectId');
+    
+    
     const{content,assignmentTitle,dateTime} = req.body
 
     

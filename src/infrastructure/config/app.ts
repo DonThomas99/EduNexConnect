@@ -7,6 +7,8 @@ import session, {SessionOptions} from 'express-session'
 import superAdminRouter from "../route/superAdminRoute";
 import { checkTenantMiddleware } from "../middlewares/checkTenant";
 import schoolRouting  from '../middlewares/schoolRouting';
+import  SocketRepository  from "../utils/socketRepository"
+import { Server as SocketIOServer } from "socket.io"
 const morgan = require('morgan'); 
 
 export const createServer = ()=>{
@@ -14,6 +16,16 @@ export const createServer = ()=>{
     
      const app = express()
      const httpServer = http.createServer(app)
+
+     const io = new SocketIOServer(httpServer, {
+      cors: {
+        origin: 'http://localhost:4200',
+        methods: ["GET", "POST"],
+      },
+    });
+
+    new SocketRepository(httpServer,io)
+
      app.use(morgan('dev'))
      app.use(express.json())
      app.use(express.urlencoded({extended:true}))
@@ -26,6 +38,7 @@ export const createServer = ()=>{
           credentials:true,
         })
       )
+
       const sessionOptions:SessionOptions={
         secret:'your-secret-key',
         resave:false,
@@ -45,7 +58,7 @@ export const createServer = ()=>{
       app.use('/',schoolRouting)
       app.use(checkTenantMiddleware)
       // const pathName = req.originalUrl.split('?')[0]
-      return app
+      return httpServer
 //  }
   // catch (error) {
     // console.log(error);
