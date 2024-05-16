@@ -14,11 +14,12 @@ import { assignmentSchema } from '../database/assignment';
 import { conversationsSchema } from '../database/conversations';
 import MessageSchema from '../database/messages';
 import { submissionSchema } from '../database/submissions';
+import { SubscriptionPlanSchema } from '../database/subscriptionPlans';
 
 // Indicates which Schemas are used by whom
 
 const ChildrenSchemas: Map<string, any> = new Map([['schoolAdmin', schoolAdminSchema],['subjects',subjectSchema],['teachers',teacherSchema],['students',studentSchema],['materials',materialSchema],['assignments',assignmentSchema],['conversationModel',conversationsSchema],['messages',MessageSchema],['submissions',submissionSchema]]);
-const TenantSchemas: Map<string, any> = new Map([['tenants', TenantSchema],['admins',superAdminSchema]]);
+const TenantSchemas: Map<string, any> = new Map([['tenants', TenantSchema],['admins',superAdminSchema],['subscriptionPlans',SubscriptionPlanSchema]]);
 
 /** Switch db on the same connection pool
  * @return new connection
@@ -26,7 +27,7 @@ const TenantSchemas: Map<string, any> = new Map([['tenants', TenantSchema],['adm
 
 
 const getSchema =  async (schoolName: string,modelName:string): Promise<any> => {
-    if(modelName=="tenants"||modelName=="admins"){
+    if(modelName=="tenants"||modelName=="admins" || modelName =="subscriptionPlans"){
            
       const tenantDB: Connection = await switchDB('EduNextConnect', TenantSchemas);
      

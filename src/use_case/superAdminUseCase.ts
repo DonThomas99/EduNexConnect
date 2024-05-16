@@ -1,3 +1,4 @@
+import { subscripitonPlan } from "../domain/subscriptionPlan";
 import superAdminRepository from "../infrastructure/repository/superAdminRepository";
 import tenantRepository from "../infrastructure/repository/tenantRepository";
 import JwtCreate from "../infrastructure/utils/jwtCreate";
@@ -90,6 +91,58 @@ try {
     console.log(error);
     
 }
+ }
+
+ //--------------Subscription Plans CRUD Operations----------------
+
+ async savePlan(newPlan:subscripitonPlan){
+    try {
+        
+        const savePlan = await this.superAdminRepository.addPlan(newPlan)
+        if(savePlan){
+            return{
+                status:200,
+                message:'Plan Added Successfully'
+            }
+        }else {
+            return{
+                status:409,
+                message:'Error Adding Plan'
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        return {
+            status:500,
+            message:'Internal Server Error'
+        }
+        
+    }
+
+ }
+ async fetchPlans(){
+    try {
+        const plans = await this.superAdminRepository.fetchPlans()
+        if(plans){
+            return{
+                status:200,
+                data:plans
+            }
+        } else{
+            return {
+                status:304,
+                data:null,
+                message:"No Plans Added Yet"
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        return {
+            status:500,
+            message:"Error Fetching Plans"
+        }
+        
+    }
  }
 
 }

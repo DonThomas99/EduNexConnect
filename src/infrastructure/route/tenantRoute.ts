@@ -18,14 +18,23 @@ const useCase = new tenantusecase(repository,otpSend,otp,hashPassword,jwtCreate)
 const controller =  new tenantController(useCase)
 
 const router = express.Router()
-
+//--------------------Authentication Procedure---------------------
 router.post('/signup',(req:Request,res)=>controller.signUp(req,res))
 router.post('/signin',(req:Request,res)=>controller.signIn(req,res))
+
+//----------------------OTP Operations-------------------------------
 router.post('/verifyOtp',(req:Request,res)=>controller.verifyOtp(req,res))
+router.get('/resendOtp',(req:Request,res)=>controller.resendOtp(req,res))
+
+//----------------------Profile CRUD Operations------------------------
 router.put('/updateProfile',(req:Request,res)=>controller.updateProfile(req,res))
 router.put('/updatePassword',(req:Request,res)=>controller.updatePassword(req,res))
+
+//-----------------------schoolAdmin CRUD Operations-------------------
 router.post('/saveAdmin',tenantAuth,(req:Request,res)=>controller.saveAdmin(req,res))
 router.get('/adminList',(req:Request,res)=>controller.getAdminList(req,res))
+
+//-----------------------Create DB CRUD Operations----------------------
 router.get('/createDb',(req:Request,res)=>controller.createDb(req,res))
-router.get('/resendOtp',(req:Request,res)=>controller.resendOtp(req,res))
+
 export default router

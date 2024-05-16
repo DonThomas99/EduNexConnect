@@ -14,7 +14,13 @@ const useCase = new superAdminUseCase(repository,trepository,jwt)
 const controller = new superAdminController(useCase)
 
 const superAdminRouter = express.Router()
+
 superAdminRouter.post('/login',(req:Request,res)=>controller.adminLogin(req,res))
+
+//----------------Subscription Operations--------------------------
+superAdminRouter.post('/addPlan',(req:Request,res)=>controller.addPlan(req,res))
+superAdminRouter.get('/fetchPlans',(req:Request,res)=>controller.fetchPlans(req,res))
+//-------------------------Tenant Operations------------------------
 superAdminRouter.get('/tenantList',(req:Request,res)=>controller.tenantList(req,res))
 superAdminRouter.put('/blockTenant',(req:Request,res)=>controller.blockUnblock(req,res))
 superAdminRouter.get('/TenantData/:TenantId',(req:Request,res)=>controller.getTenantData(req,res))
