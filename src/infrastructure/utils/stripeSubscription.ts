@@ -1,8 +1,11 @@
 import Stripe from "stripe";
 import { ItenantPlan } from "../../domain/subscriptionPlan";
 import { Request } from "express";
+import dotenv from "dotenv"
+dotenv.config();
 
-const stripeSecretKey = 'sk_test_51PBH8NSBdm1wkPvdWGhuy4p7B3gjBUmm1ooYlZSSbEIqbBQTFGqEjj3XCLrAqIjuoZO9Cu7Fk5EbomURLkvl9tU4001lpiHcza';
+
+const stripeSecretKey = process.env.STRIPE_SECRET_KEY
 if (!stripeSecretKey) {
     throw new Error("Stripe secret key is not defined");
 }
