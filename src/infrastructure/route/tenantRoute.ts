@@ -8,13 +8,15 @@ import HashPassword from "../utils/hashPassword"
 import JwtCreate from "../utils/jwtCreate"
 import  {getSchema} from "../utils/switchDb"
 import { tenantAuth } from "../middlewares/tenant.auth"
+import generateStripeSession from "../utils/stripeSubscription"
 
 const repository = new tenantRepository(getSchema)
+const stripeSession = new generateStripeSession()
 const otp = new otpGen()
 const otpSend = new sendOtp()
 const hashPassword = new HashPassword()
 const jwtCreate = new JwtCreate()
-const useCase = new tenantusecase(repository,otpSend,otp,hashPassword,jwtCreate)
+const useCase = new tenantusecase(repository,otpSend,otp,hashPassword,jwtCreate,stripeSession)
 const controller =  new tenantController(useCase)
 
 const router = express.Router()
@@ -34,7 +36,12 @@ router.put('/updatePassword',(req:Request,res)=>controller.updatePassword(req,re
 router.post('/saveAdmin',tenantAuth,(req:Request,res)=>controller.saveAdmin(req,res))
 router.get('/adminList',(req:Request,res)=>controller.getAdminList(req,res))
 
-//-----------------------Create DB CRUD Operations----------------------
+//------------------------Subscription Operations-----------------------
+router.get('/fetchPlans',(req:Request,res)=>controller.fetchPlans(req,res))
+router.post('/subscribePlan',(req:Request,res)=>controller.subscribePlan(req,res))
+router.post('/saveSubscription',(req:Request,res)=>controller.saveSubscription(req,res))
+
+//----------------------- DB CRUD Operations----------------------
 router.get('/createDb',(req:Request,res)=>controller.createDb(req,res))
 
 export default router

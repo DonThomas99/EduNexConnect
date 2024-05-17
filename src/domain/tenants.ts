@@ -13,5 +13,5 @@ export interface ITenants {
     city:string;
     zip:number;
     schoolAdmins:[]
-    // transactions: string;
+    transactions: [];
 }

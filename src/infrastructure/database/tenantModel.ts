@@ -52,12 +52,28 @@ export const TenantSchema:Schema = new Schema<TenantSchemaType>({
         }
     },
 ],
-    // transactions:[ {
-    //   transactionType: String,
-    //   method:String,
-    //   amount: Number,
-    //   date:Date,
-    // }], 
+    transactions:[ {
+      transactionType:{
+          type:String,
+          required:true
+      },
+      planId:{
+        type:String,
+        required:true
+      },      
+      amount: {
+        type:Number
+    },
+      date:{
+        type:Date,
+        required:true
+    },
+    expiryDate:{
+        type:Date,
+        required:true
+    }
+
+    }], 
     isBlocked:{
         type:Boolean,
         required: true,

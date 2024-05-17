@@ -1,7 +1,7 @@
 
 // import TenantSchema from './models/tenantSchema.js';
 // import EmployeeSchema from './models/employeeSchema.js';
-import mongoose, { Connection, Model } from 'mongoose';
+import mongoose, { Connection, Model, model } from 'mongoose';
 import { schoolConnectDB } from '../config/connectDb'; 
 import { schoolAdminSchema } from '../database/schoolAdminModel';
 import { TenantSchema } from '../database/tenantModel';
@@ -15,11 +15,12 @@ import { conversationsSchema } from '../database/conversations';
 import MessageSchema from '../database/messages';
 import { submissionSchema } from '../database/submissions';
 import { SubscriptionPlanSchema } from '../database/subscriptionPlans';
+import { premiumTenants } from '../database/premiumTenants';
 
 // Indicates which Schemas are used by whom
 
 const ChildrenSchemas: Map<string, any> = new Map([['schoolAdmin', schoolAdminSchema],['subjects',subjectSchema],['teachers',teacherSchema],['students',studentSchema],['materials',materialSchema],['assignments',assignmentSchema],['conversationModel',conversationsSchema],['messages',MessageSchema],['submissions',submissionSchema]]);
-const TenantSchemas: Map<string, any> = new Map([['tenants', TenantSchema],['admins',superAdminSchema],['subscriptionPlans',SubscriptionPlanSchema]]);
+const TenantSchemas: Map<string, any> = new Map([['tenants', TenantSchema],['admins',superAdminSchema],['subscriptionPlans',SubscriptionPlanSchema],['premiumTenants',premiumTenants]]);
 
 /** Switch db on the same connection pool
  * @return new connection
@@ -27,7 +28,7 @@ const TenantSchemas: Map<string, any> = new Map([['tenants', TenantSchema],['adm
 
 
 const getSchema =  async (schoolName: string,modelName:string): Promise<any> => {
-    if(modelName=="tenants"||modelName=="admins" || modelName =="subscriptionPlans"){
+    if(modelName=="tenants"||modelName=="admins" || modelName =="subscriptionPlans" || modelName=="premiumTenants"){
            
       const tenantDB: Connection = await switchDB('EduNextConnect', TenantSchemas);
      

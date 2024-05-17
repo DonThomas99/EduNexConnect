@@ -12,3 +12,9 @@ export interface OsubscripitonPlan{
     durationUnit:string,
     durationValue:string,
 }
+
+export interface ItenantPlan{
+    plan: OsubscripitonPlan;
+    tenantId: string;
+    date: string;
+}

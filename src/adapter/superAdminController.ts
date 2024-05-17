@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 import superAdminUsecase from "../use_case/superAdminUseCase"
-import { LEGAL_TCP_SOCKET_OPTIONS } from "mongodb";
+
 class superAdminController {
     private superAdminCase:superAdminUsecase
     constructor(
@@ -18,6 +18,8 @@ async adminLogin(req:Request,res:Response){
         
     // }
 }
+
+
 
 async tenantList(req:Request,res:Response){
     const list:any = await this.superAdminCase.findAll()
@@ -49,6 +51,7 @@ async getTenantData(req:Request,res:Response){
     }
 }
 
+//--------------Subscription Plans CRUD Operations----------------
 async addPlan(req:Request,res:Response){
     try {     
         const value = req.body.planData
@@ -64,7 +67,6 @@ async addPlan(req:Request,res:Response){
     }
 }
 
- //--------------Subscription Plans CRUD Operations----------------
 
 async fetchPlans(req:Request,res:Response){
 try {

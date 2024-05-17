@@ -6,6 +6,9 @@ import otpGen from "../infrastructure/utils/otpGen";
 import sendMail from "../infrastructure/utils/sendMail";
 import hashPassword from "../infrastructure/utils/hashPassword"
 import JwtCreate from "../infrastructure/utils/jwtCreate";
+import { ItenantPlan, OsubscripitonPlan } from "../domain/subscriptionPlan";
+import generateStripeSession from "../infrastructure/utils/stripeSubscription";
+import { Request } from "express";
 
 class tenantUsecase {
     // private tempTenantRepository: tempTenantRepository
@@ -14,6 +17,7 @@ class tenantUsecase {
     private sendMail: sendMail;
     private hashPassword: hashPassword;
     private JwtCreate: JwtCreate;
+    private stripeSession:generateStripeSession
 
     constructor(
         // tempTenantRepository: tempTenantRepository,
@@ -21,7 +25,8 @@ class tenantUsecase {
         sendMail: sendMail,
         otpGen: otpGen,
         hashPassword: hashPassword,
-        JwtCreate: JwtCreate
+        JwtCreate: JwtCreate,
+        stripeSession:generateStripeSession
     ) {
         // this.tempTenantRepository = tempTenantRepository
         this.tenantRepository = tenantRepository
@@ -29,6 +34,7 @@ class tenantUsecase {
         this.otpGen = otpGen
         this.hashPassword = hashPassword
         this.JwtCreate = JwtCreate
+        this.stripeSession = stripeSession
     }
     async signup(tenant: ITenants) {
         const isExisting = await this.tenantRepository.findByEmail(tenant.email)
@@ -229,6 +235,76 @@ class tenantUsecase {
 
         }
     }
+    
+async fetchPlans(){
+    try {
+        const plans = await this.tenantRepository.fetchPlans()
+        if(plans){
+            return{
+                status:200,
+                data:plans
+            }
+        } else{
+            return {
+                status:304,
+                data:null,
+            }
+        }
+    } catch (error) {
+        console.log(error);
+            return {
+                status:500,
+                message:'Error Fetching Plans'
+            }        
+    }
+}
+
+async subscribePlan(ItenantPlan:ItenantPlan){
+    try {
+        
+        
+       const sessionUrl  = await this.stripeSession.confirmTransaction(ItenantPlan)
+       if(sessionUrl){
+        return {
+            status:200,
+            url:sessionUrl
+        }
+       } else{
+        return {
+            status:409,
+            message:'Error Fetching Url'
+        }
+       }
+       
+        
+    } catch (error) {
+        console.log(error);
+        return {
+            status:500,
+            message:"Error Subscribing "
+        }
+        
+    }
+}
+async confirmSubscription(ItenantPlan:ItenantPlan){
+    try {
+        const saveSubscription = await this.tenantRepository.saveSubscriptionDetail(ItenantPlan)
+        if(saveSubscription){
+                return {
+                    status:200,
+                    message:'Payment Successfull'
+                }
+        }
+        
+    } catch (error) {
+        console.log(error);
+        return {
+            status:500,
+            
+        }
+        
+    }
+}
 
 
 }

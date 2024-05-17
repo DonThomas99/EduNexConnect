@@ -5,6 +5,7 @@ import TenantRepository from "../../use_case/interface/tenantRepository";
 import { ITenants } from "../../domain/tenants";
 import { UpdateResult } from "mongodb";
 import { getSchema } from "../utils/switchDb";
+import { ItenantPlan } from "../../domain/subscriptionPlan";
 
 class tenantRepository implements TenantRepository{
     private readonly getSchema: (schoolName: string, modelName: string) => Promise<any>;
@@ -72,6 +73,8 @@ try {
 }
     }
 
+    //---------------------------Tenant Profile Management---------------------
+
     async updateProfile(id:string,tenant:ITenants){
         const TenantModel = await getSchema(id,"admins")
         const {name,mobile,email,school,address,state} = tenant
@@ -120,8 +123,6 @@ async adminExist(tenantId:string,id:string){
             password:password
         }
         try {
-
-
             const schoolAdminmodel = await getSchema(tenantId,"schoolAdmin")
             const newAdmin = new schoolAdminmodel(adminData); // Create a new instance of the CompanySchema with the provided data
             const updatedTenant = await newAdmin.save();
@@ -138,6 +139,92 @@ async adminExist(tenantId:string,id:string){
         }
     }
 
+
+    //------------------------Subscription Operations---------------------------
+
+
+    async fetchPlans(){
+        try {
+            const plansModel = await getSchema("EduNextConnect","subscriptionPlans")
+            const plans = await plansModel.find({})
+            if (plans.length>0){
+                return plans
+            } else {
+                return null
+            }
+        } catch (error) {
+            console.log(error);
+            return null         
+        }
+    }
+
+    async saveSubscriptionDetail(tenantPlan: ItenantPlan) {
+        try {
+            const { plan, tenantId, date } = tenantPlan;
+            
+            const mappedPlan = {
+                amount: plan.amount,
+                planName: plan.planName,
+                durationUnit: plan.durationUnit,
+                durationValue: plan.durationValue,
+                expiryDate: new Date() // Initialize expiryDate as null initially
+            };
+    
+            // Calculate expiry date based on durationValue and durationUnit
+            const startDate = new Date(date);
+            switch (mappedPlan.durationUnit.toLowerCase()) {
+                case 'day':
+                    mappedPlan.expiryDate = new Date(startDate.getTime() + (parseInt(mappedPlan.durationValue) * 24 * 60 * 60 * 1000));
+                    break;
+                case 'week':
+                    mappedPlan.expiryDate = new Date(startDate.getTime() + (parseInt(mappedPlan.durationValue) * 7 * 24 * 60 * 60 * 1000));
+                    break;
+                case 'month':
+                    mappedPlan.expiryDate = new Date(startDate.getFullYear(), startDate.getMonth() + parseInt(mappedPlan.durationValue), startDate.getDate());
+                    break;
+                case 'year':
+                    mappedPlan.expiryDate = new Date(startDate.getFullYear() + parseInt(mappedPlan.durationValue), startDate.getMonth(), startDate.getDate());
+                    break;
+                default:
+                    throw new Error('Invalid duration unit');
+            }
+    
+            const premiumTenantModel = await getSchema("EduNextConnect", "premiumTenants");
+            const newDocument = new premiumTenantModel({
+               ...mappedPlan,
+                tenantId,
+                startedDate: startDate,
+            });
+    
+            const save = await newDocument.save();
+            console.log(save);
+    
+            if (!!save) {
+                const tenantModel = await getSchema("EduNextConnect", "tenants");
+                const tenant = await tenantModel.findById(tenantPlan.tenantId);
+                const transaction = {
+                    transactionType: tenantPlan.plan.planName,
+                    amount: tenantPlan.plan.amount,
+                    planId: tenantPlan.plan._id,
+                    date: startDate,
+                    expiryDate:mappedPlan.expiryDate
+                };
+                await tenant.transactions.push(transaction);
+                const tenantStatus = await tenant.save();
+                if (!!tenantStatus) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        } catch (error) {
+            console.error(error);
+            return false;
+        }
+    }
+    
 
 }
 export default tenantRepository

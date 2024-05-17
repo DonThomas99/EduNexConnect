@@ -1,6 +1,8 @@
 import { Request,Response } from "express";
 import tenantUsecase from "../use_case/tenantUsecase"
 import { ITenants } from "../domain/tenants";
+import GenerateStripeSession from "../infrastructure/utils/stripeSubscription";
+// import stripe from "stripe";
 // import tenants from "../domain/tenants";
 
 
@@ -12,6 +14,7 @@ class tenantController {
         this.tenantCase= tenantCase
         
     }
+    //---------------Tenant Authentication Operations--------------
         async signUp(req:Request,res:Response){
             try {     
                 console.log(req.body);
@@ -79,6 +82,9 @@ class tenantController {
                     
         }
     } 
+
+    //-------------Profile Management Operations------------------
+
     async updateProfile(req:Request,res:Response){
         try {
             const body = req.body
@@ -105,6 +111,8 @@ class tenantController {
             
         }
     }
+
+    //--------------School Admin CRUD Operations------------------
     
 async saveAdmin(req:Request,res:Response){
 try {
@@ -162,6 +170,65 @@ async resendOtp(req:Request,res:Response){
         
     }
 }
+
+//---------------Subscription Operations 
+
+async fetchPlans(req:Request,res:Response){
+    try {       
+        const response = await this.tenantCase.fetchPlans()
+        if(response){
+            res.status(response.status).json({data:response.data,message:response.message})
+        } else{
+        res.status(500).json({message:'Error Fetching Plans'})           
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message:'Error Fetching Plans'})
+        
+    }
+}
+
+async subscribePlan(req:Request,res:Response){
+    try {
+        const {plan,tenantId,date} = req.body 
+        const document ={
+            plan:plan,
+            tenantId:tenantId,
+            date:date
+        }     
+        
+        req.app.locals.subscription =document
+       
+        const response = await this.tenantCase.subscribePlan(document)
+        if(response){
+            res.status(response.status).json({url:response.url,message:response.message})
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message:"Error Subscribing"})
+        
+    }
+}
+async saveSubscription(req:Request,res:Response){
+    try {
+        const localData = req.app.locals.subscription
+        const subscripiton = new GenerateStripeSession() 
+        const payment = await subscripiton.confirmSubscription(req)
+        if(payment){
+         const response = await  this.tenantCase.confirmSubscription(localData)  
+         if(response){
+            res.status(response.status).json({message:response.message})
+         }
+        } else{
+console.log('Webhook did it wrong')           
+        }
+
+        
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 }
 
 
