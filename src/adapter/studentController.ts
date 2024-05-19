@@ -43,9 +43,10 @@ res.status(response.status).json({data:response.data,message:response.message})
 
     async fetchSubjects(req:Request,res:Response){
         try {
-    const {id,email,classNum} = req.body
-    const response = await this.studentCase.fetchSubjects(classNum,id)    
-    res.status(response.status).json(response.data)      
+    const {id,email,classNum,page} = req.body
+        
+    const response = await this.studentCase.fetchSubjects(classNum,id,page)    
+    res.status(response.status).json({subjects:response.data,count:response.count})      
         } catch (error) {
             console.log(error);
             res.status(500).json({data:null,message:'Error Fetching Subjects'})

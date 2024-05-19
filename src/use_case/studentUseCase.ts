@@ -93,14 +93,17 @@ this.studentRepo = studentRepo
         }
     }
 
-async fetchSubjects(classNum:string,id:string){
+async fetchSubjects(classNum:string,id:string,page:number){
     try {
+        const startIndex = (page - 1) * 3
         const isExisting = await this.studentRepo.fetchSubjects(classNum,id)
-        const subjects = isExisting.subjects
+        const count:number = isExisting.subjects.length
+        const subjects = isExisting.subjects.slice(startIndex, startIndex + 3)
         if(isExisting){
             return{
                 status:200,
-                data:subjects
+                data:subjects,
+                count:count
             } 
         } else{
             return {
