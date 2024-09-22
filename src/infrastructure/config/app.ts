@@ -9,6 +9,9 @@ import { checkTenantMiddleware } from "../middlewares/checkTenant";
 import schoolRouting  from '../middlewares/schoolRouting';
 import  SocketRepository  from "../utils/socketRepository"
 import { Server as SocketIOServer } from "socket.io"
+import helmet from "helmet"
+import mongoSanitize from "express-mongo-sanitize"
+const xss = require( "xss-clean")
 const morgan = require('morgan'); 
 
 export const createServer = ()=>{
@@ -50,6 +53,11 @@ export const createServer = ()=>{
       }
       app.use(session(sessionOptions))
 
+
+      app.use(helmet())
+
+      app.use(mongoSanitize())
+      app.use(xss())
 
       app.use('/super-admin',superAdminRouter)
       
