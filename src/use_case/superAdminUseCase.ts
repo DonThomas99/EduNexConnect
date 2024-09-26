@@ -1,3 +1,4 @@
+import { IbannerData } from "../domain/banner";
 import { subscripitonPlan } from "../domain/subscriptionPlan";
 import superAdminRepository from "../infrastructure/repository/superAdminRepository";
 import tenantRepository from "../infrastructure/repository/tenantRepository";
@@ -97,8 +98,8 @@ try {
 
  async savePlan(newPlan:subscripitonPlan){
     try {
-        
         const savePlan = await this.superAdminRepository.addPlan(newPlan)
+        console.log(savePlan,'heeiei')
         if(savePlan){
             return{
                 status:200,
@@ -142,6 +143,76 @@ try {
             message:"Error Fetching Plans"
         }
         
+    }
+ }
+
+ //------------------------Banner CRUD Operations----------------------------
+
+ async fetchBanner(){
+    try {
+        const banners = await this.superAdminRepository.fetchBanner()
+        if(banners){
+            return {
+                status:200,
+                data:banners
+            }
+        }else{
+            return {
+                status:409,
+                data:null,
+                message:'No Banners Added Yet'
+            }
+        }
+    } catch (error) {
+        console.log(error)
+        return {
+            status:500,
+            message:"Error Fetching Plans"
+        }
+    }
+ }
+
+ async saveBanner(bannerData:IbannerData){
+   try {
+        const saveBanner = await this.superAdminRepository.saveBanner(bannerData)
+        if(saveBanner){
+            return {
+                status:200,
+                message:'Banner Added Successfully'
+            }
+        }else{
+            return {
+                status:409,
+                message:'Error Saving Banner '
+            }
+        }
+   } catch (error) {
+    return {
+        status:500,
+        message:'Error Saving Banner'
+    }
+   } 
+ }
+
+ async removeBanner(bannerId:string){
+    try {
+        const removeBanner = await this.superAdminRepository.deleteBanner(bannerId)
+        if(removeBanner){
+            return{
+                status:200,
+                message:'Banner Deleted Successfully'
+            }
+        }else{
+            return {
+                status:409,
+                message:'Error Deleting Banner'
+            }
+        }
+    } catch (error) {
+        return{
+            status:500,
+            message:'Error Removing Banner'
+        }
     }
  }
 

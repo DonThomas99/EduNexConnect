@@ -16,11 +16,12 @@ import MessageSchema from '../database/messages';
 import { submissionSchema } from '../database/submissions';
 import { SubscriptionPlanSchema } from '../database/subscriptionPlans';
 import { premiumTenants } from '../database/premiumTenants';
+import { bannerSchema } from '../database/banner';
 
 // Indicates which Schemas are used by whom
 
 const ChildrenSchemas: Map<string, any> = new Map([['schoolAdmin', schoolAdminSchema],['subjects',subjectSchema],['teachers',teacherSchema],['students',studentSchema],['materials',materialSchema],['assignments',assignmentSchema],['conversationModel',conversationsSchema],['messages',MessageSchema],['submissions',submissionSchema]]);
-const TenantSchemas: Map<string, any> = new Map([['tenants', TenantSchema],['admins',superAdminSchema],['subscriptionPlans',SubscriptionPlanSchema],['premiumTenants',premiumTenants]]);
+const TenantSchemas: Map<string, any> = new Map([['tenants', TenantSchema],['admins',superAdminSchema],['subscriptionPlans',SubscriptionPlanSchema],['premiumTenants',premiumTenants],['bannerSchema',bannerSchema]]);
 
 /** Switch db on the same connection pool
  * @return new connection
@@ -28,7 +29,7 @@ const TenantSchemas: Map<string, any> = new Map([['tenants', TenantSchema],['adm
 
 
 const getSchema =  async (schoolName: string,modelName:string): Promise<any> => {
-    if(modelName=="tenants"||modelName=="admins" || modelName =="subscriptionPlans" || modelName=="premiumTenants"){
+    if(modelName=="tenants"||modelName=="admins" || modelName =="subscriptionPlans" || modelName=="premiumTenants" || modelName=="bannerSchema"){
            
       const tenantDB: Connection = await switchDB('EduNextConnect', TenantSchemas);
      

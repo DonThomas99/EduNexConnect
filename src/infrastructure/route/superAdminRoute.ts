@@ -25,4 +25,9 @@ superAdminRouter.get('/tenantList',(req:Request,res)=>controller.tenantList(req,
 superAdminRouter.put('/blockTenant',(req:Request,res)=>controller.blockUnblock(req,res))
 superAdminRouter.get('/TenantData/:TenantId',(req:Request,res)=>controller.getTenantData(req,res))
 
+//---------------------------Banners-------------------------------------------------
+superAdminRouter.post('/Banner',(req:Request,res)=>{controller.addBanner(req,res)})
+superAdminRouter.get('/Banner',(req:Request,res)=>{controller.fetchBanner(req,res)})
+superAdminRouter.delete('/Banner',(req:Request,res)=>{controller.deleteBanner(req,res)})
+
 export default superAdminRouter 

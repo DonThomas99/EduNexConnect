@@ -1,5 +1,6 @@
 import { Request, Response } from "express"
 import superAdminUsecase from "../use_case/superAdminUseCase"
+import { IbannerData } from "../domain/banner";
 
 class superAdminController {
     private superAdminCase:superAdminUsecase
@@ -78,6 +79,46 @@ try {
 console.log(error);
 res.status(500).json({message:'No Plans Added Yet.'})
 }
+}
+
+//--------------------Banner CRUD operations--------------
+
+async addBanner(req:Request,res:Response){
+    try {
+        let bannerData:IbannerData
+         bannerData = req.body.bannerData
+        const response = await this.superAdminCase.saveBanner(bannerData)
+        if(response){
+            res.status(response.status).json({message:response.message})
+        }
+    } catch (error) {
+        res.status(500).json({message:'Error Saving Banner'})
+    }
+}
+
+async fetchBanner(req:Request,res:Response){
+    try {
+        const response = await this.superAdminCase.fetchBanner()
+        if(response){
+            res.status(response.status).json({message:response.message,data:response.data})
+        }
+        
+    } catch (error) {
+        
+    }
+}
+
+async deleteBanner(req:Request,res:Response){
+    try {
+        const bannerId = req.query.bannerId as unknown as string
+        console.log(bannerId)
+        const response = await this.superAdminCase.removeBanner(bannerId)
+        if(response){
+            res.status(response.status).json({message:response.message})
+        }
+    } catch (error) {
+        res.status(500).json({message:'Error Deleting Banner'})
+    }
 }
 
 }

@@ -3,6 +3,7 @@ import SuperAdminRepository from "../../use_case/interface/superAdminRepository"
 import superAdmin from "../../domain/superAdmin";
 import { getSchema } from "../utils/switchDb";
 import { subscripitonPlan } from "../../domain/subscriptionPlan";
+import { IbannerData } from "../../domain/banner";
 
 class superAdminRepository implements SuperAdminRepository{
     
@@ -48,7 +49,55 @@ class superAdminRepository implements SuperAdminRepository{
         }
     }
 
+    //-----------------------------Banner CRUD Operations---------
 
+    async saveBanner(bannerData:IbannerData){
+        try {
+            
+            const superAdminModel = await getSchema("EduNextConnect","bannerSchema")
+            const newBanner = new superAdminModel(bannerData)
+            const save = await newBanner.save()
+            if(save){
+                      return true
+            }else{
+                return false
+            }
+        } catch (error) {
+            return false
+        }
+
+    }
+
+    async deleteBanner(bannerId:string){
+        try {
+            const superAdminModel = await getSchema("EduNextConnect","bannerSchema")
+            const status = await superAdminModel.deleteOne({_id:bannerId})
+            if(status){
+                return true
+            }else{
+                return false
+            }
+            
+        } catch (error) {
+            console.log(error)
+            return false
+        }
+    }
+
+    async fetchBanner(){
+        try {
+            const superAdminModel = await getSchema("EduNextConnect","bannerSchema")
+            const data = await superAdminModel.find({})
+            if(data){
+                return data
+            }else{
+                return null
+            }
+        } catch (error) {
+            console.log(error)
+            return false
+        }
+    }
 }
 
 export default superAdminRepository
