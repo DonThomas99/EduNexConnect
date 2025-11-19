@@ -1,5 +1,7 @@
 {
-    "watch": ["/*"],
-        "ext": ".ts,.js",
-            "exec": "ts-node ./src/index.ts"
+    "watch": ["src"],
+    "ext": "ts,js",
+    "ignore": ["node_modules", "logs", "*.log", "dist", "build"],
+    "exec": "ts-node ./src/index.ts",
+    "delay": 2000
 }
