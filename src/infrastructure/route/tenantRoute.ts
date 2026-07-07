@@ -18,11 +18,13 @@ const hashPassword = new HashPassword()
 const jwtCreate = new JwtCreate()
 const useCase = new tenantusecase(repository,otpSend,otp,hashPassword,jwtCreate,stripeSession)
 const controller =  new tenantController(useCase)
+export { controller as tenantController }
 
 const router = express.Router()
 //--------------------Authentication Procedure---------------------
 router.post('/signup',(req:Request,res)=>controller.signUp(req,res))
 router.post('/signin',(req:Request,res)=>controller.signIn(req,res))
+router.post('/signout',(req:Request,res)=>controller.signOut(req,res))
 
 //----------------------OTP Operations-------------------------------
 router.post('/verifyOtp',(req:Request,res)=>controller.verifyOtp(req,res))
@@ -39,7 +41,7 @@ router.get('/adminList',(req:Request,res)=>controller.getAdminList(req,res))
 //------------------------Subscription Operations-----------------------
 router.get('/fetchPlans',(req:Request,res)=>controller.fetchPlans(req,res))
 router.post('/subscribePlan',(req:Request,res)=>controller.subscribePlan(req,res))
-router.post('/saveSubscription',(req:Request,res)=>controller.saveSubscription(req,res))
+//------ Stripe webhook is mounted directly on app at /api/subscriptions/webhook (see app.ts) ------
 
 //----------------------- DB CRUD Operations----------------------
 router.get('/createDb',(req:Request,res)=>controller.createDb(req,res))

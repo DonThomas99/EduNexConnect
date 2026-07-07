@@ -2,8 +2,7 @@ import express from "express"
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import http from 'http'
-import tenantRoute from '../route/tenantRoute'
-import session, {SessionOptions} from 'express-session'
+import tenantRoute, { tenantController } from '../route/tenantRoute'
 import superAdminRouter from "../route/superAdminRoute";
 import { checkTenantMiddleware } from "../middlewares/checkTenant";
 import schoolRouting  from '../middlewares/schoolRouting';
@@ -30,6 +29,10 @@ export const createServer = ()=>{
     new SocketRepository(httpServer,io)
 
      app.use(morgan('dev'))
+     // Stripe webhook signatures are verified against the exact raw request
+     // bytes, so this route is registered with its own raw-body parser
+     // ahead of the global JSON/sanitize middleware below.
+     app.post('/api/subscriptions/webhook', express.raw({ type: 'application/json' }), (req, res) => tenantController.saveSubscription(req, res))
      app.use(express.json())
      app.use(express.urlencoded({extended:true}))
      app.use(cookieParser())
@@ -41,18 +44,6 @@ export const createServer = ()=>{
           credentials:true,
         })
       )
-
-      const sessionOptions:SessionOptions={
-        secret:'your-secret-key',
-        resave:false,
-        saveUninitialized:false,
-        cookie:{
-          secure:false,
-          maxAge:3600000,
-        }
-      }
-      app.use(session(sessionOptions))
-
 
       app.use(helmet())
 

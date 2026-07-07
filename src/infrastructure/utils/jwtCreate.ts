@@ -8,7 +8,8 @@ class JwtCreate implements Ijwt{
         if(jwtKey){
             const token:string = jwt.sign(
                 {id:Id},
-                jwtKey
+                jwtKey,
+                {expiresIn:'1h'}
             );
             return token
         }

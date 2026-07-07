@@ -24,9 +24,7 @@ export const checkTenantMiddleware = async (req: CustomRequest, res: Response, n
         }
         
         req.tenantId = tenant._id as unknown as string;
-        console.log("you got it:",req.tenantId);
-        return res.status(200).json(req.tenantId)
-        // next(); // Call next middleware or route handler
+        next();
     } catch (error) {
         console.error('Error checking school:', error);
         return res.status(500).send('Internal Server Error');

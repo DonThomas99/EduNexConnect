@@ -59,7 +59,15 @@ export default class GenerateStripeSession {
                 success_url: `http://localhost:4200/subscribed`,
                 cancel_url: "http://localhost:4200/cancelled",
                 billing_address_collection: 'required',
-                metadata:{tenantId:tenantPlan.tenantId}
+                metadata:{
+                    tenantId:tenantPlan.tenantId,
+                    planId:tenantPlan.plan._id,
+                    planName:tenantPlan.plan.planName,
+                    amount:String(tenantPlan.plan.amount),
+                    durationUnit:tenantPlan.plan.durationUnit,
+                    durationValue:String(tenantPlan.plan.durationValue),
+                    date:tenantPlan.date
+                }
             });
 
             // console.log(session);
@@ -70,35 +78,55 @@ export default class GenerateStripeSession {
         }
     }
 
-async confirmSubscription(req:Request){
+async confirmSubscription(req:Request):Promise<{verified:boolean,subscription?:ItenantPlan}>{
     try {
-        const payload = req.body
-        const payloadString = JSON.stringify(payload,null,2)
         const sig = req.headers["stripe-signature"]
         if(typeof sig !== "string"){
-            return false
+            return {verified:false}
         }
-        const endpointSecret = 'whsec_9cf41b7e0faa80da18972b9154353ef5089c85866f1131da43d4245880281cfe'
-        const header = stripe.webhooks.generateTestHeaderString({
-            payload:payloadString,
-            secret:endpointSecret
-        })
-        let event;
-        event  = stripe.webhooks.constructEvent(
-            payloadString,
-            header,
+        const endpointSecret = process.env.WEB_HOOK_SECRET
+        if(!endpointSecret){
+            throw new Error("Stripe webhook secret is not defined")
+        }
+        // req.body must be the raw request buffer (see the express.raw()
+        // middleware mounted on this route in app.ts) - Stripe signatures
+        // are computed over the exact raw bytes, so a parsed/re-serialized
+        // body will never verify, even with the correct secret.
+        const event = stripe.webhooks.constructEvent(
+            req.body,
+            sig,
             endpointSecret
         )
-        console.log(`Webhook Verified:`,event);
+        console.log(`Webhook Verified:`,event.type);
         if(event.type == "checkout.session.completed"){
-            return true
-        } else{
-            return false
+            const session = event.data.object as Stripe.Checkout.Session
+            const metadata = session.metadata
+            // The full plan/tenant/date is carried in the checkout session's
+            // own metadata (set at session-creation time) rather than in any
+            // server-side memory, so this webhook is self-contained and
+            // doesn't depend on state left behind by an earlier request.
+            if(!metadata?.tenantId || !metadata.planId){
+                return {verified:true}
+            }
+            return {
+                verified:true,
+                subscription:{
+                    tenantId:metadata.tenantId,
+                    date:metadata.date,
+                    plan:{
+                        _id:metadata.planId,
+                        planName:metadata.planName,
+                        amount:Number(metadata.amount),
+                        durationUnit:metadata.durationUnit,
+                        durationValue:metadata.durationValue
+                    }
+                }
+            }
         }
-        
+        return {verified:true}
     } catch (error) {
-        console.log(error);
-        
+        console.log("Webhook signature verification failed:",error);
+        return {verified:false}
     }
 }
   
