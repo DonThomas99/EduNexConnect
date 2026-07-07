@@ -49,20 +49,23 @@ const getSchema =  async (schoolName: string,modelName:string): Promise<any> => 
 
   const switchDB = async (dbName: string, dbSchema: Map<string, any>): Promise<Connection> => {
     try {
-      const mongooseInstance:any = await schoolConnectDB();
+      const mongooseInstance = await schoolConnectDB();
     
-      if (mongooseInstance.connection.readyState === 1) {
-        const db = mongooseInstance.connection.useDb(dbName);
-        // Prevent from schema re-registration
-        if (!Object.keys(db.models).length) {
-          dbSchema.forEach((schema, modelName) => {
-            db.model(modelName, schema);
-          });
-        }
-        return db;
-      } else {
-        throw new Error('MongoDB connection is not open');
+      // Check connection state
+      if (mongooseInstance.connection.readyState !== 1) {
+        throw new Error(`MongoDB connection is not open. State: ${mongooseInstance.connection.readyState}`);
       }
+
+      const db = mongooseInstance.connection.useDb(dbName, { useCache: true });
+      
+      // Prevent from schema re-registration
+      if (!Object.keys(db.models).length) {
+        dbSchema.forEach((schema, modelName) => {
+          db.model(modelName, schema);
+        });
+      }
+      
+      return db;
     } catch (error) {
       console.error('Error switching database:', error);
       throw error; // Re-throw the error to propagate it up the call stack
