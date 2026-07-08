@@ -105,7 +105,7 @@ async confirmSubscription(req:Request):Promise<{verified:boolean,subscription?:I
             // own metadata (set at session-creation time) rather than in any
             // server-side memory, so this webhook is self-contained and
             // doesn't depend on state left behind by an earlier request.
-            if(!metadata?.tenantId || !metadata.planId){
+            if(!metadata?.tenantId || !metadata.planId || !metadata.planName || !metadata.durationUnit || !metadata.durationValue || !metadata.date){
                 return {verified:true}
             }
             return {

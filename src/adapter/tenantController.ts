@@ -55,7 +55,7 @@ class tenantController {
         }
     }
 
-    async signOut(req:Request,res:Response){
+    async signOut(_req:Request,res:Response){
         try {
             res.clearCookie('tenantJwt')
             res.status(200).json({message:'Signed out'})
@@ -192,7 +192,7 @@ async resendOtp(req:Request,res:Response){
 
 //---------------Subscription Operations 
 
-async fetchPlans(req:Request,res:Response){
+async fetchPlans(_req:Request,res:Response){
     try {       
         const response = await this.tenantCase.fetchPlans()
         if(response){

@@ -16,7 +16,7 @@ const chatRoute = express()
 
 chatRoute.post('/newconversation',(req:Request,res)=>{convoController.newConversation(req,res)})
 chatRoute.get('/getconversation',(req:Request,res)=>{convoController.getConversations(req,res)})
-chatRoute.get('/getconversations',(req:Request,res)=>{})
+chatRoute.get('/getconversations',(_req:Request,_res)=>{})
 
 //--------------------Message Routes----------------
 chatRoute.post('/newMessage',(req:Request,res)=>{mesgController.newMessage(req,res)})

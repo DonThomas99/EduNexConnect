@@ -11,7 +11,7 @@ const router = express.Router();
 // fields regardless of whether the client sent a GET with query params or
 // a POST body.
 const prepareSchoolRequest = (req: Request, res: Response, next: NextFunction) => {
-    const id = req.params.id;
+    const id = req.params.id ?? '';
     const email = req.query.email as string;
     const classNum = req.query.classNum as string;
     const subjectId = req.query.subjectId

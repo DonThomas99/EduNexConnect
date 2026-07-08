@@ -16,7 +16,7 @@ export const tenantAuth = async(req:Request,res:Response,next:NextFunction) => {
         const decoded = jwt.verify(token,process.env.JWT_KEY as string ) as JwtPayload
 
 
-        const tenantData = await repo.findById(decoded.id)
+        const tenantData = await repo.findTenantById(decoded.id)
 
 
         if(tenantData != null){

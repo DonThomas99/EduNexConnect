@@ -22,7 +22,7 @@ async adminLogin(req:Request,res:Response){
 
 
 
-async tenantList(req:Request,res:Response){
+async tenantList(_req:Request,res:Response){
     const list:any = await this.superAdminCase.findAll()
     res.status(list.status).json(list)
 }
@@ -69,7 +69,7 @@ async addPlan(req:Request,res:Response){
 }
 
 
-async fetchPlans(req:Request,res:Response){
+async fetchPlans(_req:Request,res:Response){
 try {
     const response = await this.superAdminCase.fetchPlans()
     if(response){
@@ -96,7 +96,7 @@ async addBanner(req:Request,res:Response){
     }
 }
 
-async fetchBanner(req:Request,res:Response){
+async fetchBanner(_req:Request,res:Response){
     try {
         const response = await this.superAdminCase.fetchBanner()
         if(response){

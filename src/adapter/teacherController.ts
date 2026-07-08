@@ -43,7 +43,7 @@ async fetchStudents(req:Request,res:Response){
     }
 }
 //Material CRUD operations 
-async uploadMaterial(req:Request,res:Response){
+async uploadMaterial(req:Request,_res:Response){
     try {
         const id = req.body.tenantId[0]
         const teacherId = req.body.subjectId[0]
