@@ -34,6 +34,11 @@ class tenantRepository implements TenantRepository{
         //     return null
         // }
     }
+
+    async findTenantById(id:string): Promise<ITenants | null>{
+        const TenantModel = await this.getSchema("EduNextConnect","tenants")
+        return await TenantModel.findById(id)
+    }
     async findAll(){
         return await TenantModel.find({})
     }
