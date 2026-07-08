@@ -54,7 +54,7 @@ export default class schoolAdminRepo implements schoolAdminRepository {
         })
         return !!status
     }
-    async addSubject(classNumber: string, subject: string, document: SubjectsDocument, id: string): Promise<boolean> {
+    async addSubject(classNumber: string, _subject: string, document: SubjectsDocument, id: string): Promise<boolean> {
         try {
             const Model = await getSchema(id, 'subjects');
             const status = await Model.findOne({ class: classNumber });

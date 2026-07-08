@@ -13,7 +13,7 @@ export default class SocketRepository {
     private io: SocketIOServer;
     private users: User[] = [];
 
-    constructor(httpServer: HttpServer, io: SocketIOServer) {
+    constructor(_httpServer: HttpServer, io: SocketIOServer) {
         // console.log('heee');
         
         this.io = io;

@@ -150,7 +150,7 @@ class tenantUsecase {
         }
     }
 
-    async updatePassword(email: string, currentPassword: any, newPassword: string, repeatPassword: string) {
+    async updatePassword(email: string, currentPassword: any, newPassword: string, _repeatPassword: string) {
         try {
 
             const data = await this.tenantRepository.findByEmail(email)
@@ -177,7 +177,7 @@ class tenantUsecase {
 
         }
     }
-    async saveAdmin(tenantId: string, id: string, password: string, repeatPassword: string) {
+    async saveAdmin(tenantId: string, id: string, password: string, _repeatPassword: string) {
         try {
 
 
@@ -210,7 +210,7 @@ class tenantUsecase {
         }
     }
 
-    async createDb(id: string) {
+    async createDb(_id: string) {
         try {
 
         } catch (error) {

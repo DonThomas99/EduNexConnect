@@ -10,9 +10,13 @@ interface CustomRequest extends Request {
 
 export const checkTenantMiddleware = async (req: CustomRequest, res: Response, next: NextFunction) => {
     try {
-        const schoolName = extractSchoolName(req); 
+        const schoolName = extractSchoolName(req);
             console.log(schoolName);
-            
+
+        if (!schoolName) {
+            return res.status(400).send('School name missing from request path');
+        }
+
         // Get the model for the tenants collection from the main database
         const tenantModel = await getSchema('EduNextConnect', 'tenants');
 
@@ -32,7 +36,7 @@ export const checkTenantMiddleware = async (req: CustomRequest, res: Response, n
 };
 
 // Helper function to extract school name from the request URL
-const extractSchoolName = (req: Request): string => {
+const extractSchoolName = (req: Request): string | undefined => {
     const parts = req.path.split('/'); // Split the request path by '/'
     return parts[1]; // The school name is the second part of the request path
 };
