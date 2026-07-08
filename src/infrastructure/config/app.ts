@@ -9,9 +9,9 @@ import schoolRouting  from '../middlewares/schoolRouting';
 import  SocketRepository  from "../utils/socketRepository"
 import { Server as SocketIOServer } from "socket.io"
 import helmet from "helmet"
-import mongoSanitize from "express-mongo-sanitize"
-const xss = require( "xss-clean")
-const morgan = require('morgan'); 
+import { mongoSanitize } from "../middlewares/mongoSanitize"
+import { xssSanitize } from "../middlewares/xssSanitize"
+const morgan = require('morgan');
 
 export const createServer = ()=>{
 //  try {
@@ -47,8 +47,8 @@ export const createServer = ()=>{
 
       app.use(helmet())
 
-      app.use(mongoSanitize())
-      app.use(xss())
+      app.use(mongoSanitize)
+      app.use(xssSanitize)
 
       app.use('/super-admin',superAdminRouter)
       
